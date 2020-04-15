@@ -42,19 +42,19 @@ class ServicesListView(LoginRequiredMixin, ListView):
     paginate_by = 6
 
     # -------- Sorting --------------
-    def get_queryset(self,):
-        queryset = Services.objects.all().order_by('-id')
-        dict_services = queryset.values()
-        try:
-            queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
-        except ValueError as error:
-            print("--ERROR--ValueError---", __name__, error)
-            pass
-        except TypeError as error:
-            print("--ERROR--TypeError---", __name__, error)
-            pass
-
-        return queryset
+    # def get_queryset(self,):
+    #     queryset = Services.objects.all().order_by('-id')
+    #     dict_services = queryset.values()
+    #     try:
+    #         queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
+    #     except ValueError as error:
+    #         print("--ERROR--ValueError---", __name__, error)
+    #         pass
+    #     except TypeError as error:
+    #         print("--ERROR--TypeError---", __name__, error)
+    #         pass
+    #
+    #     return queryset
 
 
 class EditService(LoginRequiredMixin, UpdateView):
