@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Είστε σίγουροι ότι θέλετε να διαγράψετε "
+    </p>
+    <table>{{ object }}</table>
+
+    <input type="submit" value="Διαγραφή" class="button3">
+    <button class="button">
+        <a href="/machines/{{ object.id }}">
+            Ακυρο
+        </a>
+    </button>
+</form>
+{% endblock %}

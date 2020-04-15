@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="btn btn-warning btn-lg">
+<i class="fas fa-calendar-alt">  Επεξεργασία εργασίας
+</i>
+</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% load crispy_forms_tags %}
+<form  method="POST">
+    {% csrf_token %}
+    <table class="table-secondary table-bordered">
+
+
+        <tr class="table-secondary" align="center">
+            <td colspan="3">
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.Ημερομηνία|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-2 mb-1">
+                        <a class="btn btn btn-info" role="button" href="/customers/{{ calendar_form.Copier_ID.Πελάτης.id }}">
+                            {{  form.Πελάτης|as_crispy_field }}
+                        </a>
+
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        <a class="btn  btn-secondary" role="button"  href="/machines/{{ calendar_form.Copier_ID.id }}">
+                            {{ form.Copier_ID|as_crispy_field }}
+                        </a>
+                    </div>
+
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.Σκοπός|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-1 mb-0">
+                        {{ form.Ενέργειες|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-1 mb-0">
+                        {{ form.Κατάσταση|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.Ημ_Ολοκλ|as_crispy_field }}
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr class="table-secondary" align="center">
+
+            <td>
+
+                {{ form.Τεχνικός|as_crispy_field }}
+
+                {{ form.Επείγων|as_crispy_field }}
+
+                {{ form.Τηλέφωνο|as_crispy_field }}
+
+                {{ form.Μετρητής|as_crispy_field }}
+
+                {{ form.Επ_Service|as_crispy_field }}
+
+                {{ form.ΔΤΕ|as_crispy_field }}
+
+                {{ form.Price|as_crispy_field }}
+
+            </td>
+            <td>
+                {{ form.Σημειώσεις|as_crispy_field }}
+                <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <button type="submit" class="btn btn-success">Αποθήκευση</button>
+
+                <a role="button" class="btn btn-danger" href="{% url 'Calendar:delete_calendar' calendar_form.id %}">Διαγραφή</a>
+
+            </td>
+            <td>
+
+                <h3>Ανταλλακτικά</h3>
+
+                <ol>
+                    {% for item in spareparts %}
+
+                    <li>
+                        <a role="button" class="btn  btn-secondary" href=" {% url 'spareparts:edit_sparepart' item.id  %}">  {{ item  }}
+                        </a>
+                    </li>
+                    <br>
+                    {% endfor %}
+                </ol>
+
+            </td>
+
+        <tr class="table-secondary" align="center">
+            <td align="left" colspan="3">
+                <div class="form-row">
+
+
+
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.Service_ID|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-2 mb-0">
+
+                    </div>
+
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+    </tr>
+
+    </table>
+</form>
+
+
+
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+{% endblock %}
+

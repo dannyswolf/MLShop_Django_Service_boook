@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<h2 class="btn btn-info btn-lg"> <svg class="bi bi-people-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 100-6 3 3 0 000 6zm-5.784 6A2.238 2.238 0 015 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 005 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clip-rule="evenodd"/>
+</svg>
+    Σύνολο:{{ page_obj.paginator.count }} πελάτες </h2>
+
+<div class="input-group col-md-3 mb-3">
+
+    <div class="input-group-append">
+        <form class="form-inline" action="{% url 'customers:search_customer' %}" method="get">
+
+            <input  class="form-control mr-sm-2" name="q"  placeholder="Αναζήτηση..." aria-label=="Αναζήτηση..." type="text" >
+            <button  class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
+
+
+        </form>
+    </div>
+</div>
+
+
+
+
+<p></p>
+
+
+
+<table class="table table-hover table-bordered">
+
+    <thead>
+
+    <tr class="table-success">
+        <th>ID</th>
+        <th><label about=""> Επωνυμία Επιχείρησης </label></th>
+        <th>Ονοματεπώνυμο</th>
+        <th>Διεύθυνση</th>
+        <th>Τηλέφωνο</th>
+        <th>Κινητό</th>
+        <!--   <th>E_mail</th> -->
+       <!--    <th>Σελίδες_πακέτου</th> -->
+        <!--   <th>Κόστος_πακέτου</th> -->
+         <th>Μηχανήματα </th>
+
+
+
+     </tr>
+
+     </thead>
+
+     <tbody>
+
+
+    {% for obj in object_list %}
+     <tr>
+         <td><a href=" {{ obj.id }}" name="id">{{ obj.id }}</a> </td>
+         <td><a href=" {{ obj.id }}" name="Επωνυμία_Επιχείρησης">{{ obj.Επωνυμία_Επιχείρησης}} </a></td>
+         <td><a href=" {{ obj.id }}" name="Ονοματεπώνυμο">{% if obj.Ονοματεπώνυμο %} {{ obj.Ονοματεπώνυμο}}{% else %}{% endif %}</a> </td>
+         <td><a href=" {{ obj.id }}" name="Διεύθυνση">{% if obj.Διεύθυνση %}{{ obj.Διεύθυνση}} {% else %} {% endif %}</a> </td>
+         <td><a href=" {{ obj.id }}" name="Τηλέφωνο">{{ obj.Τηλέφωνο}} </a></td>
+         <td> {{obj.Κινητό}} </td>
+
+
+         <td colspan="2">
+
+             <ol>{% for mach in obj.machines_set.all %}
+
+                 <li>
+
+                         <a role="button"  class="btn btn-secondary" href="/machines/{{ mach.id }}" >{{ mach}}</a>
+
+
+                 </li><br>
+
+                 {% endfor %}
+             </ol>
+
+         </td>
+
+
+
+
+      </tr>
+      </tbody>
+      {% endfor %}
+  </table>
+
+{% if page_obj.paginator.num_pages > 1 %}
+
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="pagination-action" href="?page=1">
+                <svg class="bi bi-caret-left-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 00-1.659-.753l-5.48 4.796a1 1 0 000 1.506z"/>
+                </svg>
+            </a>
+        </li>
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                Προηγούμενο
+            </a>
+        </li>
+
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <li class="page-item active">
+
+            <a class="page-link" href="?page={{ num }}">
+                {{ num }}
+            </a>
+            <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num }}">
+                {{ num }}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                Επόμενη
+            </a>
+        </li>
+        <li class="page-item">
+
+            <a class="pagination-action" href="?page={{ page_obj.paginator.num_pages }}">
+                <svg class="bi bi-caret-right-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
+                </svg>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endif %}
+
+<p>
+    <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+  {% endblock %}
+
+

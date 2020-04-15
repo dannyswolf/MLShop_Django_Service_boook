@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<h2 class="btn btn-info btn-lg">
+    <i class="fas fa-user-edit"> Επεξεργασία πελάτη
+    </i>
+</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% load crispy_forms_tags %}
+<form  method="POST">
+    {% csrf_token %}
+
+    <table class="table table-secondary table-bordered">
+
+        <tr class="table-secondary" align="center">
+            <td colspan="3">
+
+                <div class="form-row">
+                    <div class="form-group col-md-3 mb-0">
+                        {{ form.Επωνυμία_Επιχείρησης|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+
+                        {{ form.Ονοματεπώνυμο|as_crispy_field }}
+
+
+                    </div>
+                    <div class="form-group col-md-3 mb-0">
+
+                        {{ form.Διεύθυνση|as_crispy_field }}
+
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.Πόλη|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.Περιοχή|as_crispy_field }}
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr class="table-secondary" align="center">
+            <td>
+
+                {{ form.Τηλέφωνο|as_crispy_field }}
+
+
+                {{ form.Κινητό|as_crispy_field }}
+
+                {{ form.Φαξ|as_crispy_field }}
+
+                {{ form.E_mail|as_crispy_field }}
+
+                {{ form.Ταχ_Κώδικας|as_crispy_field }}
+                {{ form.Κατάσταση|as_crispy_field }}
+
+            </td>
+            <td>
+                {{ form.Σημειώσεις|as_crispy_field }}
+                <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <button  type="submit" class="btn btn-success">Αποθήκευση</button>
+                <a class="btn  btn-secondary" role="button"  href=" {% url 'machines:add_machine_from_customers'  customer %} ">
+                     Προσθήκη Μηχανήματος
+                </a>
+                {% if not machine_form %}
+
+                    <a class="btn  btn btn-danger" role="button" href="{% url 'customers:delete_customer' customer %}">Διαγραφή</a>
+
+                {% endif %}
+            </td>
+            <td align="left">
+                <table>
+                    <td align="center">
+
+                        <h4 class="btn btn-info btn-lg" align="center">Μηχανήματα</h4><p></p>
+            <ol>
+                {% for mach in machine_form %}
+
+
+                <li>
+                    <a class="btn  btn-secondary btn-sm" role="button" href="/machines/{{ mach.id }}">{{ mach }} </a>
+
+                </li>
+                <br>
+                {% endfor %}</ol>
+                    </td>
+                    <td align="center">
+                        <h4 class="btn btn-info btn-lg" align="center">Ανταλλακτικά</h4>
+                        <ol>
+                            {% for item in spareparts %}
+
+
+                            <li>
+                                <a class="btn  btn-secondary btn-sm" role="button" href="/spareparts/{{ item.id }}">{{ item }} </a>
+
+                            </li>
+                            <br>
+                            {% endfor %}</ol>
+                    </td>
+                </table>
+            </td>
+
+        <tr class="table-secondary" align="center">
+            <td align="left" colspan="2">
+                <div class="form-row">
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+    </tr>
+
+    </table>
+</form>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+{% endblock content %}
+
+
+
+

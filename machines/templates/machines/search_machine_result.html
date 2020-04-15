@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h2 class="btn btn-secondary btn-lg">  Σύνολο: {{ object_list.paginator.count }} Μηχανήματα βρέθηκαν </h2>
+
+
+<div class="input-group col-md-3 mb-3">
+
+    <div class="input-group-append">
+        <form action="{% url 'machines:search_machine' %}" method="get">
+
+            <input name="q" placeholder="Αναζήτηση..." type="text" >
+            <button class="btn btn-outline-success my-2 my-sm-0" name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση στα ενεργά</button>
+
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover table-bordered">
+    <thead>
+    <tr class="table-success " align="center">
+        <th>ID</th>
+        <th><label about=""> Εταιρεία </label></th>
+        <th>Serial</th>
+        <th>Εναρξη</th>
+        <th>Μετρητής έναρξης</th>
+        <th>Πελάτης</th>
+        <th>Service</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <!--  το "object_list" ειναι το ´κλειδί' απο το dictionary του αρχείου views.py  -->
+    {% for obj in object_list %}
+    <tr align="center">
+        <td><a href="/machines/{{ obj.id }}">{{ obj.id }}</a> </td>
+        <td><a role="button" class="btn btn btn-secondary btn-sm" href="/machines/{{ obj.id }}">{{ obj.Εταιρεία}} </a> </td>
+        <td><a href="/machines/{{ obj.id }}">{{ obj.Serial}} </a></td>
+        <td><a href="/machines/{{ obj.id }}">{{ obj.Εναρξη}} </a></td>
+        <td><a href="/machines/{{ obj.id }}">{{ obj.Μετρητής_έναρξης}} </a></td>
+        <td><a class="btn btn-info" role="button" href="/customers/{{ obj.Πελάτης.id }}">{{ obj.Πελάτης}} </a></td>
+        <td>
+            <ol>{% for service in obj.services_set.all %}
+                <li><a href="/services/{{ service.id }}">{{ service.Ημερομηνία }} {{ service.Σκοπός_Επίσκεψης }}</a></li>
+                {% endfor %}
+            </ol>
+        </td>
+
+
+
+    </tr>
+
+    </tbody>
+    {% endfor %}
+</table>
+<hr width="70%" align="left">
+
+
+
+{% if object_list.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+
+            <a class="pagination-action" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <svg class="bi bi-caret-left-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 00-1.659-.753l-5.48 4.796a1 1 0 000 1.506z"/>
+                </svg>
+            </a>
+
+        </li>
+        {% if object_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                Προηγούμενη
+            </a>
+        </li>
+
+        {% endif %}
+        {% for num in object_list.paginator.page_range %}
+        {% if object_list.number == num %}
+        <li class="page-item active">
+
+            <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                {{ num }}
+            </a>
+            <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% elif num > object_list.number|add:'-3' and num < object_list.number|add:'3' %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+
+        {% endif %}
+        {% endfor %}
+
+        {% if object_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                Επόμενη
+            </a>
+        </li>
+        <li class="page-item">
+
+            <a class="pagination-action"  href="?page={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <svg class="bi bi-caret-right-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
+                </svg>
+            </a>
+        </li>
+
+        {% endif %}
+    </ul>
+</nav>
+
+{% endif %}
+
+<p>
+    <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+{% endblock %}
+

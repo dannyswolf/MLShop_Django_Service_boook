@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Είστε σίγουροι ότι θέλετε να διαγράψετε "
+    </p>
+    <table>{{ object }}</table>
+
+    <input type="submit" value="Διαγραφή" class="button3">
+    <button onclick="goBack()">Ακυρο</button>
+
+    <script>
+function goBack() {
+  window.history.back();
+}
+</script>
+</form>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h2 class="btn btn-secondary btn-lg">
+     Επεξεργασία μηχανήματος
+
+</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% load crispy_forms_tags %}
+<form method="POST">
+    {% csrf_token %}
+
+    <table class="table table-secondary table-bordered">
+
+        <tr class="table-secondary" align="center">
+            <td>
+
+
+                <div class="form-group col-md-5 mb-0">
+                    {% for field in customer %}
+
+
+                        <a>
+                            <a class="btn btn btn-info" role="button"  href="/customers/{{ field.Πελάτης.id }}">
+                                {{  form.Πελάτης|as_crispy_field }}
+                        </a>
+
+
+                    {% endfor %}
+
+                    {{ form.Εταιρεία|as_crispy_field }}
+
+                    {{ form.Serial|as_crispy_field }}
+
+                    {{ form.Εναρξη|as_crispy_field }}
+
+                    {{ form.Μετρητής_έναρξης|as_crispy_field }}
+
+                    {{ form.Κατάσταση|as_crispy_field }}
+
+
+                </div>
+            </td>
+
+
+            <td>
+                {{ form.Σημειώσεις|as_crispy_field }}
+                <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <button type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
+                {% if not services  and not customer %}
+
+                    <a class="btn  btn-danger" role="button" href="{% url 'machines:delete_machine' machine_id %}">Διαγραφή</a>
+
+                {% endif %}
+                <br><br>
+                <div class="form-row">
+                    <div class="form-group col-md-5 mb-0">
+                        <a class="btn  btn-warning" role="button"  href=" {% url 'Calendar:add_calendar' machine_id  %} ">
+                            Προσθήκη Εργασίας
+                        </a>
+                    </div>
+
+                    <div class="form-group col-md-5 mb-0">
+                        <a class="btn  btn-dark" role="button" href=" {% url 'services:add_service_from_machines' machine_id %} ">
+                            Προσθήκη Συντηρήσης
+                        </a>
+                    </div>
+                </div>
+
+            </td>
+        <td align="left">
+
+
+
+
+            <h4 class="btn btn-info btn-lg">Συντηρήσεις</h4>
+            <br>
+
+
+                    <ol>
+                        {% for service in services %}
+
+
+                        <li>
+                            <a class="btn  btn-secondary btn-sm" role="button" href="/services/{{ service.id }}">
+                            {{ service.Ημερομηνία }} {{ service.Σκοπός_Επίσκεψης }} {{ service.Τεχνικός }}
+                            </a>
+                        </li>
+                        <br>
+
+                        {% endfor %}
+                    </ol>
+
+
+
+        </td>
+
+    </table>
+
+    </tr>
+
+    </table>
+</form>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+{% endblock content %}
+
+
+
+
+
+

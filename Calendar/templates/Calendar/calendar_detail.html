@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1 class="btn btn-warning btn-lg">
+    <i class="fas fa-calendar-alt"> Σύνολο: {{ page_obj.paginator.count }} Τρέχουσες εργασίες</i>
+</h1>
+
+
+
+<div class="form-row">
+
+    <div class="form-group col-md-4 mb-0">
+        <form  class="form-inline" action="{% url 'Calendar:search_calendar_dte' %}" method="get">
+
+            <input class="form-control mr-sm-2" name="q" placeholder="Αναζήτηση ΔΤΕ..." type="text" >
+            <button class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση ΔΤΕ</button>
+
+        </form>
+    </div>
+
+    <div class="form-group col-md-6 mb-0">
+        <form class="form-inline" action="{% url 'Calendar:search_calendar' %}" method="get">
+
+            <input  class="form-control mr-sm-2" name="q"  placeholder="Αναζήτηση..." aria-label=="Αναζήτηση..." type="text" >
+            <button  class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
+
+
+        </form>
+        </div>
+</div>
+
+
+<p></p>
+
+
+<table id="calendar" class="table table-hover table-bordered "  bgcolor="#EFF0F1">
+
+    <thead>
+
+    <tr class="table-success" align="center">
+        <th>ID</th>
+        <th> Ημερομηνία </th>
+        <th>Σκοπός</th>
+        <th>Πελάτης</th>
+        <th>Μηχάνημα</th>
+        <th>Ενέργειες</th>
+           <th>Τεχνικός</th>
+            <th>Επείγων</th>
+           <th>ΔΤΕ</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for obj in object_list %}
+    <tr  align="center">
+        <td ><a href=" {{ obj.id }}" name="id">{{ obj.id }}</a> </td>
+        <td><a href="{{ obj.id }} " name="Ημερομηνία">{{ obj.Ημερομηνία}} </a></td>
+        <td><a href=" {{ obj.id }}" name="Σκοπός">{{ obj.Σκοπός}} </a></td>
+        <td><a class="btn btn-info" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}" name="Επωνυμία_Επιχείρησης">{% if obj.Πελάτης %} {{ obj.Πελάτης}}{% else %}{% endif %}</a> </td>
+        <td><a role="button"  class="btn btn-secondary" href=" {% url 'machines:edit_machine' obj.Copier_ID_id %}" name="Μηχάνημα">{% if obj.Μηχάνημα %}{{ obj.Μηχάνημα}} {% else %} {% endif %}</a> </td>
+
+        <td> {{obj.Ενέργειες}} </td>
+           <td>{{ obj.Τεχνικός}} </td>
+         <td>{{ obj.Επείγων}} </td>
+          <td>{{ obj.ΔΤΕ}} </td>
+
+    </tr>
+    </tbody>
+    {% endfor %}
+</table>
+
+
+
+{% if page_obj.paginator.num_pages > 1 %}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="pagination-action" href="?page=1">
+                <svg class="bi bi-caret-left-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 00-1.659-.753l-5.48 4.796a1 1 0 000 1.506z"/>
+                </svg>
+            </a>
+        </li>
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                Προηγούμενο
+            </a>
+        </li>
+
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <li class="page-item active">
+
+            <a class="page-link" href="?page={{ num }}">
+                {{ num }}
+            </a>
+            <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num }}">
+                {{ num }}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                Επόμενη
+            </a>
+        </li>
+        <li class="page-item">
+
+            <a class="pagination-action" href="?page={{ page_obj.paginator.num_pages }}">
+                <svg class="bi bi-caret-right-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
+                </svg>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endif %}
+
+
+<p>
+    <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+{% endblock %}
+
+
+

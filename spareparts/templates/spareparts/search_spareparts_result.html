@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h2>Σύνολο:{{ object_list.paginator.count }} Ανταλλακτικά βρέθηκαν </h2>
+
+
+
+<div class="input-group col-md-3 mb-3">
+
+    <div class="input-group-append">
+    <form action="{% url 'spareparts:search_spareparts' %}" method="get">
+
+        <input name="q" placeholder="Αναζήτηση..." type="text" >
+        <button class="btn btn-outline-success my-2 my-sm-0" name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
+
+    </form>
+    </div>
+</div>
+
+<table class="table table-hover table-bordered">
+    <thead>
+    <tr class="table-success " align="center">
+        <th>ID</th>
+        <th><label about=""> PARTS_NR </label></th>
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>Πελάτης</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>Service</th>
+        <th>Κλήση</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for obj in object_list %}
+    <tr align="center">
+        <td><a href=" {{ obj.id }}" name="id">{{ obj.id }} </a></td>
+        <td><a href=" {{ obj.id }}" name="id">{{ obj.PARTS_NR }}</a> </td>
+        <td><a href=" {{ obj.id }}" name="id">{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30" }}</a> </td>
+        <td><a href=" {{ obj.id }}" name="id">{{ obj.ΚΩΔΙΚΟΣ }} </a> </td>
+        <td><a class="btn btn-info" role="button" href=" /customers/{{ obj.Customer_ID_id }}" name="id">{{ obj.Customer_ID }} </a></</td>
+        <td><a href=" {{ obj.id }}" name="id">{{ obj.ΤΕΜΑΧΙΑ }}</a> </td>
+        <td><a role="button" class="btn btn btn-dark btn-sm" href="/services/{{ obj.Service_ID }}" name="id">{{ obj.Service_ID }} </a></td>
+
+        <td><a role="button" class="btn btn btn-warning btn-sm" href=" /Calendar/{{ obj.Calendar_ID }}" name="id">{{ obj.Calendar_ID }} </a></td>
+
+
+
+    </tr>
+
+    </tbody>
+    {% endfor %}
+</table>
+<hr width="70%" align="left">
+
+
+
+{% if object_list.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+
+            <a class="pagination-action" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <svg class="bi bi-caret-left-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 00-1.659-.753l-5.48 4.796a1 1 0 000 1.506z"/>
+                </svg>
+            </a>
+
+        </li>
+        {% if object_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                Προηγούμενη
+            </a>
+        </li>
+
+        {% endif %}
+        {% for num in object_list.paginator.page_range %}
+        {% if object_list.number == num %}
+        <li class="page-item active">
+
+            <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                {{ num }}
+            </a>
+            <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        {% elif num > object_list.number|add:'-3' and num < object_list.number|add:'3' %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+
+        {% endif %}
+        {% endfor %}
+
+        {% if object_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                Επόμενη
+            </a>
+        </li>
+        <li class="page-item">
+
+            <a class="pagination-action"  href="?page={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <svg class="bi bi-caret-right-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
+                </svg>
+            </a>
+        </li>
+
+        {% endif %}
+    </ul>
+</nav>
+
+{% endif %}
+
+
+<p>
+    <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+{% endblock %}
+

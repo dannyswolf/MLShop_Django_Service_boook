@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 style="background-color:#EFF0F1;">
+    <svg class="bi bi-gear-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z" clip-rule="evenodd"/>
+    </svg>Ανταλλακτικά
+
+</h2>
+
+
+
+{% load crispy_forms_tags %}
+<form  method="POST">
+    {% csrf_token %}
+
+    <table class="table table-secondary table-bordered">
+
+        <tr class="table-secondary" align="center">
+            <td align="center">
+                <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.PARTS_NR|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-2 mb-0">
+                        <a class="btn btn btn-info btn-lg" role="button" href="{% url 'customers:edit_customer' context_data.Customer_ID.id %}">
+                            <h5>Πελάτης</h5>
+                             {{  context_data.Customer_ID }}
+                        </a>
+                    </div>
+
+                    <div class="form-group col-lg-3 mb-0">
+                        <a class="btn  btn-secondary" role="button"  href=" {% url 'machines:edit_machine' machine_id %} ">
+                            <H5>Μηχάνημα</H5>
+                            {{  spareparts.ΜΗΧΑΝΗΜΑ }}
+                        </a>
+
+                    </div>
+
+                        <div class="form-group col-md-1 mb-0">
+                            {{ form.ΚΩΔΙΚΟΣ|as_crispy_field }}
+                        </div>
+
+
+
+                        <div class="form-group col-md-1 mb-0">
+                            {{ form.ΤΕΜΑΧΙΑ|as_crispy_field }}
+                        </div>
+
+
+                    {% if context_data.Calendar_ID %}
+                    <div class="form-group col-md-2 mb-0">
+                        <a role="button" class="btn btn-warning"
+                           href=" {% url 'Calendar:edit_calendar' context_data.Calendar_ID %} ">
+                            <h5>Ημερολόγιο   <br>{{  context_data.Calendar_ID }} </h5>
+                        </a>
+                    </div>
+                    {% endif %}
+
+
+                    {% if context_data.Service_ID %}
+                    <div class="form-group col-md-1 mb-0">
+                        <a role="button" class="btn  btn-secondary"
+                           href="{% url 'services:edit_service' context_data.Service_ID %}">
+                            <h5>Συντήρηση <br>{{  context_data.Service_ID }}</h5>
+                        </a>
+
+                    {% endif %}
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ form.ΠΕΡΙΓΡΑΦΗ|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-5 mb-0">
+                        {{ form.ΠΑΡΑΤΗΡΗΣΗΣ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+                        <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                    </div>
+                        <div class="form-group col-md-5 mb-0">
+                            <button name="add_service" type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
+                        </div>
+
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+    </tr>
+
+    </table>
+</form>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+ ol {
+  background: #e0ebeb;
+  padding: 10px;
+}
+
+ul {
+  background: #e0ebeb;
+  padding: 20px;
+}
+
+ol li {
+  background: #c2d6d6;
+  padding: 5px;
+  margin-left: 35px;
+}
+
+ul li {
+  background: #c2d6d6;
+  margin: 5px;
+}
+body {background-color: #F1F1F1;}
+
+table, th, td {
+  display: inline-block
+  border: 1px solid black;
+  border-spacing: 15px;
+  background-color: #e6e6e6;
+}
+th, td {
+  padding: 5px;
+  text-align: center;
+
+}
+th {
+  text-align: center;
+
+}
+
+

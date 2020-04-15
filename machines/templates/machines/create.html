@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+
+<h2 class="btn btn-secondary btn-lg">
+      Προσθήκη μηχανήματος
+
+</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{% load crispy_forms_tags %}
+<form action="add_machine" method="POST">
+    {% csrf_token %}
+
+    <table class="table table-secondary table-bordered">
+
+        <tr class="table-secondary" align="center">
+            <td>
+                <div class="form-group col-md-5 mb-0">
+                    {{ form.Πελάτης|as_crispy_field }}
+                        {{ form.Εταιρεία|as_crispy_field }}
+
+
+                        {{ form.Serial|as_crispy_field }}
+
+
+
+                        {{ form.Εναρξη|as_crispy_field }}
+
+                        {{ form.Μετρητής_έναρξης|as_crispy_field }}
+
+
+
+                        {{ form.Κατάσταση|as_crispy_field }}
+                </div>
+            </td>
+
+
+            <td>
+                {{ form.Σημειώσεις|as_crispy_field }}
+                <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <button name="add_machine" type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
+
+            </td>
+
+    </table>
+
+    </tr>
+
+    </table>
+</form>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+{% endblock content %}
+
+
+
+
+
+
