@@ -22,15 +22,6 @@ class CalendarListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     model = Calendar
     template_name = 'Calendar/calendar_detail.html'
-    # sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
-    # queryset = sorted(Services.objects.all(), key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
-    # sort(key=lambda date: datetime.strptime(date, '"%d/%m/%Y"))
-    # queryset = Calendar.objects.filter(Κατάσταση=True).order_by('-pk')
-
-
-    # print("context['services']", context['services'][1:])
-    # sorted_data_from_calendar = sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
-    # queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
     fields = '__all__'
     # form_class = CustomerForm
     paginate_by = 5

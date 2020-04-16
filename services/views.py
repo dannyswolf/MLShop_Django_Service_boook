@@ -20,41 +20,17 @@ class ServicesListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     model = Services
     template_name = 'services/services_detail.html'
-    # sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
-    # queryset = sorted(Services.objects.all(), key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
-    # sort(key=lambda date: datetime.strptime(date, '"%d/%m/%Y"))
 
-    # --------------Sorting -------
-    #dict_services = queryset.values()
-    # print("dict_services", dict_services)
-    # sorted_data_from_calendar = sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
-    # try:
-    #     queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
-    #     #print('queryset', dir(queryset))
-    # except ValueError as error:
-    #     print("--ERROR--", error)
-    #     pass
-    # except TypeError as error:
-    #     print("--ERROR--", error)
-    #     pass
     fields = '__all__'
     # form_class = CustomerForm
     paginate_by = 6
 
     # -------- Sorting --------------
-    # def get_queryset(self,):
-    #     queryset = Services.objects.all().order_by('-id')
-    #     dict_services = queryset.values()
-    #     try:
-    #         queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
-    #     except ValueError as error:
-    #         print("--ERROR--ValueError---", __name__, error)
-    #         pass
-    #     except TypeError as error:
-    #         print("--ERROR--TypeError---", __name__, error)
-    #         pass
-    #
-    #     return queryset
+    def get_queryset(self,):
+        queryset = Services.objects.all().order_by('-id')
+        # dict_services = queryset.values()
+        # queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
+        return queryset
 
 
 class EditService(LoginRequiredMixin, UpdateView):

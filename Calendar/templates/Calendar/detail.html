@@ -30,23 +30,25 @@
                         {{ form.Ημερομηνία|as_crispy_field }}
                     </div>
 
-                    <div class="form-group col-md-2 mb-1">
+                    <div class="form-group col-md-4 mb-0">
                         <a class="btn btn btn-info" role="button" href="/customers/{{ calendar_form.Copier_ID.Πελάτης.id }}">
                             {{  form.Πελάτης|as_crispy_field }}
                         </a>
-
                     </div>
-                    <div class="form-group col-md-2 mb-0">
+
+                    <div class="form-group col-md-3 mb-0">
                         <a class="btn  btn-secondary" role="button"  href="/machines/{{ calendar_form.Copier_ID.id }}">
                             {{ form.Copier_ID|as_crispy_field }}
                         </a>
                     </div>
 
-                    <div class="form-group col-md-2 mb-0">
+
+
+                    <div class="form-group col-md-4 mb-0">
                         {{ form.Σκοπός|as_crispy_field }}
                     </div>
 
-                    <div class="form-group col-md-1 mb-0">
+                    <div class="form-group col-md-4 mb-0">
                         {{ form.Ενέργειες|as_crispy_field }}
                     </div>
 
@@ -88,7 +90,12 @@
                 <a role="button" class="btn btn-danger" href="{% url 'Calendar:delete_calendar' calendar_form.id %}">Διαγραφή</a>
 
             </td>
-            <td>
+            <td align="left">
+                <h5 class="btn btn-secondary">Αριθμός συντήρηση</h5>
+                <div class="form-group col-md-2 mb-0">
+                    <a role="button" class="btn btn-outline-secondary" href="{% url 'services:edit_service' form.Service_ID.value %}"> {{ form.Service_ID.value }}</a>
+
+                    </div>
 
                 <h3>Ανταλλακτικά</h3>
 
@@ -111,13 +118,8 @@
 
 
 
-                    <div class="form-group col-md-2 mb-0">
-                        {{ form.Service_ID|as_crispy_field }}
-                    </div>
 
-                    <div class="form-group col-md-2 mb-0">
 
-                    </div>
 
 
                 </div>

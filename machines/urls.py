@@ -16,7 +16,7 @@ Including another URLconf
 
 from django.urls import path
 from .views import MachinesListView, CreateMachine, EditMachine, search_machine_view, add_machine_from_customers, \
-    MachineDelete, InactiveMachinesListView, search_inactive_machine_view
+    MachineDelete, InactiveMachinesListView, search_inactive_machine_view, TransferMachine
 
 app_name = 'machines'
 urlpatterns = [
@@ -28,6 +28,7 @@ urlpatterns = [
     path('<int:machine_id>/delete/', MachineDelete.as_view(), name='delete_machine'),
     path('search_machine', search_machine_view,  name='search_machine'),
     path('search_inactive_machine', search_inactive_machine_view,  name='search_inactive_machine'),
+    path('transfer/<int:machine_id>', TransferMachine.as_view(), name='transfer_machine'),
 
 ]
 

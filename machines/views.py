@@ -1,19 +1,18 @@
-
 from django.shortcuts import render, get_object_or_404
 from .models import Machines
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.urls import reverse_lazy
 from django.db.models import Q
-from django.forms import Textarea
 from django.forms.models import modelform_factory
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from datetime import date, datetime
+from datetime import datetime
 from services.models import Services
 from .forms import AddMachineFromCustomersForm, EditMachineForm
 from customers.models import Customer
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from Copiers_Log.models import CopiersLog
 
 
 # Ενεργά μηχανήματα
@@ -58,16 +57,16 @@ class EditMachine(LoginRequiredMixin, UpdateView):
     form_class = EditMachineForm
     template_name = 'machines/detail.html'
     success_url = reverse_lazy('machines:machines')
+
     # queryset = Customer.objects.get()
     # form_class = CustomerForm  # modelform
 
     def get_object(self):
         id_ = self.kwargs.get("machine_id")  # apo to urls.py -->> path('<int:machine_id>'....
-        return get_object_or_404(Machines, id=id_,)
+        return get_object_or_404(Machines, id=id_, )
 
     def get_initial(self):
         initial = super(EditMachine, self).get_initial()
-        print("initial", initial)
 
         try:
             old_date = self.object.Εναρξη
@@ -81,7 +80,7 @@ class EditMachine(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         id_ = self.kwargs.get("machine_id")
         context = super(EditMachine, self).get_context_data(**kwargs)
-        context['services'] = Services.objects.filter(Copier_ID=id_)  #whatever you would like
+        context['services'] = Services.objects.filter(Copier_ID=id_)  # whatever you would like
 
         dict_services = context['services'].values()
         try:
@@ -100,8 +99,6 @@ class EditMachine(LoginRequiredMixin, UpdateView):
         # context['customer'] = Customer.objects.filter(pk=customer[0]['Πελάτης'])
         context['customer'] = Machines.objects.filter(pk=id_)
         return context
-
-
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -217,3 +214,78 @@ def add_machine_from_customers(request, customer_id, **kwargs):
         'form': form,
     }
     return render(request, 'machines/add_machine_to_customer.html', context)
+
+
+# Μεταφορά μηχανήματος
+class TransferMachine(LoginRequiredMixin, UpdateView):
+    redirect_field_name = ''
+    # services = forms.ModelChoiceField(queryset=Services.objects.all())
+    model = Machines
+    form_class = EditMachineForm
+    template_name = 'machines/transfer_machine.html'
+    success_url = reverse_lazy('machines:machines')
+
+    # queryset = Customer.objects.get()
+    # form_class = CustomerForm  # modelform
+
+    def get_object(self):
+        # self.id_ == machine_id
+        self.id_ = self.kwargs.get("machine_id")  # apo to urls.py -->> path('<int:machine_id>'....
+        machine = Machines.objects.all().filter(pk=self.id_)
+        self.Προηγούμενος_Πελάτης = machine[0].Πελάτης
+        return get_object_or_404(Machines, id=self.id_, )
+
+    def get_initial(self):
+        initial = super(TransferMachine, self).get_initial()
+        try:
+            old_date = self.object.Εναρξη
+            new_date = datetime.strptime(old_date, '%d/%m/%Y').strftime('%Y-%m-%d')
+            initial['Εναρξη'] = new_date
+            return initial
+        except ValueError as error:  # data '' does not match format '%d/%m/%Y'
+            print("--------ValueError at Εναρξη -----------", __name__, "Function TransferMachine", error)
+            return initial
+
+    def get_context_data(self, **kwargs):
+        id_ = self.kwargs.get("machine_id")
+        context = super(TransferMachine, self).get_context_data(**kwargs)
+        context['services'] = Services.objects.filter(Copier_ID=id_)  # whatever you would like
+
+        dict_services = context['services'].values()
+        try:
+            sorted_services = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"),
+                                     reverse=False)
+            context['services'] = sorted_services
+        except ValueError as error:
+            print("--------ValueError at services -----------", __name__, "Function TransferMachine", error)
+            pass
+        except TypeError as error:
+            print("--------TypeError at services -----------", __name__, "Function TransferMachine", error)
+            pass
+        # context['services'] = sorted_services
+        context['machine_id'] = id_
+        context['customer'] = Machines.objects.filter(pk=id_)
+        return context
+
+    def form_valid(self, form):
+        if form.is_valid():
+            data = form.cleaned_data
+            Μηχάνημα = f"{data['Εταιρεία']}  Serial: {data['Serial']}"
+            Ημερομηνία = datetime.today().strftime("%d/%m/%Y")
+            Νέος_Πελάτης = data['Πελάτης']
+
+            machine_Σημειώσεις = f"{data['Σημειώσεις']} \n -----Μεταφορα μηχανήματος----- απο πελάτη " \
+                         f"{self.Προηγούμενος_Πελάτης} σε πελάτη {Νέος_Πελάτης} στης {Ημερομηνία}"
+
+            Σημειώσεις = f"-----Μεταφορα μηχανήματος----- απο πελάτη " \
+                         f"{self.Προηγούμενος_Πελάτης} σε πελάτη {Νέος_Πελάτης} στης {Ημερομηνία}"
+
+            # Δημιουργεία Copiers_log
+            new_service = CopiersLog.objects.create(Μηχάνημα=Μηχάνημα, Ημερομηνία=Ημερομηνία,
+                                                    Προηγούμενος_Πελάτης=self.Προηγούμενος_Πελάτης,
+                                                    Νέος_Πελάτης=Νέος_Πελάτης, Σημειώσεις=Σημειώσεις,
+                                                    ID_μηχανήματος=self.object)
+
+            form.instance.Σημειώσεις = machine_Σημειώσεις
+
+        return super().form_valid(form)

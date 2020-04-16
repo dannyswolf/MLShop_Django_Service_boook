@@ -9,24 +9,34 @@ from services.models import Services
 class Calendar(models.Model):
     # customer = list(Customer.objects.filter(Κατάσταση=True))
     Ημερομηνία = models.CharField(help_text='Ημερομηνία', max_length=10)
-    Πελάτης = models.CharField(max_length=100, unique=False, blank=False, null=False,)
+    Πελάτης = models.CharField(max_length=100, unique=False, blank=False, null=False)
     Μηχάνημα = models.CharField(max_length=100, unique=False, blank=False, null=False)
-    Σκοπός = models.CharField(max_length=100, unique=False, blank=True, null=True)
-    Ενέργειες = models.CharField(max_length=100, unique=False, blank=True, null=True)
-    Τεχνικός = models.CharField(max_length=100, unique=False, blank=True, null=True, default="")
-    Ημ_Ολοκλ = models.CharField(help_text='Ημερομηνία ολοκλήρωσης', null=True, blank=True, max_length=10)
-    Επείγων = models.CharField(max_length=100, unique=False, blank=True, null=True, default="")
-    Τηλέφωνο = models.CharField(max_length=100, unique=False, blank=True, null=True)
-    Σημειώσεις = models.CharField(max_length=5000, unique=False, blank=True, null=True)
+    Σκοπός = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
+    Ενέργειες = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
+    Τεχνικός = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
+    Ημ_Ολοκλ = models.CharField(help_text='Ημερομηνία ολοκλήρωσης', null=False, blank=True, max_length=10, default="")
+    Επείγων = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
+    Τηλέφωνο = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
+    Σημειώσεις = models.CharField(max_length=5000, unique=False, blank=True, null=False, default="")
+
     Copier_ID = models.ForeignKey(Machines, blank=False, null=False, on_delete=models.PROTECT, db_column='Copier_ID',
                                   help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    ΔΤΕ = models.CharField(max_length=100, unique=False, blank=True, null=True, default="")
-    Service_ID = models.SmallIntegerField(null=True, blank=True, help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    Μετρητής = models.CharField(max_length=11, unique=False, blank=True, null=True)
-    Επ_Service = models.CharField(max_length=11, unique=False, blank=True, null=True)
-    Customer_ID = models.SmallIntegerField(blank=False, null=False, help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    Price = models.CharField(max_length=100, unique=False, blank=True, null=True)
-    Κατάσταση = models.BooleanField(default=True, help_text='<font color="red"><b>Ενεργό αν δεν έχει τελειώσει η εργασία</b></font>')
+
+    ΔΤΕ = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
+
+    Service_ID = models.CharField(null=False, blank=True, default="", max_length=10,
+                                  help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
+
+    Μετρητής = models.CharField(max_length=11, unique=False, blank=True, null=False, default="")
+    Επ_Service = models.CharField(max_length=11, unique=False, blank=True, null=False, default="")
+
+    Customer_ID = models.SmallIntegerField(blank=False, null=False,
+                                           help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
+
+    Price = models.CharField(max_length=100, blank=True, null=False, default="",)
+
+    Κατάσταση = models.BooleanField(default=True,
+                                    help_text='<font color="red"><b>Ενεργό αν δεν έχει τελειώσει η εργασία</b></font>')
 
     class Meta:
         db_table = 'Calendar'

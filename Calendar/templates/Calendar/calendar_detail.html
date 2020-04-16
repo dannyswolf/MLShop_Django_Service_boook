@@ -59,8 +59,10 @@
         <td ><a href=" {{ obj.id }}" name="id">{{ obj.id }}</a> </td>
         <td><a href="{{ obj.id }} " name="Ημερομηνία">{{ obj.Ημερομηνία}} </a></td>
         <td><a href=" {{ obj.id }}" name="Σκοπός">{{ obj.Σκοπός}} </a></td>
-        <td><a class="btn btn-info" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}" name="Επωνυμία_Επιχείρησης">{% if obj.Πελάτης %} {{ obj.Πελάτης}}{% else %}{% endif %}</a> </td>
-        <td><a role="button"  class="btn btn-secondary" href=" {% url 'machines:edit_machine' obj.Copier_ID_id %}" name="Μηχάνημα">{% if obj.Μηχάνημα %}{{ obj.Μηχάνημα}} {% else %} {% endif %}</a> </td>
+        <td><a class="btn btn-info" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}" name="Επωνυμία_Επιχείρησης">
+             {{ obj.Πελάτης }}</a> </td>
+        <td><a role="button"  class="btn btn-secondary" href=" {% url 'machines:edit_machine' obj.Copier_ID_id %}" name="Μηχάνημα">
+            {{ obj.Μηχάνημα }} </a> </td>
 
         <td> {{obj.Ενέργειες}} </td>
            <td>{{ obj.Τεχνικός}} </td>
