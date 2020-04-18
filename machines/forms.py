@@ -4,7 +4,7 @@ from datetime import datetime
 from machines.models import Machines
 
 
-class AddMachineFromCustomersForm(forms.Form):
+class AddMachineFromCustomersForm(forms.ModelForm):
     class Meta:
         model = Machines
         fields = '__all__'
@@ -26,7 +26,7 @@ class AddMachineFromCustomersForm(forms.Form):
     Σημειώσεις = forms.CharField(widget=forms.Textarea, required=False)
     Κατάσταση = forms.BooleanField(required=True, initial=True, help_text='<font color="red"><b>Ενεργό αν δεν έχει αποσυρθεί το μηχάνημα</b></font>')
 
-    def clean_Εναρξη(self):
+    def clean_Εναρξη(self, *args, **kwargs):
         Εναρξη = self.cleaned_data.get('Εναρξη')
         # datetime.datetime.strptime("2013-1-25", '%Y-%m-%d').strftime('%m/%d/%y')
         try:
@@ -35,6 +35,16 @@ class AddMachineFromCustomersForm(forms.Form):
         except ValueError as error:
             print("----ValueError at Εναρξη --- ", __name__, error)
         return Εναρξη
+
+    def clean_Serial(self, *args, **kwargs):
+        Serial = self.cleaned_data.get('Serial')
+        # datetime.datetime.strptime("2013-1-25", '%Y-%m-%d').strftime('%m/%d/%y')
+        try:
+            new_serial = Serial.replace(" ", "_")
+            return str(new_serial)
+        except ValueError as error:
+            print("----ValueError at Εναρξη --- ", __name__, error)
+        return Serial
 
 
 class EditMachineForm(forms.ModelForm):
@@ -68,3 +78,13 @@ class EditMachineForm(forms.ModelForm):
         except ValueError as error:
             print("----ValueError at Εναρξη --- ", __name__, error)
         return Εναρξη
+
+    def clean_Serial(self, *args, **kwargs):
+        Serial = self.cleaned_data.get('Serial')
+        # datetime.datetime.strptime("2013-1-25", '%Y-%m-%d').strftime('%m/%d/%y')
+        try:
+            new_serial = Serial.replace(" ", "_")
+            return str(new_serial)
+        except ValueError as error:
+            print("----ValueError at Εναρξη --- ", __name__, error)
+        return Serial

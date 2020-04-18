@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.urls import reverse
-from customers.models import Customer
 from machines.models import Machines
-from services.models import Services
+from datetime import datetime
 
 
 class Calendar(models.Model):
@@ -37,6 +36,7 @@ class Calendar(models.Model):
 
     Κατάσταση = models.BooleanField(default=True,
                                     help_text='<font color="red"><b>Ενεργό αν δεν έχει τελειώσει η εργασία</b></font>')
+
 
     class Meta:
         db_table = 'Calendar'

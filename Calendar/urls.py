@@ -16,8 +16,8 @@ Including another URLconf
 
 from django.urls import path
 from .views import (CalendarListView, create_calendar, EditCalendar, FinishedCalendarListView, CalendarDelete,
-                    search_calendar, search_calendar_dte, search_finished_calendar, search_finished_calendar_dte
-                    )
+                    search_calendar, search_calendar_dte, search_finished_calendar, search_finished_calendar_dte,
+                    CalendarView)
 
 
 app_name = 'Calendar'
@@ -32,6 +32,7 @@ urlpatterns = [
     path('search_finished_calendar', search_finished_calendar,  name='search_finished_calendar'),
     path('search_calendar_dte', search_calendar_dte,  name='search_calendar_dte'),
     path('search_finished_calendar_dte', search_finished_calendar_dte,  name='search_finished_calendar_dte'),
+    path('calendar', CalendarView.as_view(),  name='calendar'),
 
 
 ]

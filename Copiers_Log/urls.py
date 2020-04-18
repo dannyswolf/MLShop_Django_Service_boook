@@ -15,11 +15,13 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import CopiersLogListView
+from .views import CopiersLogListView, search_copiers_log
+
 app_name = 'Copiers_Log'
 urlpatterns = [
 
     path('', CopiersLogListView.as_view(), name='transfers'),
+    path('search', search_copiers_log, name='search_copiers_log'),
 
 ]
 

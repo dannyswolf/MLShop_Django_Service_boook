@@ -41,7 +41,7 @@ class InactiveMachinesListView(LoginRequiredMixin, ListView):
 
 class CreateMachine(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
-    form_class = modelform_factory(Machines, fields='__all__')
+    form_class = AddMachineFromCustomersForm
     # model = Machines
     # fields = '__all__'
     template_name = 'machines/create.html'
@@ -61,7 +61,7 @@ class EditMachine(LoginRequiredMixin, UpdateView):
     # queryset = Customer.objects.get()
     # form_class = CustomerForm  # modelform
 
-    def get_object(self):
+    def get_object(self, ):
         id_ = self.kwargs.get("machine_id")  # apo to urls.py -->> path('<int:machine_id>'....
         return get_object_or_404(Machines, id=id_, )
 
@@ -74,7 +74,7 @@ class EditMachine(LoginRequiredMixin, UpdateView):
             initial['Εναρξη'] = new_date
             return initial
         except ValueError as error:
-            print("--------ValueError at Εναρξη -----------", __name__, error)
+            print("--------ValueError at Εναρξη -----------", __name__, 'Function -- EditMachine --', error)
             return initial
 
     def get_context_data(self, **kwargs):
@@ -209,6 +209,12 @@ def add_machine_from_customers(request, customer_id, **kwargs):
     form = AddMachineFromCustomersForm(request.POST or None, initial=initial_data)
     if request.method == 'POST':
         if form.is_valid():
+            data = form.cleaned_data
+            #  serial χωρίς κενα
+            Serial = data['Serial'].replace(" ", "_")
+
+            print("Serial", Serial)
+            form.instance.Serial = Serial
             form.save()
     context = {
         'form': form,
