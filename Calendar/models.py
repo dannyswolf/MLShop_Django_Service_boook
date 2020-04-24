@@ -5,6 +5,11 @@ from machines.models import Machines
 from datetime import datetime
 
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/Service_ID/<filename>
+    return '{0}/{1}'.format(instance.Service_ID, filename)
+
+
 class Calendar(models.Model):
     # customer = list(Customer.objects.filter(Κατάσταση=True))
     Ημερομηνία = models.CharField(help_text='Ημερομηνία', max_length=10)
@@ -16,7 +21,7 @@ class Calendar(models.Model):
     Ημ_Ολοκλ = models.CharField(help_text='Ημερομηνία ολοκλήρωσης', null=False, blank=True, max_length=10, default="")
     Επείγων = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
     Τηλέφωνο = models.CharField(max_length=100, unique=False, blank=True, null=False, default="")
-    Σημειώσεις = models.CharField(max_length=5000, unique=False, blank=True, null=False, default="")
+    Σημειώσεις = models.TextField(max_length=5000, unique=False, blank=True, null=False, default="")
 
     Copier_ID = models.ForeignKey(Machines, blank=False, null=False, on_delete=models.PROTECT, db_column='Copier_ID',
                                   help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
@@ -32,11 +37,11 @@ class Calendar(models.Model):
     Customer_ID = models.SmallIntegerField(blank=False, null=False,
                                            help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
 
-    Price = models.CharField(max_length=100, blank=True, null=False, default="",)
+    Price = models.TextField(max_length=100, blank=True, null=True, default="")
 
     Κατάσταση = models.BooleanField(default=True,
                                     help_text='<font color="red"><b>Ενεργό αν δεν έχει τελειώσει η εργασία</b></font>')
-
+    file = models.FileField(upload_to=user_directory_path, default="",)
 
     class Meta:
         db_table = 'Calendar'

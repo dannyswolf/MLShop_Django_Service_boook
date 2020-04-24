@@ -12,17 +12,24 @@
 
 </h2>
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+ {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ key }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
 
 
 {% load crispy_forms_tags %}
-<form action="{% url 'services:add_service_from_machines' form.Copier_ID.value  %}" method="POST">
+<form action="{% url 'services:add_service_from_machines' form.Copier_ID.value  %}" method="POST" enctype="multipart/form-data">
 {% csrf_token %}
 
     <table class="table table-secondary table-bordered">
@@ -77,6 +84,7 @@
             <td rowspan="5">
                 {{ form.Σημειώσεις|as_crispy_field }}
                 <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <input type="file" name="file" multiple />
                 <button name="add_service" type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
 
             </td>

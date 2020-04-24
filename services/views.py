@@ -1,3 +1,5 @@
+import os
+from django_project.settings import MEDIA_ROOT
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
@@ -59,11 +61,30 @@ class EditService(LoginRequiredMixin, UpdateView):
         context = super(EditService, self).get_context_data(**kwargs)
         context['machine_form'] = self.object  # whatever you would like
         spareparts = SpareParts.objects.filter(Service_ID=id_)
+        try:
+            files = os.listdir(os.path.join(MEDIA_ROOT, str(id_)))
+            context['files'] = files
+        except FileNotFoundError as error:  # Όταν δεν υπάρχουν αρχεία
+            context['files'] = ""
+
         context['spareparts'] = spareparts
 
         return context
 
     def form_valid(self, form):
+        # # Αρχεία
+        Service_ID = form.instance.id
+        file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+        if not os.path.exists(file_dir):
+            os.makedirs(file_dir)
+        for x in self.request.FILES.getlist("file"):
+
+            def process(f):
+
+                with open(f'{file_dir}/' + str(f.name), 'wb+') as destination:
+                    for chunk in f.chunks():
+                        destination.write(chunk)
+            process(x)
         return super().form_valid(form)
 
 
@@ -133,7 +154,23 @@ def create_service_from_machines(request, machine_id, **kwargs):
     form = CreateServiceFromMachineForm(request.POST or None, initial=initial_data)
     if request.method == 'POST':
         if form.is_valid():
+
             form.save()
+
+            # # Αρχεία
+            Service_ID = form.instance.id
+
+            file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+            if not os.path.exists(file_dir):
+                os.makedirs(file_dir)
+            for x in request.FILES.getlist("file"):
+
+                def process(f):
+                    with open(f'{file_dir}/' + str(f.name), 'wb+') as destination:
+                        for chunk in f.chunks():
+                            destination.write(chunk)
+                process(x)
+
             return HttpResponseRedirect('../',)
     context = {
         'form': form,

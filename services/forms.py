@@ -14,7 +14,7 @@ class CreateServiceFromMachineForm(forms.ModelForm):
     Σκοπός_data = sorted(set(ServiceData.objects.values_list('Σκοπός', flat=True)))
     Ενέργειες_data = sorted(set(ServiceData.objects.values_list('Ενέργειες', flat=True)))
     Σκοπός_choices = [(item, item) for item in Σκοπός_data]
-    Ενέργειες_choices =[(item, item) for item in Ενέργειες_data]
+    Ενέργειες_choices = [(item, item) for item in Ενέργειες_data]
 
     Ημερομηνία = forms.CharField(help_text='Ημερομηνία ολοκλήρωσής εργασίας', required=True,
                                  widget=forms.TextInput(attrs={'type': 'date'}))
@@ -29,6 +29,8 @@ class CreateServiceFromMachineForm(forms.ModelForm):
     ΔΤΕ = forms.CharField(required=False, max_length=100)
     Price = forms.CharField(required=False, max_length=100)
     Σημειώσεις = forms.CharField(widget=forms.Textarea, required=False)
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                           max_length=100, allow_empty_file=True, required=False)
 
     def clean_Ημερομηνία(self):
         Ημερομηνία = self.cleaned_data.get('Ημερομηνία')

@@ -27,7 +27,8 @@ urlpatterns = [
     path('services/', include('services.urls')),
     path('spareparts/', include('spareparts.urls')),
     path('admin/', admin.site.urls, name="admin"),
-    path('__debug__/', include(debug_toolbar.urls))
+    path('__debug__/', include(debug_toolbar.urls)),
+
 
 ]
 

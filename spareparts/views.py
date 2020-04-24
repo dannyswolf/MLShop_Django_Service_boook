@@ -95,7 +95,10 @@ class EditSparePart(LoginRequiredMixin, UpdateView):
         ΜΗΧΑΝΗΜΑ = spareparts.ΜΗΧΑΝΗΜΑ
         serial = ΜΗΧΑΝΗΜΑ.split('Σειριακός: ', -1)[-1]
         ΜΗΧΑΝΗΜΑ_queryset = Machines.objects.filter(Serial=serial).values_list('id')  # return a <QuerySet [(357,)]>
-        machine_id = ΜΗΧΑΝΗΜΑ_queryset[0][0]
+        try:
+            machine_id = ΜΗΧΑΝΗΜΑ_queryset[0][0]
+        except IndexError as error:  # Όταν το μηχάνημα δεν έχει Σειριακό
+            machine_id = 2
         context['machine_id'] = machine_id
         return context
 

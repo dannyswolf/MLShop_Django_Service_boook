@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from machines.models import Machines
 from datetime import datetime
+from django_project.settings import MEDIA_ROOT
 """
 
 I got a field with attribute unique, which was not unique [eg 2-time same value]
@@ -15,6 +16,11 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 
 """
+
+
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/Service_ID/<filename>
+    return '{0}/{1}'.format(instance.id, filename)
 
 
 # Create your models here.
@@ -41,6 +47,7 @@ class Services(models.Model):
     Copier_ID = models.ForeignKey(Machines, on_delete=models.PROTECT, blank=False, null=False, db_column='Copier_ID',)
     ΔΤΕ = models.CharField(blank=True, null=True, max_length=20)
     Price = models.CharField(blank=True, null=True, max_length=20)
+    file = models.FileField(upload_to="", default="")
 
     def __str__(self):
         return f'{self.Copier_ID} Ημερομηνία: {self.Ημερομηνία}  Σκοπός Επίσκεψης: {self.Σκοπός_Επίσκεψης} Τεχνικός: {self.Τεχνικός} '

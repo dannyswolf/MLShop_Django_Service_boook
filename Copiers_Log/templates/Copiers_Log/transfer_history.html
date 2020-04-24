@@ -38,8 +38,8 @@
         <tr align="center">
             <td><a role="button"  class="btn btn-secondary" href="../machines/{{  obj.ID_μηχανήματος.id }} " name="id">{{ obj.Μηχάνημα }}</a> </td>
             <td><a  name="id">{{ obj.Ημερομηνία}} </a> </td>
-            <td><a class="btn btn-info" role="button" href="" href=" " name="id">{{ obj.Προηγούμενος_Πελάτης }}</a> </td>
-            <td><a class="btn btn-info" role="button" href="" href=" " name="id">{{ obj.Νέος_Πελάτης }}</a> </td>
+            <td><a class="btn btn-info" role="button" href="{{ obj.Προηγούμενος_Πελάτης.ID }}" name="id">{{ obj.Προηγούμενος_Πελάτης }}</a> </td>
+            <td><a class="btn btn-info" role="button" href="{{ obj.Νέος_Πελάτης.ID }}"  name="id">{{ obj.Νέος_Πελάτης }}</a> </td>
             <td><a  name="id">{{ obj.Σημειώσεις}} </a></td>
 
         </tr>

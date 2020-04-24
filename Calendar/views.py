@@ -17,6 +17,8 @@ from services.models import Services
 from django.core.exceptions import ObjectDoesNotExist
 from spareparts.models import SpareParts
 from calendar import HTMLCalendar
+import os
+from django_project.settings import MEDIA_ROOT
 
 
 # Ενεργά
@@ -78,9 +80,11 @@ def create_calendar(request, machine_id, **kwargs):
     form = CreateCalendarForm(request.POST or None, initial=initial_data)
 
     if request.method == 'POST':
+
         if form.is_valid():
 
             data = form.cleaned_data
+
             Σκοπός = data['Σκοπός']
             Ενέργειες = data['Ενέργειες']
             Τεχνικός = data['Τεχνικός']
@@ -101,8 +105,25 @@ def create_calendar(request, machine_id, **kwargs):
             # Δημιουργεία service
             new_service = Services.objects.create(Σκοπός_Επίσκεψης=Σκοπός, Ενέργειες=Ενέργειες, Τεχνικός=Τεχνικός,
                                                   Σημειώσεις=Σημειώσεις, Μετρητής=Μετρητής, Επ_Service=Επ_Service,
-                                                  Price=Price, Copier_ID=Copier_ID_id, Ημερομηνία=Ημερομηνία, ΔΤΕ=ΔΤΕ)
+                                                  Price=Price, Copier_ID=Copier_ID_id, Ημερομηνία=Ημερομηνία, ΔΤΕ=ΔΤΕ,
+                                                  )
             form.instance.Service_ID = new_service.pk
+
+            # Αρχεία
+            # uploaded_file = request.FILES.getlist("file")
+            Service_ID = new_service.pk
+            file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+            if not os.path.exists(file_dir):
+                os.makedirs(file_dir)
+            for x in request.FILES.getlist("file"):
+
+                def process(f):
+                    with open(f'{file_dir}/' + str(f.name), 'wb+') as destination:
+                        for chunk in f.chunks():
+                            destination.write(chunk)
+
+                process(x)
+
             form.instance.Ημ_Ολοκλ = date.today().strftime("%d/%m/%Y")
 
             form.save()
@@ -145,20 +166,26 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
             new_date = datetime.strptime(old_date, '%d/%m/%Y').strftime('%Y-%m-%d')
             initial['Ημερομηνία'] = new_date
         except ValueError as error:
-            print("--------ValueError at Ημερομηνία -----------", error)
+            print("--------ValueError at Ημερομηνία -----------", __file__, error)
             pass
         try:
             old_date = self.object.Ημ_Ολοκλ
             Ημ_Ολοκλ = datetime.strptime(old_date, '%d/%m/%Y').strftime('%Y-%m-%d')
             initial['Ημ_Ολοκλ'] = Ημ_Ολοκλ
         except ValueError as error:
-            print("---------- ValueError at Ημ_Ολοκλ ----------", error)
+            print("---------- ValueError at Ημ_Ολοκλ ----------", __file__, error)
         return initial
 
     def get_context_data(self, **kwargs):
         id_ = self.kwargs.get("calendar_id")
         context = super(EditCalendar, self).get_context_data(**kwargs)
         context['calendar_form'] = self.object  # whatever you would like
+        try:
+
+            files = os.listdir(os.path.join(MEDIA_ROOT, str(self.object.Service_ID)))
+            context['files'] = files
+        except FileNotFoundError as error:  # Όταν δεν υπάρχουν αρχεία
+            context['files'] = ""
 
         spareparts = SpareParts.objects.filter(Calendar_ID=id_)
         context['spareparts'] = spareparts
@@ -178,9 +205,23 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         Μετρητής = data['Μετρητής']
         Επ_Service = data['Επ_Service']
         Price = data['Price']
-        Copier_ID = data['Copier_ID']
         Σημειώσεις = data['Σημειώσεις']
         Service_ID = data['Service_ID']
+
+        # Αρχεία
+        file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+        if not os.path.exists(file_dir):
+            os.makedirs(file_dir)
+        for x in self.request.FILES.getlist("file"):
+
+            def process(f):
+
+                with open(f'{file_dir}/' + str(f.name), 'wb+') as destination:
+                    for chunk in f.chunks():
+                        destination.write(chunk)
+
+            process(x)
+
         if Ημερομηνία is None or Ημερομηνία == "":
             Ημερομηνία = date.today().strftime("%d/%m/%Y")
 
@@ -196,7 +237,6 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         service_record.Μετρητής = Μετρητής
         service_record.Επ_Service = Επ_Service
         service_record.Price = Price
-        service_record.Copier_ID = Copier_ID
         service_record.Ημερομηνία = Ημερομηνία
         service_record.ΔΤΕ = ΔΤΕ
         service_record.save()
@@ -205,6 +245,9 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         #                                       Price=Price, Copier_ID=Copier_ID_id, Ημερομηνία=Ημερομηνία, ΔΤΕ=ΔΤΕ)
         # form.instance.Service_ID = new_service.pk
         # form.instance.Ημ_Ολοκλ = date.today().strftime("%d/%m/%Y")
+
+
+
 
         return super().form_valid(form)
 
@@ -437,36 +480,30 @@ class CalendarView(ListView):
             Ημερομηνία = item['Ημερομηνία']
             old_date = datetime.strptime(Ημερομηνία, "%d/%m/%Y")
             day = old_date.day
-            print("day", day)
 
             date_lists.append(day)
             if day in date_lists:
                 try:
                     new_calendar[day].append('<li><a class="btn btn-info" role="button" href="'
                                              f'{item["id"]}"> {item["Πελάτης"]}</a></li>')
-                    print("New item added")
                 except KeyError:  # Οταν μπαίνει για πρώτη φορά
                     new_calendar[day] = []
                     new_calendar[day].append('<li><a class="btn btn-info" role="button" href="'
                                              f'{item["id"]}"> {item["Πελάτης"]}</a></li>')
-                    print("New item added")
             else:
                 new_calendar[day] = []
-                print("Nothing  added")
         # print("new_calendar", ''.join([str(elem) for elem in new_calendar[29]]))
-        print("new_calendar[29]", ' '.join([str(elem) for elem in new_calendar[29]]))
+
         done_day = []
         for key, item in enumerate(sorted_data):
             Ημερομηνία = item['Ημερομηνία']
             old_date = datetime.strptime(Ημερομηνία, "%d/%m/%Y")
             day = old_date.day
-            print("done_day", done_day)
-            print("Second day", day)
             if day not in done_day:
                 if old_date.month == datetime.today().month:  # Είναι στον υπάρχοντα μήνα αρά μπορουμε να το εμφανίσουμε
 
                     new_date = new_date.replace(f"{day}",
-                                                          ''.join([str(elem) for elem in new_calendar[day]]))
+                                                ''.join([str(elem) for elem in new_calendar[day]]))
 
                     done_day.append(day)
                 else:

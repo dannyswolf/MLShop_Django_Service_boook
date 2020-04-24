@@ -25,7 +25,7 @@ SECRET_KEY = 'ngbgtwu*my@ws%z7y4mszc0yq)yp+zi-9jrxc3chs7&j9-+^(v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.17.0.2', '192.168.1.5']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.17.0.2', '192.168.1.5', '10.8.0.1']
 
 
 # Application definition
@@ -94,7 +94,12 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'Service_book.db'),
+    },
+    'SparePartsDb': {
+        'ENGINE': 'django.db.backends.sqlite3',
+                  'NAME': os.path.join(BASE_DIR, '3. ΚΑΙΝΟΥΡΙΑ_ΑΠΟΘΗΚΗ.db'),
+
     }
 }
 
@@ -135,6 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/Service_images/")
+MEDIA_URL = "/Service_images/"
 #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 
@@ -174,3 +181,6 @@ LOGIN_URL = 'login:login'
 # }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False

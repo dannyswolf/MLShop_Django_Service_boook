@@ -10,7 +10,7 @@ class CreateCalendarForm(forms.ModelForm):
         fields = ('Ημερομηνία', "Πελάτης", "Τηλέφωνο", "Customer_ID", "Μηχάνημα",
                   "Copier_ID", "Σκοπός", "Ενέργειες", "Τεχνικός", "Επείγων",
                   "Μετρητής", "Επ_Service", "ΔΤΕ", "Price", "Service_ID",
-                  "Σημειώσεις", "Ημ_Ολοκλ", "Κατάσταση")
+                  "Σημειώσεις", "Ημ_Ολοκλ", "Κατάσταση", "file")
 
     Σκοπός_data = sorted(set(ServiceData.objects.values_list('Σκοπός', flat=True)))
     Ενέργειες_data = sorted(set(ServiceData.objects.values_list('Ενέργειες', flat=True)))
@@ -40,6 +40,8 @@ class CreateCalendarForm(forms.ModelForm):
     Κατάσταση = forms.BooleanField(required=False, initial=True,
                                    help_text="<font color='red'><strong>Ενεργό αν δεν έχει τελειώσει η "
                                              "εργασία</strong></font>")
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                           max_length=100, allow_empty_file=True, required=False)
 
     def clean_Ημερομηνία(self):
         Ημερομηνία = self.cleaned_data.get('Ημερομηνία')
@@ -54,7 +56,7 @@ class EditCalendarForm(forms.ModelForm):
         fields = ('Ημερομηνία', 'Πελάτης', "Τηλέφωνο",
                   "Copier_ID", "Σκοπός", "Ενέργειες", "Τεχνικός", "Επείγων",
                   "Μετρητής", "Επ_Service", "ΔΤΕ", "Price", "Service_ID",
-                  "Σημειώσεις", "Ημ_Ολοκλ", "Κατάσταση")
+                  "Σημειώσεις", "Ημ_Ολοκλ", "Κατάσταση", 'file')
 
     Σκοπός_data = sorted(set(ServiceData.objects.values_list('Σκοπός', flat=True)))
     Ενέργειες_data = sorted(set(ServiceData.objects.values_list('Ενέργειες', flat=True)))
@@ -72,8 +74,8 @@ class EditCalendarForm(forms.ModelForm):
     # Customer_ID = forms.IntegerField(required=True)
     # Μηχάνημα = forms.CharField(max_length=200, required=True)
     # Copier_ID = forms.IntegerField(required=True)
-    Σκοπός = forms.ChoiceField(choices=Σκοπός_choices, required=False)
-    Ενέργειες = forms.ChoiceField(choices=Ενέργειες_choices, required=False)
+    # Σκοπός = forms.ChoiceField(choices=Σκοπός_choices, required=False)
+    # Ενέργειες = forms.ChoiceField(choices=Ενέργειες_choices, required=False)
 
     Μετρητής = forms.CharField(max_length=11, required=False)
     Επ_Service = forms.CharField(max_length=11, required=False)
@@ -84,6 +86,9 @@ class EditCalendarForm(forms.ModelForm):
                                widget=forms.TextInput(attrs={'type': 'date'}))
     Κατάσταση = forms.BooleanField(required=False, initial=True,
                                    help_text="<font color='red'><strong>Ενεργό αν δεν έχει τελειώσει η εργασία</strong></font>")
+
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
+                           max_length=100, allow_empty_file=True, required=False)
 
     def clean_Ημερομηνία(self):
         Ημερομηνία = self.cleaned_data.get('Ημερομηνία')
@@ -98,5 +103,5 @@ class EditCalendarForm(forms.ModelForm):
             new_date = datetime.strptime(Ημ_Ολοκλ, '%Y-%m-%d').strftime('%d/%m/%Y')
             return str(new_date)
         except ValueError as error:
-            print("----ValueError at Ημ_Ολοκλ ", __name__, error)
+            print("----ValueError at Ημ_Ολοκλ ", __file__, error)
         return Ημ_Ολοκλ

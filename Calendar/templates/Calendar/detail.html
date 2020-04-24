@@ -6,17 +6,24 @@
 </i>
 </h2>
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+ {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ key }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
 
 
 {% load crispy_forms_tags %}
-<form  method="POST">
+<form  method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table class="table-secondary table-bordered">
 
@@ -85,6 +92,7 @@
             <td>
                 {{ form.Σημειώσεις|as_crispy_field }}
                 <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <input type="file" name="file" multiple />
                 <button type="submit" class="btn btn-success">Αποθήκευση</button>
 
                 <a role="button" class="btn btn-danger" href="{% url 'Calendar:delete_calendar' calendar_form.id %}">Διαγραφή</a>
@@ -110,27 +118,46 @@
                     {% endfor %}
                 </ol>
 
+                <h3>Αρχεία</h3>
+                    <ol>
+                        {% for i in files %}
+                            <li>
+                                <a href="Service_images/{{ form.Service_ID.value }}/{{ i }}">{{ i }}</a>
+
+                            </li>
+                        {% endfor %}
+
+
+                    </ol>
+
             </td>
 
+        </tr>
         <tr class="table-secondary" align="center">
-            <td align="left" colspan="3">
-                <div class="form-row">
+        <td align="left" colspan="2">
+            <div class="form-row">
 
 
 
 
 
-
-
+                <div class="form-group col-md-2 mb-0">
+                        {{ form.Service_ID|as_crispy_field }}
                 </div>
 
-            </td>
-        </tr>
+
+
+
+            </div>
+
+        </td>
+            </tr>
+
+
     </table>
 
-    </tr>
 
-    </table>
+
 </form>
 
 
