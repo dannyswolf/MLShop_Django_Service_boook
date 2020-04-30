@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ngbgtwu*my@ws%z7y4mszc0yq)yp+zi-9jrxc3chs7&j9-+^(v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.17.0.2', '192.168.1.5', '10.8.0.1']
 
@@ -80,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -141,7 +142,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 MEDIA_ROOT = os.path.join(BASE_DIR, "static/Service_images/")
-MEDIA_URL = "/Service_images/"
+MEDIA_URL = "/static/Service_images/"
 #STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 

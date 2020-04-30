@@ -41,7 +41,7 @@
                         {{ form.Ημερομηνία|as_crispy_field }}
                     </div>
                     <div class="form-group col-md-2 mb-0">
-                        <a class="btn btn btn-info btn-lg" role="button" href="/customers/{{ machine_form.Copier_ID.Πελάτης.id }}">
+                        <a class="btn btn btn-primary btn-lg" role="button" href="/customers/{{ machine_form.Copier_ID.Πελάτης.id }}">
                                 <h5>Πελάτης</h5>
                                 {{  machine_form.Copier_ID.Πελάτης }}
 
@@ -85,7 +85,7 @@
 
             <td rowspan="5" align="center">
                 {{ form.Σημειώσεις|as_crispy_field }}
-                <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
                    <input type="file" name="file" multiple />
                 <button name="add_service" type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
                 <a role="button" class="btn btn-danger" href="{% url 'services:delete_service' services.id %}">Διαγραφή</a>
@@ -104,7 +104,7 @@
                     <ol>
                         {% for i in files %}
                             <li>
-                                <a href="Service_images/{{form.}}/{{ i }}">{{ i }}</a>
+                                <a href="{{ MEDIA_URL }}{{ service_id }}/{{ i }}">{{ i }}</a>
 
                             </li>
                         {% endfor %}

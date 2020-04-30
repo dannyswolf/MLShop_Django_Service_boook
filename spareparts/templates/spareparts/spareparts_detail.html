@@ -45,7 +45,7 @@
         <td><a href=" {{ obj.id }}" name="id">{{ obj.PARTS_NR }}</a> </td>
         <td><a href=" {{ obj.id }}" name="id">{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30" }}</a> </td>
         <td><a href=" {{ obj.id }}" name="id">{{ obj.ΚΩΔΙΚΟΣ }} </a> </td>
-        <td><a class="btn btn-info" role="button" href=" /customers/{{ obj.Customer_ID_id }}" name="id">{{ obj.Customer_ID }} </a></</td>
+        <td><a class="btn btn-primary" role="button" href=" /customers/{{ obj.Customer_ID_id }}" name="id">{{ obj.Customer_ID }} </a></</td>
         <td><a href=" {{ obj.id }}" name="id">{{ obj.ΤΕΜΑΧΙΑ }}</a> </td>
         <td><a role="button" class="btn btn btn-dark btn-sm" href=" /services/{{ obj.Service_ID }}" name="id">{{ obj.Service_ID }} </a></td>
         <td><a class="btn btn-warning" role="button" href=" /Calendar/{{ obj.Calendar_ID }}" name="id">{{ obj.Calendar_ID }} </a></td>
@@ -118,7 +118,7 @@
 
 
 <p>
-    <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+    <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
 
 </p>
 <script>

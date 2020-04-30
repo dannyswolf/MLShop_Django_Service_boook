@@ -39,7 +39,7 @@
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Serial}} </a> </td>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Εναρξη}}</a> </td>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Μετρητής_έναρξης}}</a> </td>
-            <td><a class="btn btn-info" role="button" href="/customers/{{ obj.Πελάτης.id }}" name="id">{{ obj.Πελάτης}} </a></td>
+            <td><a class="btn btn-primary" role="button" href="/customers/{{ obj.Πελάτης.id }}" name="id">{{ obj.Πελάτης}} </a></td>
 
         </tr>
         {% endfor %}
@@ -112,7 +112,7 @@
 
 
     <p>
-        <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+        <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
 
     </p>
     <script>

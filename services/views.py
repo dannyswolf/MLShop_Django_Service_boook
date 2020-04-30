@@ -61,6 +61,7 @@ class EditService(LoginRequiredMixin, UpdateView):
         context = super(EditService, self).get_context_data(**kwargs)
         context['machine_form'] = self.object  # whatever you would like
         spareparts = SpareParts.objects.filter(Service_ID=id_)
+        context['service_id'] = id_
         try:
             files = os.listdir(os.path.join(MEDIA_ROOT, str(id_)))
             context['files'] = files

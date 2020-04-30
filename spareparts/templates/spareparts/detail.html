@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="form-group col-md-2 mb-0">
-                        <a class="btn btn btn-info btn-lg" role="button" href="{% url 'customers:edit_customer' context_data.Customer_ID.id %}">
+                        <a class="btn btn btn-primary btn-lg" role="button" href="{% url 'customers:edit_customer' context_data.Customer_ID.id %}">
                             <h5>Πελάτης</h5>
                              {{  context_data.Customer_ID }}
                         </a>
@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="form-group col-md-4 mb-0">
-                        <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                        <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
                     </div>
                         <div class="form-group col-md-5 mb-0">
                             <button name="add_service" type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>

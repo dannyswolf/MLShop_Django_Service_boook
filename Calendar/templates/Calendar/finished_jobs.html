@@ -63,7 +63,7 @@
         <td><a href="{{ obj.id }} " name="Ημερομηνία">{{ obj.Ημερομηνία}} </a></td>
         <td><a  href=" {{ obj.id }}" name="Σκοπός">{{ obj.Σκοπός}} </a></td>
         <td>
-            <a class="btn btn-info" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}" name="Επωνυμία_Επιχείρησης">
+            <a class="btn btn-primary" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}" name="Επωνυμία_Επιχείρησης">
             {% if obj.Πελάτης %} {{ obj.Πελάτης}}{% else %}{% endif %}
             </a>
         </td>
@@ -158,7 +158,7 @@
 
 
 <p>
-    <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+    <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
 
 </p>
 <script>

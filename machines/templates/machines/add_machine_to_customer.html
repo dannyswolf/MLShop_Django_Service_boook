@@ -37,7 +37,7 @@
             <td>
                 <div class="form-group col-md-5 mb-0">
                     <a>
-                        <a class="btn btn btn-info" role="button"  href="/customers/{{ form.Πελάτης.value }}">
+                        <a class="btn btn btn-primary" role="button"  href="/customers/{{ form.Πελάτης.value }}">
                             {{ form.Πελάτης|as_crispy_field }}
                         </a>
 
@@ -61,7 +61,7 @@
 
             <td>
                 {{ form.Σημειώσεις|as_crispy_field }}
-                <button type="button" class="btn btn-primary" onclick="goBack()">Πίσω</button>
+                <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
                 <button name="add_machine" type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
 
             </td>
