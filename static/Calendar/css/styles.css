@@ -1,0 +1,83 @@
+.calendar {
+
+  width: 80%;
+  margin: 10px auto;
+  background-color: #EFF0F1;
+  grid-template-rows: 50px;
+  grid-auto-rows: 120px;
+  overflow: auto;
+  position: relative;
+}
+
+.calendar tr, .calendar td {
+
+  border: 3px solid black;
+}
+
+.calendar th {
+
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.calendar td {
+
+
+  width: 1px;
+  white-space: nowrap;
+  padding: 20px 0px 0px 5px;
+}
+
+.month {
+
+  font-size: 25px;
+}
+
+.date {
+  border-bottom: 4px solid rgba(166, 168, 179, 0.12);
+  border-right: 4px solid rgba(166, 168, 179, 0.12);
+  text-align: right;
+  padding: 14px 20px;
+  letter-spacing: 1px;
+  font-size: 25px;
+  box-sizing: border-box;
+  color: #ff0000;
+  position: relative;
+
+  pointer-events: none;
+  z-index: 1;
+}
+
+ul {
+  height: 100%;
+  padding: 0px 5px 0px 20px;
+}
+
+a {
+  color: #17a2b8;
+}
+.calendar .mon {
+	background: #B1DFBB;
+}
+.calendar .tue {
+	background: #B1DFBB;
+}
+
+.calendar .wed {
+	background: #B1DFBB;
+}
+.calendar .thu {
+	background: #B1DFBB;
+}
+.calendar .fri {
+	background: #B1DFBB;
+}
+.calendar .sat {
+	background: #B1DFBB;
+}
+.calendar .sun {
+	background: #B1DFBB;
+}
+
+
