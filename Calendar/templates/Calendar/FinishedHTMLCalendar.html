@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+
+{% autoescape off %}
+
+<div class="clearfix">
+
+	<a class="btn btn-info left" href="{% url 'Calendar:finished_calendar' %}?{{ prev_month }}"> Προηγούμενος μήνας </a>
+	<a class="btn btn-info right" href="{% url 'Calendar:finished_calendar' %}?{{ next_month }}"> Επόμενος μήνας </a>
+</div>
+
+
+{{ calendar }}
+
+{% endautoescape %}
+
+
+{% endblock content %}
+
+
+

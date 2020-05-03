@@ -1,4 +1,3 @@
-from django.forms import modelform_factory, TextInput, Textarea
 from django.shortcuts import render, get_object_or_404
 from django.utils.safestring import mark_safe
 from django.views.generic import ListView
@@ -16,7 +15,7 @@ from django.http import HttpResponseRedirect
 from services.models import Services
 from django.core.exceptions import ObjectDoesNotExist
 from spareparts.models import SpareParts
-from .utils import MyHtmlCalendar
+from .utils import MyHtmlCalendar, MyFinishedHtmlCalendar
 import os
 from django_project.settings import MEDIA_ROOT
 import calendar
@@ -437,7 +436,6 @@ class CalendarView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         # use today's date for the calendar
         d = get_date(self.request.GET.get('day', None))
         new_month = get_date(self.request.GET.get('month', None))
@@ -449,6 +447,32 @@ class CalendarView(LoginRequiredMixin, ListView):
             cal = MyHtmlCalendar(d.year, new_month.month)
         else:
             cal = MyHtmlCalendar(d.year, d.month)
+
+        # Call the formatmonth method, which returns our calendar as a table
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendar'] = mark_safe(html_cal)
+
+        return context
+
+
+class FinishedCalendarView(LoginRequiredMixin, ListView):
+    model = Calendar
+    template_name = 'Calendar/FinishedHTMLCalendar.html'
+    success_url = reverse_lazy("Calendar")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # use today's date for the calendar
+        d = get_date(self.request.GET.get('day', None))
+        new_month = get_date(self.request.GET.get('month', None))
+        context['prev_month'] = prev_month(new_month)
+        context['next_month'] = next_month(new_month)
+
+        # Instantiate our calendar class with today's year and date
+        if new_month:
+            cal = MyFinishedHtmlCalendar(d.year, new_month.month)
+        else:
+            cal = MyFinishedHtmlCalendar(d.year, d.month)
 
         # Call the formatmonth method, which returns our calendar as a table
         html_cal = cal.formatmonth(withyear=True)

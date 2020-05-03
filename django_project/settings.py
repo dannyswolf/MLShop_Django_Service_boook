@@ -150,8 +150,8 @@ INTERNAL_IPS = [
         # ...
         "127.0.0.1",
         "localhost",
-        "172.17.0.1"  # docker
-
+        "172.17.0.1",  # docker
+        "192.168.1.5"
         # ...
         ]
 
@@ -176,12 +176,12 @@ DATE_INPUT_FORMATS = (
 LOGIN_URL = 'login:login'
 
 # DIsable  DEBUG_TOOLBAR
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
-#     # '...
-# }
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda r: True,  # disables it
+    # '...
+}
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
