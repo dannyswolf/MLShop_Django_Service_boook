@@ -5,7 +5,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, DeleteView
 from .models import Calendar
 from django.urls import reverse_lazy
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from machines.models import Machines
@@ -16,9 +16,10 @@ from django.http import HttpResponseRedirect
 from services.models import Services
 from django.core.exceptions import ObjectDoesNotExist
 from spareparts.models import SpareParts
-from calendar import HTMLCalendar
+from .utils import MyHtmlCalendar
 import os
 from django_project.settings import MEDIA_ROOT
+import calendar
 
 
 # Ενεργά
@@ -246,9 +247,6 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         # form.instance.Service_ID = new_service.pk
         # form.instance.Ημ_Ολοκλ = date.today().strftime("%d/%m/%Y")
 
-
-
-
         return super().form_valid(form)
 
 
@@ -432,88 +430,57 @@ def search_finished_calendar_dte(request):
     return render(request, "Calendar/search_calendar_result.html", object_list)
 
 
-class CalendarView(ListView):
+class CalendarView(LoginRequiredMixin, ListView):
     model = Calendar
     template_name = 'Calendar/HTMLCalendar.html'
     success_url = reverse_lazy("Calendar")
 
-    # -------- Sorting --------------
-    def get_queryset(self, ):
-        """
-                return : object_list
-
-                """
-        queryset = Calendar.objects.filter(Κατάσταση=True)
-        dict_services = queryset.values()
-        queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
-        return queryset
-
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)  # Πέρνουμε τα δεδομένα
-        data = context['object_list']
-        # ----Sorting----
-        sorted_data = sorted(data, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
+        context = super().get_context_data(**kwargs)
 
-        # Variables
-        year = datetime.today().year
-        month = datetime.today().month
-        weekday = datetime.today().weekday()
+        # use today's date for the calendar
+        d = get_date(self.request.GET.get('day', None))
+        new_month = get_date(self.request.GET.get('month', None))
+        context['prev_month'] = prev_month(new_month)
+        context['next_month'] = next_month(new_month)
 
-        # Calendar Html
-        cal = HTMLCalendar()
-        html_cal = cal.formatmonth(year, month, withyear=True)  # simple Calendar
+        # Instantiate our calendar class with today's year and date
+        if new_month:
+            cal = MyHtmlCalendar(d.year, new_month.month)
+        else:
+            cal = MyHtmlCalendar(d.year, d.month)
 
-        # Μεταμόρφωση Ημερολογίου
-        border_and_class_table = mark_safe(html_cal.replace('border="0"', 'border="1"').
-                                           replace('class="month"', 'class="table table-hover table-bordered"'))
-        Mon_head = border_and_class_table.replace('class="mon">Mon', 'class="table-success">Δευτέρα')
-        Tue_head = Mon_head.replace('class="tue">Tue', 'class="table-success">Τρίτη')
-        Thu_head = Tue_head.replace('class="wed">Wed', 'class="table-success">Τετάρτη')
-        Fri_head = Thu_head.replace('class="thu">Thu', 'class="table-success">Πέμπτη')
-        Sut_head = Fri_head.replace('class="fri">Fri', 'class="table-success">Παρασκευή')
-        Sun_head = Sut_head.replace('class="sat">Sat', 'class="table-success">Σάββατο')
-        Final_head = Sun_head.replace('class="sun">Sun', 'class="table-success">Κυριακή')
-        new_date = Final_head
-        date_lists = []
-        new_calendar = {}
-        for index, item in enumerate(sorted_data):
-            Ημερομηνία = item['Ημερομηνία']
-            old_date = datetime.strptime(Ημερομηνία, "%d/%m/%Y")
-            day = old_date.day
+        # Call the formatmonth method, which returns our calendar as a table
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendar'] = mark_safe(html_cal)
 
-            date_lists.append(day)
-            if day in date_lists:
-                try:
-                    new_calendar[day].append('<li><a class="btn btn-info" role="button" href="'
-                                             f'{item["id"]}"> {item["Πελάτης"]}</a></li>')
-                except KeyError:  # Οταν μπαίνει για πρώτη φορά
-                    new_calendar[day] = []
-                    new_calendar[day].append('<li><a class="btn btn-info" role="button" href="'
-                                             f'{item["id"]}"> {item["Πελάτης"]}</a></li>')
-            else:
-                new_calendar[day] = []
-        # print("new_calendar", ''.join([str(elem) for elem in new_calendar[29]]))
-
-        done_day = []
-        for key, item in enumerate(sorted_data):
-            Ημερομηνία = item['Ημερομηνία']
-            old_date = datetime.strptime(Ημερομηνία, "%d/%m/%Y")
-            day = old_date.day
-            if day not in done_day:
-                if old_date.month == datetime.today().month:  # Είναι στον υπάρχοντα μήνα αρά μπορουμε να το εμφανίσουμε
-
-                    new_date = new_date.replace(f"{day}",
-                                                ''.join([str(elem) for elem in new_calendar[day]]))
-
-                    done_day.append(day)
-                else:
-                    continue
-            else:
-                continue  # να πάμε στο επωμενο αφου δεν ειναι για αυτόν τον μήνα
-
-        try:
-            context['calendar'] = new_date
-        except UnboundLocalError as error:  # Όταν δεν υπάρχει καμία κλήση για αυτόν τον μήνα
-            print("---ERROR---", __name__, "at  Function CalendarView")
-            context['calendar'] = Final_head
         return context
+
+
+def prev_month(d):
+    first = d.replace(day=1)
+    prev_month = first - timedelta(days=1)
+    month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
+    return month
+
+
+def next_month(d):
+    # calendar ==> import calendar (build in python)
+    days_in_month = calendar.monthrange(d.year, d.month)[1]
+    """
+        import calendar (build in python)
+        calendar.monthrange(year, month)
+        Returns weekday of first day of the month and number of days in month, for the specified year and month.
+    """
+
+    last = d.replace(day=days_in_month)
+    next_month = last + timedelta(days=1)
+    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
+    return month
+
+
+def get_date(req_day):
+    if req_day:
+        year, month = (int(x) for x in req_day.split('-'))
+        return date(year, month, day=1)
+    return datetime.today()

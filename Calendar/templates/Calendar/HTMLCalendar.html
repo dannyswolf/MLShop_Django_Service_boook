@@ -6,11 +6,14 @@
 
 {% autoescape off %}
 
+<div class="clearfix">
+
+	<a class="btn btn-info left" href="{% url 'Calendar:calendar' %}?{{ prev_month }}"> Προηγούμενος μήνας </a>
+	<a class="btn btn-info right" href="{% url 'Calendar:calendar' %}?{{ next_month }}"> Επόμενος μήνας </a>
+</div>
+
 
 {{ calendar }}
-
-
-
 
 {% endautoescape %}
 
