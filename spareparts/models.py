@@ -26,8 +26,9 @@ class SpareParts(models.Model):
     #                              db_column='ΜΗΧΑΝΗΜΑ',
     #                              help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
 
-    Service_ID = models.SmallIntegerField(null=True, blank=True, db_column='Service_ID',
-                                          help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
+    Service_ID = models.ForeignKey(Services, blank=False, null=False, on_delete=models.PROTECT,
+                                    db_column='Service_ID',
+                                    help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
 
     Customer_ID = models.ForeignKey(Customer, blank=False, null=False, on_delete=models.PROTECT,
                                     db_column='Customer_ID',

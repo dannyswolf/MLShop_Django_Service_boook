@@ -3,28 +3,12 @@
 
     {% block content %}
     <h2 class="btn btn-secondary btn-lg"> Ιστορικό μεταφορών
-    <br>
-    Σύνολο:{{ page_obj.paginator.count }} Μεταφορές
     </h2>
 
 
-
-    <div class="input-group col-md-3 mb-3">
-
-        <div class="input-group-append">
-    <form action="{% url 'Copiers_Log:search_copiers_log' %}" method="get">
-
-        <input name="q" placeholder="Αναζήτηση..." type="text" >
-        <button class="btn btn-outline-success my-2 my-sm-0" name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
-
-    </form>
-        </div>
-    </div>
-
-
-    <table class="table table-hover table-bordered justify-content-center">
+    <table class="table table-hover table-bordered justify-content-center" id="data-table">
         <thead>
-        <tr class="table-success" align="center">
+        <tr class="table-success">
             <th><label about=""> Μηχάνημα </label></th>
             <th>Ημερομηνία</th>
             <th>Προηγούμενος Πελάτης</th>
@@ -35,16 +19,26 @@
         </thead>
         <tbody>
         {% for obj in object_list %}
-        <tr align="center">
-            <td><a role="button"  class="btn btn-secondary" href="../machines/{{  obj.ID_μηχανήματος.id }} " name="id">{{ obj.Μηχάνημα }}</a> </td>
-            <td><a  name="id">{{ obj.Ημερομηνία}} </a> </td>
-            <td><a class="btn btn-info" role="button" href="{{ obj.Προηγούμενος_Πελάτης.ID }}" name="id">{{ obj.Προηγούμενος_Πελάτης }}</a> </td>
-            <td><a class="btn btn-primary" role="button" href="{{ obj.Νέος_Πελάτης.ID }}"  name="id">{{ obj.Νέος_Πελάτης }}</a> </td>
-            <td><a  name="id">{{ obj.Σημειώσεις}} </a></td>
+        <tr>
+            <td><a role="button"  class="btn btn-secondary" href="../machines/{{  obj.ID_μηχανήματος.id }}">{{ obj.Μηχάνημα }}</a> </td>
+            <td>{{ obj.Ημερομηνία}} </td>
+            <td>{{ obj.Προηγούμενος_Πελάτης }} </td>
 
+            <td><a class="btn btn-primary" role="button" href="{% url 'customers:edit_customer' obj.ID_μηχανήματος.Πελάτης.id %}">{{ obj.Νέος_Πελάτης }}</a> </td>
+            <td>{{ obj.Σημειώσεις}} </td>
+{% endfor %}
         </tr>
-        {% endfor %}
+
         </tbody>
+        <tfoot>
+        <tr class="table-success">
+         <th><label about=""> Μηχάνημα </label></th>
+            <th>Ημερομηνία</th>
+            <th>Προηγούμενος Πελάτης</th>
+            <th>Νέος Πελάτης</th>
+            <th>Σημειώσεις</th>
+        </tr>
+        </tfoot>
     </table>
 
 

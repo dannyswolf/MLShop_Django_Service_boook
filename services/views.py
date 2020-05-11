@@ -20,19 +20,20 @@ from datetime import datetime
 
 class ServicesListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
-    model = Services
+    # model = Services
     template_name = 'services/services_detail.html'
 
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 6
-
+    # paginate_by = 10
+    queryset = Services.objects.select_related('Copier_ID').prefetch_related('Copier_ID__Πελάτης')
     # -------- Sorting --------------
-    def get_queryset(self,):
-        queryset = Services.objects.all().order_by('-id')
-        # dict_services = queryset.values()
-        # queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
-        return queryset
+    # def get_queryset(self,):
+    #     queryset = Services.objects.select_related('Copier_ID').prefetch_related('Copier_ID__Πελάτης')
+    #
+    #     # dict_services = queryset.values()
+    #     # queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
+    #     return queryset
 
 
 class EditService(LoginRequiredMixin, UpdateView):

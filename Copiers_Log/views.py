@@ -11,11 +11,11 @@ class CopiersLogListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     model = CopiersLog
     template_name = 'Copiers_Log/transfer_history.html'
-    queryset = CopiersLog.objects.all().order_by('-id')
+    queryset = CopiersLog.objects.all()
 
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 5
+    # paginate_by = 5
 
 
 # Αναζήτηση

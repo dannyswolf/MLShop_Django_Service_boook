@@ -5,8 +5,11 @@ from import_export.admin import ImportExportModelAdmin
 
 
 # needed by ImportExportModel
-class CalendarAdmin(ImportExportModelAdmin):
-    pass
+class CalendarAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ['Ημερομηνία', 'Πελάτης', 'Copier_ID', 'Σκοπός']
+
+    class Meta:
+        model = Calendar
 
 
 admin.site.register(Calendar, CalendarAdmin)

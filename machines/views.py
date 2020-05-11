@@ -18,25 +18,25 @@ from Copiers_Log.models import CopiersLog
 # Ενεργά μηχανήματα
 class MachinesListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
-    model = Machines
+    # model = Machines
     template_name = 'machines/machines_detail.html'
-    queryset = Machines.objects.filter(Κατάσταση=True).order_by('Πελάτης__Επωνυμία_Επιχείρησης')
+    queryset = Machines.objects.filter(Κατάσταση=True)
 
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 7
+    # paginate_by = 7
 
 
 # Ανενεργά μηχανήματα
 class InactiveMachinesListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
-    model = Machines
+    # model = Machines
     template_name = 'machines/inactive_machines_detail.html'
-    queryset = Machines.objects.filter(Κατάσταση=False).order_by('Πελάτης__Επωνυμία_Επιχείρησης')
+    queryset = Machines.objects.filter(Κατάσταση=False)
 
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 7
+    # paginate_by = 7
 
 
 class CreateMachine(LoginRequiredMixin, CreateView):

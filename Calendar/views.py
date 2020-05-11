@@ -28,17 +28,17 @@ class CalendarListView(LoginRequiredMixin, ListView):
     template_name = 'Calendar/calendar_detail.html'
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 5
+    # paginate_by = 5
 
     # -------- Sorting --------------
     def get_queryset(self, ):
         """
         return : object_list
-
         """
         queryset = Calendar.objects.filter(Κατάσταση=True)
-        dict_services = queryset.values()
-        queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
+        # dict_services = queryset.values()
+        # queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
+
         return queryset
 
 
@@ -49,7 +49,7 @@ class FinishedCalendarListView(LoginRequiredMixin, ListView):
     template_name = 'Calendar/finished_jobs.html'
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 7
+    # paginate_by = 7
 
     # -------- Sorting --------------
     def get_queryset(self, ):
@@ -58,8 +58,8 @@ class FinishedCalendarListView(LoginRequiredMixin, ListView):
 
                 """
         queryset = Calendar.objects.filter(Κατάσταση=False)
-        dict_services = queryset.values()
-        queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
+        # dict_services = queryset.values()
+        # queryset = sorted(dict_services, key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"), reverse=True)
         return queryset
 
 

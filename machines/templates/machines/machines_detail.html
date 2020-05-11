@@ -1,49 +1,50 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
+
+{% load string_to_date %}
+{% block content %}
+
+    <h2 class="btn btn-secondary btn-lg">  Μηχανήματα </h2>
 
 
-    {% block content %}
-
-    <h2 class="btn btn-secondary btn-lg"> Σύνολο:{{ page_obj.paginator.count }} Μηχανήματα </h2>
 
 
-    <div class="input-group col-md-3 mb-3">
-
-        <div class="input-group-append">
-    <form action="{% url 'machines:search_machine' %}" method="get">
-
-        <input name="q" placeholder="Αναζήτηση..." type="text" >
-        <button class="btn btn-outline-success my-2 my-sm-0" name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
-
-    </form>
-        </div>
-    </div>
-
-
-    <table class="table table-hover table-bordered justify-content-center">
+    <table class="table table-hover table-bordered justify-content-center" id="data-table">
         <thead>
-        <tr class="table-success" align="center">
+        <tr class="table-success">
             <th>ID</th>
             <th><label about=""> Μηχάνημα </label></th>
             <th>Serial</th>
             <th>Εναρξη</th>
             <th>Μετρητής έναρξης</th>
-            <th>Πελάτης</th>
+
 
         </tr>
         </thead>
         <tbody>
         {% for obj in object_list %}
-        <tr align="center">
+        <tr>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.id }} </a></td>
             <td><a role="button"  class="btn btn-secondary" href=" {{ obj.id }}" name="id">{{ obj.Εταιρεία}}</a> </td>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Serial}} </a> </td>
-            <td><a href=" {{ obj.id }}" name="id">{{ obj.Εναρξη}}</a> </td>
+            <td><a href=" {{ obj.id }}"><span style="display:none">{{ obj.Εναρξη |string_to_timestamp }}</span> {{ obj.Εναρξη}}</a> </td>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Μετρητής_έναρξης}}</a> </td>
-            <td><a class="btn btn-primary" role="button" href="/customers/{{ obj.Πελάτης.id }}" name="id">{{ obj.Πελάτης}} </a></td>
+
+         {% endfor %}
+        </tr>
+
+        </tbody>
+        <tfoot>
+        <tr class="table-success">
+            <th>ID</th>
+            <th><label about=""> Μηχάνημα </label></th>
+            <th>Serial</th>
+            <th>Εναρξη</th>
+            <th>Μετρητής έναρξης</th>
+
 
         </tr>
-        {% endfor %}
-        </tbody>
+
+        </tfoot>
     </table>
 
 
@@ -122,8 +123,5 @@ function goBack() {
 </script>
 
 
-    {% endblock %}
-
-
-
+{% endblock %}
 

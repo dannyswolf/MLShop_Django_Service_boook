@@ -7,34 +7,17 @@
 <h2 class="btn btn-primary btn-lg"> <svg class="bi bi-people-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 100-6 3 3 0 000 6zm-5.784 6A2.238 2.238 0 015 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 005 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clip-rule="evenodd"/>
 </svg>
-    Σύνολο:{{ page_obj.paginator.count }} πελάτες </h2>
-
-<div class="input-group col-md-3 mb-3">
-
-    <div class="input-group-append">
-        <form class="form-inline" action="{% url 'customers:search_customer' %}" method="get">
-
-            <input  class="form-control mr-sm-2" name="q"  placeholder="Αναζήτηση..." aria-label=="Αναζήτηση..." type="text" >
-            <button  class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
-
-
-        </form>
-    </div>
-</div>
+     Πελάτες </h2>
 
 
 
 
-<p></p>
 
-
-
-<table class="table table-hover table-bordered">
+<table class="table table-hover table-bordered" id="data-table">
 
     <thead>
 
     <tr class="table-success">
-        <th>ID</th>
         <th><label about=""> Επωνυμία Επιχείρησης </label></th>
         <th>Ονοματεπώνυμο</th>
         <th>Διεύθυνση</th>
@@ -43,7 +26,6 @@
         <!--   <th>E_mail</th> -->
        <!--    <th>Σελίδες_πακέτου</th> -->
         <!--   <th>Κόστος_πακέτου</th> -->
-         <th>Μηχανήματα </th>
 
 
 
@@ -56,7 +38,6 @@
 
     {% for obj in object_list %}
      <tr>
-         <td><a href=" {{ obj.id }}" name="id">{{ obj.id }}</a> </td>
          <td><a href=" {{ obj.id }}" name="Επωνυμία_Επιχείρησης">{{ obj.Επωνυμία_Επιχείρησης}} </a></td>
          <td><a href=" {{ obj.id }}" name="Ονοματεπώνυμο">{% if obj.Ονοματεπώνυμο %} {{ obj.Ονοματεπώνυμο}}{% else %}{% endif %}</a> </td>
          <td><a href=" {{ obj.id }}" name="Διεύθυνση">{% if obj.Διεύθυνση %}{{ obj.Διεύθυνση}} {% else %} {% endif %}</a> </td>
@@ -64,28 +45,26 @@
          <td> {{obj.Κινητό}} </td>
 
 
-         <td colspan="2">
-
-             <ol>{% for mach in obj.machines_set.all %}
-
-                 <li>
-
-                         <a role="button"  class="btn btn-secondary" href="/machines/{{ mach.id }}" >{{ mach}}</a>
-
-
-                 </li><br>
-
-                 {% endfor %}
-             </ol>
-
-         </td>
 
 
 
 
+         {% endfor %}
       </tr>
       </tbody>
-      {% endfor %}
+    <tfoot>
+
+        <th> Επωνυμία Επιχείρησης</th>
+        <th>Ονοματεπώνυμο</th>
+        <th>Διεύθυνση</th>
+        <th>Τηλέφωνο</th>
+        <th>Κινητό</th>
+        <!--   <th>E_mail</th> -->
+       <!--    <th>Σελίδες_πακέτου</th> -->
+        <!--   <th>Κόστος_πακέτου</th> -->
+
+    </tfoot>
+
   </table>
 
 {% if page_obj.paginator.num_pages > 1 %}

@@ -12,7 +12,8 @@ def login_page(request, *args, **kwargs):
 
         if user is not None:
             login(request, user)
-            return redirect('Calendar:list_calendar')
+
+            return redirect('Calendar/')
 
         else:
             messages.info(request, 'Λάθος όνομα χρήστη ή κωδικός')
@@ -24,3 +25,4 @@ def login_page(request, *args, **kwargs):
 def logout_page(request, *args, **kwargs):
     logout(request)
     return redirect('login:login')
+

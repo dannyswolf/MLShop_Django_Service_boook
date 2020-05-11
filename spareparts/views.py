@@ -14,15 +14,16 @@ from machines.models import Machines
 # Create your views here.
 class SparePartsListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
-    model = SpareParts
+    # model = SpareParts
     template_name = 'spareparts/spareparts_detail.html'
     # sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
     # queryset = sorted(Services.objects.all(), key=lambda x: datetime.strptime(x['Ημερομηνία'], "%d/%m/%Y"))
     # sort(key=lambda date: datetime.strptime(date, '"%d/%m/%Y"))
-    queryset = SpareParts.objects.all().order_by("-pk")
+    queryset = SpareParts.objects.prefetch_related('Service_ID').prefetch_related('Customer_ID')
+    # select_related('Customer_ID').prefetch_related('Service_ID__Copier_ID')
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 5
+    # paginate_by = 5
 
 
 @login_required()

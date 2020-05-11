@@ -10,20 +10,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- start -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'fontawesome/5.13.0/css/all.css' %}">
 
     <!-- end -->
 
     <!-- DataTable -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'DataTables/datatables.css' %}"/>
 
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap-4.4.1/css/bootstrap.min.css' %}">
 
     <!--    Calendar -->
-     <link rel="stylesheet" type="text/css" href="../static/Calendar/css/styles.css">
+     <link rel="stylesheet" type="text/css" href="{% static 'Calendar/css/styles.css' %}">
 
 </head>
 
@@ -40,34 +38,88 @@
 {% endblock content %}
 
 {%  block js %}
+
  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script
+    src="{% static 'jquery/jquery-3.5.1/min.js' %}">
+</script>
+
+<script src="{% static 'popper/1.14.7/popper.js' %}"></script>
+
+
+<script src="{% static 'bootstrap/bootstrap-4.4.1/js/bootstrap.min.js' %}"></script>
 
 
 
 <!--  https://datatables.net/manual/installation  -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sp-1.0.1/sl-1.3.1/datatables.min.css"/>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.20/af-2.3.4/b-1.6.1/b-flash-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/fc-3.3.0/fh-3.1.6/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sp-1.0.1/sl-1.3.1/datatables.min.js"></script>
+<script type="text/javascript" src="{% static 'DataTables/datatables.js' %}"></script>
+
 <script>
-    $(document).ready( function () {
-    $('#calendar').DataTable({
 
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+
+    $('#data-table tfoot th').each( function () {
+
+        var title = $(this).text();
+
+            $(this).html( '<input type="text" placeholder="Αναζήτηση '+title+'" />' );
+
+    } );
+
+    // DataTable
+
+    var table =  $('#data-table').DataTable({
+ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "autoWidth": false,
+        "processing": true,
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
     dom: 'B<"clear">lfrtip',
     buttons: {
         name: 'primary',
-        buttons: [  'copy', 'excel', 'pdf' ]
+        buttons: [  {
+            extend: 'copy',
+            text: 'Αντιγραφή'
+        },
+        {
+            extend: 'excel',
+            text: 'Excel',
+            exportOptions: {
+                modifier: {
+                    page: 'current'
+                }
+            }
+        },
 
-        }}
-    );
+         'pdf', 'print', 'colvis',
+        'colvisRestore' ]
+
+    }
+});
+
+    // Apply the search
+    table.columns().every( function () {
+
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change clear', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
 } );
-</script>
 
-{% endblock js %}
+
+</script>
+{%  endblock js %}
+
 
 </body>
 

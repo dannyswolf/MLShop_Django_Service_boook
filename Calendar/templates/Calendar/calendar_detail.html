@@ -1,79 +1,65 @@
 {% extends "base.html" %}
 
-
+{% load string_to_date %}
 {% block content %}
 
 <h1 class="btn btn-warning btn-lg">
-    <i class="fas fa-calendar-alt"> Σύνολο: {{ page_obj.paginator.count }} Τρέχουσες εργασίες</i>
+    <em class="fas fa-calendar-alt"> Τρέχουσες εργασίες</em>
 </h1>
 
 
 
-<div class="form-row">
-
-    <div class="form-group col-md-4 mb-0">
-        <form  class="form-inline" action="{% url 'Calendar:search_calendar_dte' %}" method="get">
-
-            <input class="form-control mr-sm-2" name="q" placeholder="Αναζήτηση ΔΤΕ..." type="text" >
-            <button class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση ΔΤΕ</button>
-
-        </form>
-    </div>
-
-    <div class="form-group col-md-6 mb-0">
-        <form class="form-inline" action="{% url 'Calendar:search_calendar' %}" method="get">
-
-            <input  class="form-control mr-sm-2" name="q"  placeholder="Αναζήτηση..." aria-label=="Αναζήτηση..." type="text" >
-            <button  class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
-
-
-        </form>
-        </div>
-</div>
-
-
-<p></p>
-
-
-<table id="active_calendar" class="table table-hover table-bordered "  bgcolor="#EFF0F1">
+<table id="data-table" class="table-sm  table-hover table-bordered" >
 
     <thead>
 
-    <tr class="table-success" align="center">
-        <th>ID</th>
-        <th> Ημερομηνία </th>
+    <tr class="table-success">
+
+        <th>Ημερομηνία</th>
         <th>Σκοπός</th>
         <th>Πελάτης</th>
         <th>Μηχάνημα</th>
         <th>Ενέργειες</th>
            <th>Τεχνικός</th>
             <th>Επείγων</th>
-           <th>ΔΤΕ</th>
-
+            <th>ΔΤΕ</th>
     </tr>
     </thead>
-    {% for obj in object_list %}
+
     <tbody>
 
+{% for obj in object_list %}
+    <tr>
 
-    <tr  align="center">
-        <td ><a href=" {{ obj.id }}" name="id">{{ obj.id }}</a> </td>
-        <td><a href="{{ obj.id }} " name="Ημερομηνία">{{ obj.Ημερομηνία}} </a></td>
-        <td><a href=" {{ obj.id }}" name="Σκοπός">{{ obj.Σκοπός}} </a></td>
-        <td><a class="btn btn-primary" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}" name="Επωνυμία_Επιχείρησης">
+        <td><a href="{{ obj.id }} " > <span style="display:none">{{ obj.Ημερομηνία |string_to_timestamp }}</span>  {{ obj.Ημερομηνία }}</a></td>
+        <td><a href=" {{ obj.id }}" >{{ obj.Σκοπός}} </a></td>
+        <td><a class="btn btn-primary" role="button" href=" {% url 'customers:edit_customer' obj.Customer_ID %}">
              {{ obj.Πελάτης }}</a> </td>
-        <td><a role="button"  class="btn btn-secondary" href=" {% url 'machines:edit_machine' obj.Copier_ID_id %}" name="Μηχάνημα">
+        <td><a role="button"  class="btn btn-secondary" href=" {% url 'machines:edit_machine' obj.Copier_ID_id %}">
             {{ obj.Μηχάνημα }} </a> </td>
 
         <td> {{obj.Ενέργειες}} </td>
            <td>{{ obj.Τεχνικός}} </td>
          <td>{{ obj.Επείγων}} </td>
           <td>{{ obj.ΔΤΕ}} </td>
-
+ {% endfor %}
     </tr>
     </tbody>
-    {% endfor %}
+
     <tfoot>
+
+    <tr class="table-success">
+
+        <th>Ημερομηνία</th>
+        <th>Σκοπός</th>
+        <th>Πελάτης</th>
+        <th>Μηχάνημα</th>
+        <th>Ενέργειες</th>
+           <th>Τεχνικός</th>
+         <th>Επείγων</th>
+        <th>ΔΤΕ</th>
+
+    </tr>
    </tfoot>
 </table>
 
@@ -149,7 +135,6 @@ function goBack() {
   window.history.back();
 }
 </script>
-
 
 {% endblock %}
 

@@ -124,23 +124,23 @@ class CreateCustomer(LoginRequiredMixin, CreateView):
 # Ενεργοί πελάτες
 class CustomersListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
-    model = Customer
+    # model = Customer
     template_name = 'customers/customers_detail.html'
-    queryset = Customer.objects.filter(Κατάσταση=True).order_by('Επωνυμία_Επιχείρησης')
+    queryset = Customer.objects.filter(Κατάσταση=True)
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 5
+    # paginate_by = 5
 
 
 # Ανενεργοί πελάτες
 class InactiveCustomersListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
-    model = Customer
+    # model = Customer
     template_name = 'customers/inactive_customers_detail.html'
-    queryset = Customer.objects.filter(Κατάσταση=False).order_by('Επωνυμία_Επιχείρησης')
+    queryset = Customer.objects.filter(Κατάσταση=False)
     fields = '__all__'
     # form_class = CustomerForm
-    paginate_by = 5
+    # paginate_by = 5
 
 
 class EditCustomer(LoginRequiredMixin, UpdateView):

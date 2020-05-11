@@ -4,27 +4,11 @@
 {% block content %}
 
 
-<h2 class="btn btn-primary btn-lg"><i class="fas fa-user-times"></i>
-    Σύνολο:{{ page_obj.paginator.count }} Απενεργοποιημένοι πελάτες </h2>
+<h2 class="btn btn-primary btn-lg"><em class="fas fa-user-times"></em>
+     Απενεργοποιημένοι πελάτες </h2>
 
 
-
-<div class="input-group col-md-3 mb-3">
-
-    <div class="input-group-append">
-    <form class="form-inline" action="{% url 'customers:search_inactive_customer' %}" method="get">
-
-        <input  class="form-control mr-sm-2" name="q"  placeholder="Αναζήτηση..." aria-label=="Αναζήτηση..." type="text" >
-        <button  class="btn btn-outline-success my-2 my-sm-0"  name="Αναζήτηση" value="Αναζήτηση" type="submit">Αναζήτηση</button>
-
-        </form>
-    </div>
-</div>
-
-
-
-
-<table class="table table-hover table-bordered">
+<table class="table table-hover table-bordered" id="inactive-customers">
 
     <thead>
 
@@ -38,7 +22,7 @@
         <!--   <th>E_mail</th> -->
        <!--    <th>Σελίδες_πακέτου</th> -->
         <!--   <th>Κόστος_πακέτου</th> -->
-         <th>Μηχανήματα </th>
+
 
 
 
@@ -59,28 +43,30 @@
          <td> {{obj.Κινητό}} </td>
 
 
-         <td colspan="2">
-
-             <ol>{% for mach in obj.machines_set.all %}
-
-                 <li>
-
-                         <a role="button"  class="btn btn-secondary" href="/machines/{{ mach.id }}" >{{ mach}}</a>
-
-
-                 </li><br>
-
-                 {% endfor %}
-             </ol>
-
-         </td>
 
 
 
+    {% endfor %}
 
       </tr>
       </tbody>
-      {% endfor %}
+
+    <tfoot>
+      <tr class="table-success">
+        <th>ID</th>
+        <th><label about=""> Επωνυμία Επιχείρησης </label></th>
+        <th>Ονοματεπώνυμο</th>
+        <th>Διεύθυνση</th>
+        <th>Τηλέφωνο</th>
+        <th>Κινητό</th>
+        <!--   <th>E_mail</th> -->
+       <!--    <th>Σελίδες_πακέτου</th> -->
+        <!--   <th>Κόστος_πακέτου</th> -->
+
+
+      </tr>
+    </tfoot>
+
   </table>
 
 {% if page_obj.paginator.num_pages > 1 %}
@@ -157,3 +143,68 @@ function goBack() {
   {% endblock %}
 
 
+{%  block js %}
+
+ <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+<!--  https://datatables.net/manual/installation  -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.css"/>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#inactive-customers tfoot th').each( function () {
+        var title = $(this).text();
+        if (title != "ID") {
+            $(this).html( '<input type="text" placeholder="Αναζήτηση '+title+'" />' );
+            }
+    } );
+
+    // DataTable
+    var table =  $('#inactive-customers').DataTable({
+ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
+    dom: 'B<"clear">lfrtip',
+    buttons: {
+        name: 'primary',
+        buttons: [  {
+            extend: 'copy',
+            text: 'Copy to clipboard'
+        },
+
+        'pdf', 'print', 'colvis',
+        'colvisRestore' ]
+
+    }
+});
+
+    // Apply the search
+    table.columns().every( function () {
+
+        var that = this;
+
+        $( 'input', this.footer() ).on( 'keyup change clear', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+} );
+
+
+</script>
+{%  endblock js %}
