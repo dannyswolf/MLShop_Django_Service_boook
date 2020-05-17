@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ngbgtwu*my@ws%z7y4mszc0yq)yp+zi-9jrxc3chs7&j9-+^(v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.5']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.200', '10.8.0.1']
 
 # Application definition
 
@@ -178,7 +178,7 @@ LOGIN_URL = 'login:login'
 
 # DIsable  DEBUG_TOOLBAR
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda r: True,  # disables it
+    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
     # '...
 }
 
