@@ -3,12 +3,14 @@
 {% load string_to_date %}
 {% block content %}
 
-<h1 class="btn btn-warning btn-lg">
-    <em class="fas fa-calendar-alt"> Τρέχουσες εργασίες</em>
-</h1>
 
+<div class="col-12 mb-4">
+<a class="btn btn-light btn-lg rounded-pill border" href="{% url 'Calendar:list_calendar' %}">
+    <em class="fas fa-calendar-alt"> </em>
+     Τρέχουσες εργασίες
+</a>
 
-
+</div>
 <table id="data-table" class="table-sm  table-hover table-bordered" >
 
     <thead>

@@ -4,12 +4,13 @@
 
 {% block content %}
 
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'machines:machines' %}">
 
-
-<h2 class="btn btn-secondary btn-lg">
       Προσθήκη μηχανήματος
+</a>
 
-</h2>
+<div class="container-fluid">
+<p></p>
 
  {% if form.errors %}
     <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
@@ -73,7 +74,7 @@ function goBack() {
   window.history.back();
 }
 </script>
-
+</div>
 {% endblock content %}
 
 

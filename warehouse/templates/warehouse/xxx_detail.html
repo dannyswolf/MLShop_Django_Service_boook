@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load string_to_date %}
+{% load static %}
+{% block content %}
+
+
+    <div class="btn-group  " role="group">
+       <a href="{% url 'warehouse:xxx' %}">
+<h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+
+     <img src="{% static 'warehouse/icons/Ω_ΠΑΡΑΓΓΕΛΙΕΣ.png' %}" width="100" height="100" class="img-fluid" alt="ΠΑΡΑΓΓΕΛΙΕΣ">
+     Παραγγελίες
+
+</h1>
+</a>
+
+
+<h2 class="align-text-top">
+<a class="badge  badge-success badge-pill" href="{% url 'warehouse:add_xxx' %}">
+
+    <i class="fas fa-plus-circle"></i>
+    Προσθήκη</a>
+
+</a>
+</h2>
+</div>
+
+<table class="table table-hover  table-bordered table-sm" id="data-table">
+
+    <thead>
+
+    <tr class="table-success">
+        <th>ΚΩΔΙΚΟΣ</th>
+         <th>ΗΜΕΡΩΜΗΝΙΑ</th>
+         <th>ΠΕΡΙΓΡΑΦΗ</th>
+
+        <th>ΑΠΟΤΕΛΕΣΜΑ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΕΙΣ</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for obj in object_list  %}
+    <tr align="center">
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΚΩΔΙΚΟΣ|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}"> <span style="display:none">{{ obj.ΗΜΕΡΩΜΗΝΙΑ |string_to_timestamp }}</span>  {{ obj.ΗΜΕΡΩΜΗΝΙΑ|default_if_none:"--" }}</a></td>
+
+
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30"|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΑΠΟΤΕΛΕΣΜΑ|default_if_none:"--" }} </a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΑΡΑΤΗΡΗΣΕΙΣ|default_if_none:"--" }}</a> </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+
+     <tr class="table-success">
+     <th>ΚΩΔΙΚΟΣ</th>
+         <th>ΗΜΕΡΩΜΗΝΙΑ</th>
+         <th>ΠΕΡΙΓΡΑΦΗ</th>
+
+        <th>ΑΠΟΤΕΛΕΣΜΑ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΕΙΣ</th>
+
+
+
+
+
+
+    </tr>
+
+    </tfoot>
+</table>
+
+
+<p>
+    <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+{% endblock %}
+
+
+

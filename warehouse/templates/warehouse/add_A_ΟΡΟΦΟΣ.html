@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<div class="float">
+<a class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill" href="{% url 'warehouse:A_ΟΡΟΦΟΣ' %}">
+
+    <img src="{% static 'icons/AA_ΠΕΛΑΤΕΣ.png' %}" width="70" height="70" class="img-fluid" alt="fototipika">
+    A_ΟΡΟΦΟΣ</a>
+</div>
+
+ {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ key }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+{% load crispy_forms_tags %}
+<form  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table-secondary table-bordered">
+        <tr class="table-secondary" align="center">
+            <td colspan="3">
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΕΤΑΙΡΙΑ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+
+                            {{  form.ΠΕΡΙΓΡΑΦΗ|as_crispy_field }}
+
+                    </div>
+
+                    <div class="form-group col-md-3 mb-0">
+
+                            {{ form.ΚΩΔΙΚΟΣ|as_crispy_field }}
+
+                    </div>
+
+
+
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.TEMAXIA|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.ΤΙΜΗ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-1 mb-0">
+                        {{ form.ΣΥΝΟΛΟ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΣΕΛΙΔΕΣ|as_crispy_field }}
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr class="table-secondary" align="center">
+
+
+            <td>
+                {{ form.ΠΑΡΑΤΗΡΗΣΗΣ|as_crispy_field }}
+                <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+                <input type="file" name="file" multiple />
+                <button type="submit" class="btn btn-success">Αποθήκευση</button>
+
+
+
+            </td>
+
+        </tr>
+
+
+    </table>
+
+
+</form>
+
+
+
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+{% endblock %}
+

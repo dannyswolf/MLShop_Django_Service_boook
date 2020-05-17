@@ -12,7 +12,7 @@ class SpareParts(models.Model):
     ΠΕΡΙΓΡΑΦΗ = models.CharField(max_length=500, blank=True, null=True)
     ΚΩΔΙΚΟΣ = models.CharField(max_length=100, blank=True, null=True)
     ΤΕΜΑΧΙΑ = models.CharField(max_length=100, blank=True, null=True)
-    ΠΑΡΑΤΗΡΗΣΗΣ = models.CharField(max_length=1000, blank=True, null=True, default=" ")
+    ΠΑΡΑΤΗΡΗΣΗΣ = models.TextField(max_length=1000, blank=True, null=True, default=" ")
 
     ΜΗΧΑΝΗΜΑ = models.CharField(max_length=200, blank=False, null=False, default="",
                                 help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
@@ -48,3 +48,9 @@ class SpareParts(models.Model):
     def get_absolute_url(self):
         # customers ==>> app name στο urls
         return reverse('spareparts:edit_sparepart', kwargs={'spareparts_id': self.pk})
+
+
+    def get_delete_url(self):
+        # customers ==>> app name στο urls
+        return reverse('spareparts:delete_sparepart', kwargs={'spareparts_id': self.pk})
+

@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
-<h2 class="btn btn-warning btn-lg">
-<i class="fas fa-calendar-alt">  Επεξεργασία εργασίας
-</i>
-</h2>
+
+
+<div class="container-fluid">
+
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'Calendar:list_calendar' %}">
+    <em class="fas fa-calendar-alt"> </em>
+     Επεξεργασία εργασίας
+</a>
+
+<p></p>
 
  {% if form.errors %}
     <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
@@ -33,15 +40,16 @@
 
 
                 <div class="form-row">
-                    <div class="form-group col-md-2 mb-0">
+                    <div class="form-group col-md-1 mb-0 ">
                         {{ form.Ημερομηνία|as_crispy_field }}
                     </div>
 
-                    <div class="form-group col-md-4 mb-0">
+                    <div class="form-group col-md-2 mb-0">
                         <a class="btn btn btn-primary" role="button" href="/customers/{{ calendar_form.Copier_ID.Πελάτης.id }}">
                             {{  form.Πελάτης|as_crispy_field }}
                         </a>
                     </div>
+
 
                     <div class="form-group col-md-3 mb-0">
                         <a class="btn  btn-secondary" role="button"  href="/machines/{{ calendar_form.Copier_ID.id }}">
@@ -50,29 +58,34 @@
                     </div>
 
 
-
-                    <div class="form-group col-md-4 mb-0">
-                        {{ form.Σκοπός|as_crispy_field }}
+                    <div class="form-group col-md-2 mb-0 btn ">
+                    {{ form.ΔΤΕ|as_crispy_field }}
                     </div>
 
-                    <div class="form-group col-md-4 mb-0">
-                        {{ form.Ενέργειες|as_crispy_field }}
+                    <div class="form-group col-md-2 mb-0 btn ">
+                    {{ form.Price|as_crispy_field }}
                     </div>
 
-                    <div class="form-group col-md-1 mb-0">
-                        {{ form.Κατάσταση|as_crispy_field }}
-                    </div>
-
-                    <div class="form-group col-md-2 mb-0">
+                    <div class="form-group col-md-1 mb-0 btn btn-danger">
                         {{ form.Ημ_Ολοκλ|as_crispy_field }}
                     </div>
 
+                     <div class="form-group col-md-1 mb-0">
+                        {{ form.Κατάσταση|as_crispy_field }}
+                    </div>
+
                 </div>
+
             </td>
         </tr>
         <tr class="table-secondary" align="center">
 
             <td>
+                <div class="form-group col-md-4 mb-0">
+                        {{ form.Σκοπός|as_crispy_field }}
+
+
+
 
                 {{ form.Τεχνικός|as_crispy_field }}
 
@@ -87,21 +100,41 @@
                 {{ form.ΔΤΕ|as_crispy_field }}
 
                 {{ form.Price|as_crispy_field }}
+                    </div>
 
             </td>
             <td>
+                <div class="form-group col mb-0">
                 {{ form.Σημειώσεις|as_crispy_field }}
                 <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
                 <input type="file" name="file" multiple />
                 <button type="submit" class="btn btn-success">Αποθήκευση</button>
-
+                {% if not spareparts  and not files %}
                 <a role="button" class="btn btn-danger" href="{% url 'Calendar:delete_calendar' calendar_form.id %}">Διαγραφή</a>
+                {% else %}
+
+                <p style="color:red"><b>Για διαγραφή διαγράψτε πρώτα τα ανταλλακτικά και αρχεία</b></p>
+
+
+                {% endif %}
+
+                    <h2 class="align-text-top">
+                        <a class="badge  badge-success badge-pill" href="{% url 'spareparts:add_spareparts' service_id=form.Service_ID.value %}">
+
+                            <i class="fas fa-plus-circle"></i>
+                        Προσθήκη ανταλλακτικών
+                        </a>
+                    </h2>
+
+                </div>
+
 
             </td>
             <td align="left">
                 <h5 class="btn btn-secondary">Αριθμός συντήρηση</h5>
                 <div class="form-group col-md-2 mb-0">
-                    <a role="button" class="btn btn-outline-secondary" href="{% url 'services:edit_service' form.Service_ID.value %}"> {{ form.Service_ID.value }}</a>
+                    <a role="button" class="btn btn-outline-secondary" href="{% url 'services:edit_service' form.Service_ID.value %}">
+                        {{ form.Service_ID.value }}</a>
 
                     </div>
 
@@ -138,9 +171,6 @@
             <div class="form-row">
 
 
-
-
-
                 <div class="form-group col-md-2 mb-0">
                         {{ form.Service_ID|as_crispy_field }}
                 </div>
@@ -169,5 +199,8 @@ function goBack() {
   window.history.back();
 }
 </script>
+  </div>
+
+
 {% endblock %}
 

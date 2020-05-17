@@ -3,10 +3,14 @@
 {% block content %}
 
 
-<h2 class="btn btn-secondary btn-lg">
-     Επεξεργασία μηχανήματος
 
-</h2>
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'machines:machines' %}">
+
+     Επεξεργασία μηχανήματος
+</a>
+
+<div class="container-fluid">
+<p></p>
 
  {% if form.errors %}
     <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
@@ -65,7 +69,7 @@
                 {{ form.Σημειώσεις|as_crispy_field }}
                 <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
                 <button type="submit" value="Αποθήκευση" class="btn btn-success">Αποθήκευση</button>
-                {% if not services  and not customer %}
+                {% if not services %}
 
                     <a class="btn  btn-danger" role="button" href="{% url 'machines:delete_machine' machine_id %}">Διαγραφή</a>
 
@@ -130,7 +134,7 @@ function goBack() {
   window.history.back();
 }
 </script>
-
+</div>
 {% endblock content %}
 
 

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+
+    <div class="btn-group  " role="group">
+<a class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill" href="{% url 'warehouse:A_ΟΡΟΦΟΣ' %}">
+
+    <img src="{% static 'icons/AA_ΠΕΛΑΤΕΣ.png' %}" width="100" height="100" class="img-fluid" alt="fototipika">
+    <strong>A_ΟΡΟΦΟΣ</strong></a>
+
+
+<h2 class="align-text-top">
+<a class="badge  badge-success badge-pill" href="{% url 'warehouse:add_A_ΟΡΟΦΟΣ' %}">
+
+    <i class="fas fa-plus-circle"></i>
+    Προσθήκη</a>
+
+</a>
+</h2>
+</div>
+
+<table class="table table-hover table-bordered table-sm" id="data-table">
+
+    <thead>
+
+    <tr class="table-success">
+
+        <th>ΕΤΑΙΡΙΑ</th>
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>ΤΙΜΗ</th>
+        <th>ΣΥΝΟΛΟ</th>
+        <th>ΣΕΛΙΔΕΣ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΗΣ</th>
+
+
+
+
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for obj in object_list  %}
+    <tr align="center">
+
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΕΤΑΙΡΙΑ|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30"|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΚΩΔΙΚΟΣ|default_if_none:"--" }} </a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.TEMAXIA |default_if_none:"--"}}</a> </td>
+
+        <td><a  href=" {{ obj.get_absolute_url }}" >{{ obj.ΤΙΜΗ |default_if_none:"--"}} </a></td>
+
+        <td><a href="{{ obj.get_absolute_url }}">{{ obj.ΣΥΝΟΛΟ|default_if_none:"--" }} </a></td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΣΕΛΙΔΕΣ |default_if_none:"--"}} </a></td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΑΡΑΤΗΡΗΣΗΣ |default_if_none:"--"}} </a></td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+     <tr class="table-success">
+
+        <th>ΕΤΑΙΡΙΑ</th>
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>TEMAXIA</th>
+        <th>ΤΙΜΗ</th>
+        <th>ΣΥΝΟΛΟ</th>
+        <th>ΣΕΛΙΔΕΣ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΗΣ</th>
+
+
+
+
+    </tr>
+
+    </tfoot>
+</table>
+
+
+<p>
+    <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+</div>
+{% endblock %}
+
+
+

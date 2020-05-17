@@ -1,17 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post">{% csrf_token %}
-    <p>Είστε σίγουροι ότι θέλετε να διαγράψετε "
-    </p>
-    <table>{{ object }}</table>
 
-    <input type="submit" value="Διαγραφή" class="button3">
-    <button onclick="goBack()">Ακυρο</button>
 
-    <script>
+
+      <form method="post">{% csrf_token %}
+
+<div class="card">
+  <div class="card-body">
+
+      <h5 class="btn btn-danger  rounded-pill ">Είστε σίγουροι ότι θέλετε να διαγράψετε το </h5>
+
+
+    <h5 class="card-title">{{ object }}</h5>
+    <strong>Πελάτης: </strong><p class="card-text">{{ object.Πελάτης }}</p>
+        <strong>Μηχάνημα: </strong><p class="card-text">{{ object.Μηχάνημα }}</p>
+      <strong>Σκοπός: </strong><p class="card-text">{{ object.Σκοπός }}</p>
+          <strong>ΔΤΕ: </strong><p class="card-text">{{ object.ΔΤΕ }}</p>
+      <button type="button" class="card-link btn btn-info" onclick="goBack()">Πίσω</button>
+      <input type="submit" value="Διαγραφή" class="card-link btn btn-outline-danger">
+
+
+  </div>
+</div>
+
+
+</form>
+
+
+<script>
 function goBack() {
   window.history.back();
 }
 </script>
-</form>
 {% endblock %}
+

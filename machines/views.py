@@ -20,7 +20,7 @@ class MachinesListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     # model = Machines
     template_name = 'machines/machines_detail.html'
-    queryset = Machines.objects.filter(Κατάσταση=True)
+    queryset = Machines.objects.filter(Κατάσταση=True).select_related('Πελάτης')
 
     fields = '__all__'
     # form_class = CustomerForm
@@ -32,7 +32,7 @@ class InactiveMachinesListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     # model = Machines
     template_name = 'machines/inactive_machines_detail.html'
-    queryset = Machines.objects.filter(Κατάσταση=False)
+    queryset = Machines.objects.filter(Κατάσταση=False).select_related('Πελάτης')
 
     fields = '__all__'
     # form_class = CustomerForm

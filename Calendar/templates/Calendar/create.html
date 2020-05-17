@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1 class="btn btn-warning btn-lg">
-    <i class="fas fa-calendar-alt">  Προσθήκη εργασίας
-    </i>
-</h1>
+
+
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'Calendar:list_calendar' %}">
+    <i class="fas fa-calendar-alt"> </i>
+     Προσθήκη εργασίας
+</a>
+<div class="container-fluid">
+<p></p>
 
  {% if form.errors %}
     <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
@@ -123,6 +127,6 @@ function goBack() {
   window.history.back();
 }
 </script>
-
+</div>
 {% endblock content %}
 

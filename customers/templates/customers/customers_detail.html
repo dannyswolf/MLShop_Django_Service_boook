@@ -4,7 +4,7 @@
 {% block content %}
 
 
-<h2 class="btn btn-primary btn-lg"> <svg class="bi bi-people-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<h2 class="btn btn-light btn-lg rounded-pill"> <svg class="bi bi-people-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 100-6 3 3 0 000 6zm-5.784 6A2.238 2.238 0 015 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 005 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" clip-rule="evenodd"/>
 </svg>
      Πελάτες </h2>
@@ -23,7 +23,7 @@
         <th>Διεύθυνση</th>
         <th>Τηλέφωνο</th>
         <th>Κινητό</th>
-        <!--   <th>E_mail</th> -->
+           <th>Μηχάνηματα</th>
        <!--    <th>Σελίδες_πακέτου</th> -->
         <!--   <th>Κόστος_πακέτου</th> -->
 
@@ -46,6 +46,17 @@
 
 
 
+        <td>
+            {% for machine in obj.machines_set.all %}
+            <li>
+            <a role="button" class="btn btn-secondary" href="../machines/{{ machine.id }}" >{{ machine }}</a>
+
+            </li>
+            <br>
+        {% endfor %}
+
+        </td>
+
 
 
 
@@ -53,80 +64,21 @@
       </tr>
       </tbody>
     <tfoot>
-
+    <tr class="table-success">
         <th> Επωνυμία Επιχείρησης</th>
         <th>Ονοματεπώνυμο</th>
         <th>Διεύθυνση</th>
         <th>Τηλέφωνο</th>
         <th>Κινητό</th>
-        <!--   <th>E_mail</th> -->
+         <th>Μηχάνηματα</th>
        <!--    <th>Σελίδες_πακέτου</th> -->
         <!--   <th>Κόστος_πακέτου</th> -->
-
+    </tr>
     </tfoot>
 
   </table>
 
-{% if page_obj.paginator.num_pages > 1 %}
 
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="pagination-action" href="?page=1">
-                <svg class="bi bi-caret-left-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 00-1.659-.753l-5.48 4.796a1 1 0 000 1.506z"/>
-                </svg>
-            </a>
-        </li>
-
-        {% if page_obj.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                Προηγούμενο
-            </a>
-        </li>
-
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-        {% if num == page_obj.number %}
-        <li class="page-item active">
-
-            <a class="page-link" href="?page={{ num }}">
-                {{ num }}
-            </a>
-            <span class="sr-only">(current)</span>
-            </span>
-        </li>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ num }}">
-                {{ num }}
-            </a>
-        </li>
-        {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-                Επόμενη
-            </a>
-        </li>
-        <li class="page-item">
-
-            <a class="pagination-action" href="?page={{ page_obj.paginator.num_pages }}">
-                <svg class="bi bi-caret-right-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
-                </svg>
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
-
-{% endif %}
 
 <p>
     <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>

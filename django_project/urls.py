@@ -28,6 +28,7 @@ urlpatterns = [
     path('copiers_log/', include('Copiers_Log.urls')),
     path('services/', include('services.urls')),
     path('spareparts/', include('spareparts.urls')),
+    path('warehouse/', include('warehouse.urls')),
     path('admin/', admin.site.urls, name="admin"),
     path('__debug__/', include(debug_toolbar.urls)),
 

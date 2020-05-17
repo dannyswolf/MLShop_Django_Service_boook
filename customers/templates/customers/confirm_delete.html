@@ -1,15 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
 <form method="post">{% csrf_token %}
-    <p>Είστε σίγουροι ότι θέλετε να διαγράψετε "
-    </p>
-    <table>{{ object }}</table>
 
-    <input type="submit" value="Διαγραφή" class="button3">
-    <button class="button">
-        <a href="/customers/{{ object.id }}">
-            Ακυρο
-        </a>
-    </button>
+<div class="card">
+  <div class="card-body">
+
+      <h5 class="btn btn-danger  rounded-pill ">Είστε σίγουροι ότι θέλετε να διαγράψετε το </h5>
+
+
+    <h5 class="card-title">{{ object }}</h5>
+    <strong>Επωνυμία_Επιχείρησης: </strong><p class="card-text">{{ object.Επωνυμία_Επιχείρησης }}</p>
+        <strong>Όνομα Υπευθύνου : </strong><p class="card-text">{{ object.Ονοματεπώνυμο }}</p>
+      <strong>Τηλέφωνο: </strong><p class="card-text">{{ object.Τηλέφωνο }}</p>
+        <strong>Κινητό: </strong><p class="card-text">{{ object.Κινητό }}</p>
+
+      <button type="button" class="card-link btn btn-info" onclick="goBack()">Πίσω</button>
+      <input type="submit" value="Διαγραφή" class="card-link btn btn-outline-danger">
+
+
+  </div>
+</div>
+
 </form>
+
+
+
+
+
+
+
+
 {% endblock %}

@@ -194,6 +194,7 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         data = form.cleaned_data
+
         # Να ενημερώνει το service
         # if data['Κατάσταση'] is False and (data['Service_ID'] is None or data['Service_ID'] == ""):
 
@@ -210,8 +211,9 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
 
         # Αρχεία
         file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
-        if not os.path.exists(file_dir):
+        if self.request.FILES.getlist("file") and not os.path.exists(file_dir):
             os.makedirs(file_dir)
+
         for x in self.request.FILES.getlist("file"):
 
             def process(f):
@@ -256,11 +258,25 @@ class CalendarDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('Calendar:list_calendar')
 
     def get_object(self, queryset=None):
-        id_ = self.kwargs.get("calendar_id")  # apo to urls.py -->> path('<int:service_id>'....
-        return get_object_or_404(Calendar, id=id_)
+        self.id_ = self.kwargs.get("calendar_id")  # apo to urls.py -->> path('<int:service_id>'....
+        # self.service_to_delete =
+        # print("self.service_to_delete", self.service_to_delete)
+        return get_object_or_404(Calendar, id=self.id_)
 
-    def form_valid(self):
-        pass
+    def delete(self, request, *args, **kwargs):
+        """
+        Τρέχει όταν επιβεβαιώνουμε την διαγραφή
+        self ==>  <Calendar.views.CalendarDelete object at 0x7fbc61c77908>
+        request ==>       <WSGIRequest: POST '/Calendar/170/delete/'>
+        kwargs ==>        {'calendar_id': 170}
+        """
+        self.object = self.get_object()
+        # Διαγραφή Service
+        service_to_delete = Services.objects.get(id=self.object.Service_ID)
+        service_to_delete.delete()
+        # Διαγραφή Calendar
+        self.object.delete()
+        return HttpResponseRedirect(self.success_url)
 
 
 # Αναζήτηση με Κατάσταση=False

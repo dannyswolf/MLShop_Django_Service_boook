@@ -6,10 +6,18 @@
 
 {% autoescape off %}
 
+
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'Calendar:finished_jobs' %}">
+    <em class="fas fa-calendar-alt">  </em>
+     Ολοκληρωμένες εργασίες
+</a>
+
+<p></p>
+
 <div class="clearfix">
 
-	<a class="btn btn-info left" href="{% url 'Calendar:finished_calendar' %}?{{ prev_month }}"> Προηγούμενος μήνας </a>
-	<a class="btn btn-info right" href="{% url 'Calendar:finished_calendar' %}?{{ next_month }}"> Επόμενος μήνας </a>
+	<a class="btn btn-primary rounded-pill left" href="{% url 'Calendar:finished_calendar' %}?{{ prev_month }}"> <em class="fas fa-arrow-circle-left fa-1x"></em>  Προηγούμενος μήνας </a>
+	<a class="btn btn-primary rounded-pill right" href="{% url 'Calendar:finished_calendar' %}?{{ next_month }}">Επόμενος μήνας  <em class="fas fa-arrow-circle-right fa-1x"></em></a>
 </div>
 
 

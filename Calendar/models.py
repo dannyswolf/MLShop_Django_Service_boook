@@ -37,7 +37,7 @@ class Calendar(models.Model):
     Customer_ID = models.SmallIntegerField(blank=False, null=False,
                                            help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
 
-    Price = models.TextField(max_length=100, blank=True, null=True)
+    Price = models.CharField(max_length=100, blank=True, null=True,)
 
     Κατάσταση = models.BooleanField(default=True,
                                     help_text='<font color="red"><b>Ενεργό αν δεν έχει τελειώσει η εργασία</b></font>')
@@ -48,6 +48,7 @@ class Calendar(models.Model):
         ordering = ['Ημερομηνία']
         verbose_name_plural = 'Ημερολόγιο'
         verbose_name = 'Εργασίες'
+
 
     def get_absolute_url(self):
         # customers ==>> app name στο urls

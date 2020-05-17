@@ -20,7 +20,7 @@
 
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <svg class="bi bi-calendar-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg class="bi bi-calendar-fill " width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 2a2 2 0 012-2h12a2 2 0 012 2H0z"/>
                 <path fill-rule="evenodd" d="M0 3h16v11a2 2 0 01-2 2H2a2 2 0 01-2-2V3zm6.5 4a1 1 0 100-2 1 1 0 000 2zm4-1a1 1 0 11-2 0 1 1 0 012 0zm2 1a1 1 0 100-2 1 1 0 000 2zm-8 2a1 1 0 11-2 0 1 1 0 012 0zm2 1a1 1 0 100-2 1 1 0 000 2zm4-1a1 1 0 11-2 0 1 1 0 012 0zm2 1a1 1 0 100-2 1 1 0 000 2zm-8 2a1 1 0 11-2 0 1 1 0 012 0zm2 1a1 1 0 100-2 1 1 0 000 2zm4-1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"/>
             </svg>
@@ -74,7 +74,7 @@
         <a class="nav-link" href="{% url 'services:services' %}">
             <h4>
                 <svg class="bi bi-tools" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" d="M0 1l1-1 3.081 2.2a1 1 0 01.419.815v.07a1 1 0 00.293.708L10.5 9.5l.914-.305a1 1 0 011.023.242l3.356 3.356a1 1 0 010 1.414l-1.586 1.586a1 1 0 01-1.414 0l-3.356-3.356a1 1 0 01-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 00-.707-.293h-.071a1 1 0 01-.814-.419L0 1zm11.354 9.646a.5.5 0 00-.708.708l3 3a.5.5 0 00.708-.708l-3-3z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M0 1l1-1 3.081 2.2a1 1 0 01.419.815v.07a1 1 0 00.293.608L10.5 9.5l.914-.305a1 1 0 011.023.242l3.356 3.356a1 1 0 010 1.414l-1.586 1.586a1 1 0 01-1.414 0l-3.356-3.356a1 1 0 01-.242-1.023L9.5 10.5 3.793 4.793a1 1 0 00-.607-.293h-.071a1 1 0 01-.814-.419L0 1zm11.354 9.646a.5.5 0 00-.608.608l3 3a.5.5 0 00.608-.608l-3-3z" clip-rule="evenodd"/>
                     <path fill-rule="evenodd" d="M15.898 2.223a3.003 3.003 0 01-3.679 3.674L5.878 12.15a3 3 0 11-2.027-2.027l6.252-6.341A3 3 0 0113.778.1l-2.142 2.142L12 4l1.757.364 2.141-2.141zm-13.37 9.019L3.001 11l.471.242.529.026.287.445.445.287.026.529L5 13l-.242.471-.026.529-.445.287-.287.445-.529.026L3 15l-.471-.242L2 14.732l-.287-.445L1.268 14l-.026-.529L1 13l.242-.471.026-.529.445-.287.287-.445.529-.026z" clip-rule="evenodd"/>
                 </svg>
                 <h5>Συντήρηση</h5>
@@ -87,12 +87,118 @@
 
         <a class="nav-link" href="{% url 'spareparts:spareparts' %}">
             <svg class="bi bi-gear-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 01-2.105.872l-.31-.17c-1.283-.698-2.686.605-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 01.872 2.105l-.17.31c-.698 1.283.605 2.686 1.987 1.987l.311-.169a1.464 1.464 0 012.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 012.105-.872l.31.17c1.283.698 2.686-.605 1.987-1.987l-.169-.311a1.464 1.464 0 01.872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 01-.872-2.105l.17-.31c.698-1.283-.605-2.686-1.987-1.987l-.311.169a1.464 1.464 0 01-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 100-5.86 2.929 2.929 0 000 5.858z" clip-rule="evenodd"/>
             </svg>
             <h5>Ανταλλακτικά
            </h5>
         </a>
 
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+             <i class="fas fa-warehouse fa-2x"></i>
+
+            <h5>Αποθήκη</h5>
+        </a>
+
+        <div class="dropdown-menu">
+<ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:melanakia' %}">
+                <img src={% static "warehouse/icons/ΜΕΛΑΝΑΚΙΑ.png" %} width="60" height="60" class="img-fluid" alt="melanakia">
+            Μελανάκια
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:melanotainies' %}">
+                <img src={% static "warehouse/icons/ΜΕΛΑΝΟΤΑΙΝΙΕΣ.png" %} width="60" height="60" class="img-fluid" alt="melanotainies">
+            Μελανοταινίες
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:toner' %}">
+                <img src={% static "warehouse/icons/ΤΟΝΕΡ.png" %} width="60" height="60" class="img-fluid" alt="toner">
+            Toner
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:fototipika' %}">
+                <img src={% static "warehouse/icons/ΦΩΤΟΤΥΠΙΚΑ.png" %} width="60" height="60" class="img-fluid" alt="fototipika">
+            Φωτοτυπικά
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:xxx' %}">
+                <img src={% static "warehouse/icons/Ω_ΠΑΡΑΓΓΕΛΙΕΣ.png" %} width="60" height="60" class="img-fluid" alt="xxx">
+                Παραγγελίες
+            </a>
+    </li>
+</ul>
+<div class="dropdown-divider"></div>
+<ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
+   <li class="nav-item">
+            <a class="nav-link" href="{% url 'warehouse:A_ΟΡΟΦΟΣ' %}" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src={% static "warehouse/icons/AA_ΠΕΛΑΤΕΣ.png" %} width="50" height="50" alt="A_ΟΡΟΦΟΣ" class="img-fluid">
+                A_ΟΡΟΦΟΣ
+        </a>
+   </li>
+<li class="nav-item">
+        <a class="nav-link"  href="{% url 'warehouse:brother' %}" role="button" aria-haspopup="true" aria-expanded="false">
+
+                <img src={% static "warehouse/icons/BROTHER.png" %} width="50" height="70" class="img-fluid " alt="Brother">
+Brother
+        </a>
+</li>
+    <li class="nav-item">
+            <a href="{% url 'warehouse:canon' %}" class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false">
+                <img src={% static "warehouse/icons/CANON.png" %} width="50" height="50" class="img-fluid " alt="Canon">
+            Canon
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:konica' %}">
+                <img src={% static "warehouse/icons/KONICA.png" %} width="50" height="50" class="img-fluid " alt="Konica">
+        Konica
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:kyocera' %}">
+                <img src={% static "warehouse/icons/KYOCERA.png" %} width="50" height="50" class="img-fluid "alt="kyocera">
+            kyocera
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:lexmark' %}">
+                <img src={% static "warehouse/icons/LEXMARK.png" %} width="50" height="70" class="img-fluid " alt="Lexmark">
+            Lexmark
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:oki' %}">
+                <img src={% static "warehouse/icons/OKI.png" %} width="50" height="50" class="img-fluid" alt="Oki">
+            Oki
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:ricoh' %}">
+                <img src={% static "warehouse/icons/RICOH.png" %} width="50" height="50" class="img-fluid" alt="Ricoh">
+            Ricoh
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:samsung' %}">
+                <img src={% static "warehouse/icons/SAMSUNG.png" %} width="50" height="50" class="img-fluid" alt="samsung">
+            Samsung
+            </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link"   role="button" aria-haspopup="true" aria-expanded="false" href="{% url 'warehouse:sharp' %}">
+                <img src={% static "warehouse/icons/SHARP.png" %} width="50" height="50" class="img-fluid" alt="Sharp">
+            Sharp
+            </a>
+    </li>
+</ul>
+
+  </div>
     </li>
 
     <li class="nav-item">

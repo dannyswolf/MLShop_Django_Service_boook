@@ -32,7 +32,7 @@ class Services(models.Model):
         # sorted_data_from_calendar = sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
         # sorted(unsorted_results, key= lambda t: t.thing_date())
         #sorted_data_from_calendar = sorted(data_from_calendar, key=lambda x: datetime.strptime(x[1], "%d/%m/%Y"))
-        # ordering = ['-ΔΤΕ']
+        ordering = ['-pk']
         db_table = 'Service'
         verbose_name_plural = 'Συντήρηση'
         verbose_name = 'Συντήρηση'

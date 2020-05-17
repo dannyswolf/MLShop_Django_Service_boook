@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+{% if 'brother' in request.path %}
+<div class="btn-group  " role="group">
+<a class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill ">
+    <img src="../../static/icons/BROTHER.png" width="120" height="120" class="img-fluid" alt="fototipika">
+
+</a>
+
+
+<h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_brother' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+
+{% elif 'canon' in request.path %}
+<div class="btn-group  " role="group">
+     <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill ">
+    <img src="../../static/icons/CANON.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+    <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_canon' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+
+
+{% elif 'konica' in request.path %}
+<div class="btn-group  " role="group">
+        <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/KONICA.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+
+        <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_konica' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+
+{% elif 'kyocera' in request.path %}
+<div class="btn-group  " role="group">
+     <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/KYOCERA.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+
+            <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_kyocera' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+
+{% elif 'lexmark' in request.path %}
+<div class="btn-group  " role="group">
+        <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/LEXMARK.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+            <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_lexmark' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+
+{% elif 'oki' in request.path %}
+<div class="btn-group  " role="group">
+        <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/OKI.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+
+            <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_oki' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+
+{% elif 'ricoh' in request.path %}
+<div class="btn-group  " role="group">
+        <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/RICOH.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+
+            <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_ricoh' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+{% elif 'samsung' in request.path %}
+<div class="btn-group  " role="group">
+        <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/SAMSUNG.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+
+            <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_samsung' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+{% elif 'sharp' in request.path %}
+<div class="btn-group  " role="group">
+        <h1 class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill">
+    <img src="../../static/icons/SHARP.png" width="100" height="100" class="img-fluid" alt="fototipika">
+
+</h1>
+            <h2 class="align-text-top">
+<a role="button" class="badge  badge-success badge-pill" href="{% url 'warehouse:add_sharp' %}">
+
+    <i class="fas fa-plus-circle"></i>
+<strong >Προσθήκη</strong>
+</a>
+</h2>
+</div>
+
+{% endif %}
+
+
+<table class="table table-hover table-bordered table-sm" id="data-table">
+
+    <thead>
+
+     <tr class="table-success">
+        <th>PARTS_NR</th>
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΗΣ</th>
+
+
+    </tr>
+
+    </thead>
+    <tbody>
+
+    {% for obj in object_list  %}
+    <tr >
+        <td><a href=" {{ obj.get_absolute_url }}" >{{ obj.PARTS_NR|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}" >{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30"|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}" >{{ obj.ΚΩΔΙΚΟΣ|default_if_none:"--" }} </a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΤΕΜΑΧΙΑ|default_if_none:"--" }}</a> </td>
+
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΑΡΑΤΗΡΗΣΗΣ|default_if_none:"--" }} </a></td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+     <tr class="table-success">
+        <th>PARTS_NR</th>
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΗΣ</th>
+
+
+
+
+
+    </tr>
+
+    </tfoot>
+</table>
+
+
+<p>
+    <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+{% endblock %}
+
+
+

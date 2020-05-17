@@ -33,7 +33,7 @@ class CreateCalendarForm(forms.ModelForm):
     Επ_Service = forms.CharField(max_length=11, required=False)
 
     Service_ID = forms.IntegerField(required=False, help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 15}), required=False, max_length=5000)
+    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 10}), required=False, max_length=5000)
     Ημ_Ολοκλ = forms.CharField(help_text='Ημερομηνία ολοκλήρωσης εργασίας', required=False,
                                widget=forms.TextInput(attrs={'type': 'date',
                                                              "value": date.today().strftime("%Y-%m-%d")}))
@@ -56,7 +56,7 @@ class EditCalendarForm(forms.ModelForm):
         fields = ('Ημερομηνία', 'Πελάτης', "Τηλέφωνο",
                   "Copier_ID", "Σκοπός", "Ενέργειες", "Τεχνικός", "Επείγων",
                   "Μετρητής", "Επ_Service", "ΔΤΕ", "Price", "Service_ID",
-                  "Σημειώσεις", "Ημ_Ολοκλ", "Κατάσταση", 'file')
+                  "Σημειώσεις", "Ημ_Ολοκλ", "Κατάσταση",)
 
     Σκοπός_data = sorted(set(ServiceData.objects.values_list('Σκοπός', flat=True)))
     Ενέργειες_data = sorted(set(ServiceData.objects.values_list('Ενέργειες', flat=True)))
@@ -81,14 +81,14 @@ class EditCalendarForm(forms.ModelForm):
     Επ_Service = forms.CharField(max_length=11, required=False)
 
     Service_ID = forms.IntegerField(required=False, help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 18}), required=False, max_length=5000)
+    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 12}), required=False, max_length=5000)
     Ημ_Ολοκλ = forms.CharField(help_text='Ημερομηνία ολοκλήρωσης εργασίας', required=False,
                                widget=forms.TextInput(attrs={'type': 'date'}))
     Κατάσταση = forms.BooleanField(required=False, initial=True,
                                    help_text="<font color='red'><strong>Ενεργό αν δεν έχει τελειώσει η εργασία</strong></font>")
 
-    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
-                           max_length=100, allow_empty_file=True, required=False)
+    # file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
+    #                        max_length=100, allow_empty_file=True, required=False)
 
     def clean_Ημερομηνία(self):
         Ημερομηνία = self.cleaned_data.get('Ημερομηνία')

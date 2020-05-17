@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+{% if 'fototipika' in request.path %}
+
+<a class="btn btn-light btn-lg" href="{% url 'warehouse:fototipika' %}">
+
+    <img src="{% static 'warehouse/icons/ΦΩΤΟΤΥΠΙΚΑ.png' %}" width="100" height="100" class="img-fluid" alt="fototipika">
+    Φωτοτυπικά
+</a>
+
+
+
+{% elif 'toner' in request.path %}
+     <a class="btn btn-light btn-lg" href="{% url 'warehouse:toner' %}">
+
+    <img src="{% static 'warehouse/icons/ΤΟΝΕΡ.png' %}" width="100" height="100" class="img-fluid" alt="fototipika">
+             Toner
+</a>
+{% elif 'melanakia' in request.path %}
+
+        <a class="btn btn-light btn-lg" href="{% url 'warehouse:melanakia' %}">
+
+    <img src="{% static 'warehouse/icons/ΜΕΛΑΝΑΚΙΑ.png' %}" width="100" height="100" class="img-fluid" alt="fototipika">
+                Μελανάκια
+</a>
+
+{% endif %}
+
+ {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ key }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+{% load crispy_forms_tags %}
+<form  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table-secondary table-bordered">
+
+        <tr class="table-secondary" align="center">
+            <td colspan="3">
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΕΤΑΙΡΕΙΑ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+
+                            {{  form.ΠΟΙΟΤΗΤΑ|as_crispy_field }}
+
+                    </div>
+
+                    <div class="form-group col-md-3 mb-0">
+
+                            {{ form.ΑΝΑΛΩΣΙΜΟ|as_crispy_field }}
+
+                    </div>
+
+
+
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.ΠΕΡΙΓΡΑΦΗ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.ΚΩΔΙΚΟΣ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-1 mb-0">
+                        {{ form.ΤΕΜΑΧΙΑ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΤΙΜΗ|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΣΥΝΟΛΟ|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΣΕΛΙΔΕΣ|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΠΕΛΑΤΕΣ|as_crispy_field }}
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr class="table-secondary" align="center">
+
+
+            <td>
+                {{ form.ΠΑΡΑΤΗΡΗΣΗΣ|as_crispy_field }}
+                <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+                <input type="file" name="file" multiple />
+                <button type="submit" class="btn btn-success">Αποθήκευση</button>
+
+                <a class="btn  btn btn-danger" role="button" href="{{ object.get_delete_url }}">Διαγραφή</a>
+
+
+            </td>
+            <td>
+            <h3>Αρχεία</h3>
+
+                    <ol>
+                        {% for i in files %}
+                            <li>
+                                <a type="button" class="btn btn-warning" href="{{ form.instance.get_direct_path }}/{{ i }}">
+                                <img src="{{ form.instance.get_direct_path }}/{{ i }}"  width="200" height="200" class="img-fluid" alt="Ricoh">
+
+                                </a>
+
+                            </li>
+                        {% endfor %}
+
+
+                    </ol>
+            </td>
+        </tr>
+
+
+    </table>
+
+
+</form>
+
+
+
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+{% endblock %}
+

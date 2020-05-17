@@ -5,11 +5,12 @@
 
 
 
-<h2 class="btn btn-primary btn-lg">
-    <i class="fas fa-user-edit"> Επεξεργασία πελάτη
-    </i>
-</h2>
+<a class="btn btn-light btn-lg rounded-pill" href="{% url 'customers:list_customers' %}">
+    <i class="fas fa-user-edit"> </i>  Επεξεργασία πελάτη
 
+</a>
+<div class="container-fluid">
+<p></p>
  {% if form.errors %}
     <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
         <div id="form_errors">
@@ -141,7 +142,7 @@ function goBack() {
   window.history.back();
 }
 </script>
-
+</div>
 {% endblock content %}
 
 

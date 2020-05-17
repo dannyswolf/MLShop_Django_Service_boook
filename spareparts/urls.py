@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import SparePartsListView, search_spareparts_view, EditSparePart
+from .views import SparePartsListView, search_spareparts_view, EditSparePart, DeleteSparePart, SparePartsCreateView
 
 app_name = 'spareparts'
 urlpatterns = [
@@ -25,6 +25,8 @@ urlpatterns = [
     #
     path('<int:spareparts_id>', EditSparePart.as_view(), name='edit_sparepart'),
     path('search_spareparts', search_spareparts_view,  name='search_spareparts'),
+    path('add_spareparts/<int:service_id>', SparePartsCreateView.as_view(), name='add_spareparts'),
+    path('<int:spareparts_id>/delete', DeleteSparePart.as_view(),  name='delete_sparepart'),
     # path('search_service_dte', search_services_dte,  name='search_services_dte'),
     # path('<int:service_id>/delete/', ServiceDelete.as_view(), name='delete_service'),
 ]

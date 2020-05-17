@@ -1,28 +1,32 @@
+
 {% extends "base.html" %}
 
 
 {% block content %}
 
 
-<h2 class="btn btn-primary btn-lg"><em class="fas fa-user-times"></em>
-     Απενεργοποιημένοι πελάτες </h2>
+
+<a class="btn btn-light btn-lg rounded-pill" href="{% url 'customers:list_customers' %}">
+      <em class="fas fa-user-times"></em>  Απενεργοποιημένοι πελάτες
+
+</a>
+<p></p>
 
 
-<table class="table table-hover table-bordered" id="inactive-customers">
+
+<table class="table table-hover table-bordered" id="data-table">
 
     <thead>
 
     <tr class="table-success">
-        <th>ID</th>
         <th><label about=""> Επωνυμία Επιχείρησης </label></th>
         <th>Ονοματεπώνυμο</th>
         <th>Διεύθυνση</th>
         <th>Τηλέφωνο</th>
         <th>Κινητό</th>
-        <!--   <th>E_mail</th> -->
+           <th>Μηχάνηματα</th>
        <!--    <th>Σελίδες_πακέτου</th> -->
         <!--   <th>Κόστος_πακέτου</th> -->
-
 
 
 
@@ -35,100 +39,47 @@
 
     {% for obj in object_list %}
      <tr>
-         <td><a href=" {{ obj.id }}" name="id">{{ obj.id }}</a> </td>
-         <td><a href=" {{ obj.id }}" name="Επωνυμία_Επιχείρησης">{{ obj.Επωνυμία_Επιχείρησης}} </a></td>
-         <td><a href=" {{ obj.id }}" name="Ονοματεπώνυμο">{% if obj.Ονοματεπώνυμο %} {{ obj.Ονοματεπώνυμο}}{% else %}{% endif %}</a> </td>
-         <td><a href=" {{ obj.id }}" name="Διεύθυνση">{% if obj.Διεύθυνση %}{{ obj.Διεύθυνση}} {% else %} {% endif %}</a> </td>
-         <td><a href=" {{ obj.id }}" name="Τηλέφωνο">{{ obj.Τηλέφωνο}} </a></td>
+         <td><a href=" {{ obj.id }}" >{{ obj.Επωνυμία_Επιχείρησης}} </a></td>
+         <td><a href=" {{ obj.id }}" >{% if obj.Ονοματεπώνυμο %} {{ obj.Ονοματεπώνυμο}}{% else %}{% endif %}</a> </td>
+         <td><a href=" {{ obj.id }}" >{% if obj.Διεύθυνση %}{{ obj.Διεύθυνση}} {% else %} {% endif %}</a> </td>
+         <td><a href=" {{ obj.id }}" >{{ obj.Τηλέφωνο}} </a></td>
          <td> {{obj.Κινητό}} </td>
 
 
 
+        <td>
+            {% for machine in obj.machines_set.all %}
+            <li>
+            <a role="button" class="btn btn-secondary" href="../machines/{{ machine.id }}" >{{ machine }}</a>
+
+            </li>
+            <br>
+        {% endfor %}
+
+        </td>
 
 
-    {% endfor %}
 
+
+         {% endfor %}
       </tr>
       </tbody>
-
     <tfoot>
-      <tr class="table-success">
-        <th>ID</th>
-        <th><label about=""> Επωνυμία Επιχείρησης </label></th>
+<tr class="table-success">
+        <th> Επωνυμία Επιχείρησης</th>
         <th>Ονοματεπώνυμο</th>
         <th>Διεύθυνση</th>
         <th>Τηλέφωνο</th>
         <th>Κινητό</th>
-        <!--   <th>E_mail</th> -->
+         <th>Μηχάνηματα</th>
        <!--    <th>Σελίδες_πακέτου</th> -->
         <!--   <th>Κόστος_πακέτου</th> -->
-
-
-      </tr>
+</tr>
     </tfoot>
 
   </table>
 
-{% if page_obj.paginator.num_pages > 1 %}
 
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="pagination-action" href="?page=1">
-                <svg class="bi bi-caret-left-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3.86 8.753l5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 00-1.659-.753l-5.48 4.796a1 1 0 000 1.506z"/>
-                </svg>
-            </a>
-        </li>
-
-        {% if page_obj.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                Προηγούμενο
-            </a>
-        </li>
-
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-        {% if num == page_obj.number %}
-        <li class="page-item active">
-
-            <a class="page-link" href="?page={{ num }}">
-                {{ num }}
-            </a>
-            <span class="sr-only">(current)</span>
-            </span>
-        </li>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ num }}">
-                {{ num }}
-            </a>
-        </li>
-        {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-                Επόμενη
-            </a>
-        </li>
-        <li class="page-item">
-
-            <a class="pagination-action" href="?page={{ page_obj.paginator.num_pages }}">
-                <svg class="bi bi-caret-right-fill" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
-                </svg>
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
-
-{% endif %}
 
 <p>
     <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
@@ -143,68 +94,3 @@ function goBack() {
   {% endblock %}
 
 
-{%  block js %}
-
- <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-
-<!--  https://datatables.net/manual/installation  -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.css"/>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.20/af-2.3.4/b-1.6.1/b-colvis-1.6.1/b-html5-1.6.1/b-print-1.6.1/cr-1.5.2/kt-2.5.1/r-2.2.3/rg-1.1.1/rr-1.2.6/sc-2.0.1/sl-1.3.1/datatables.min.js"></script>
-
-<script>
-
-$(document).ready(function() {
-    // Setup - add a text input to each footer cell
-    $('#inactive-customers tfoot th').each( function () {
-        var title = $(this).text();
-        if (title != "ID") {
-            $(this).html( '<input type="text" placeholder="Αναζήτηση '+title+'" />' );
-            }
-    } );
-
-    // DataTable
-    var table =  $('#inactive-customers').DataTable({
- "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-        "scrollY":        "400px",
-        "scrollCollapse": true,
-        "paging":         false,
-    dom: 'B<"clear">lfrtip',
-    buttons: {
-        name: 'primary',
-        buttons: [  {
-            extend: 'copy',
-            text: 'Copy to clipboard'
-        },
-
-        'pdf', 'print', 'colvis',
-        'colvisRestore' ]
-
-    }
-});
-
-    // Apply the search
-    table.columns().every( function () {
-
-        var that = this;
-
-        $( 'input', this.footer() ).on( 'keyup change clear', function () {
-            if ( that.search() !== this.value ) {
-                that
-                    .search( this.value )
-                    .draw();
-            }
-        } );
-    } );
-} );
-
-
-</script>
-{%  endblock js %}

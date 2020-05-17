@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="btn-group  " role="group">
+<a class="btn btn-light btn-sm mb-1 rounded-pill  left badge-pill" href="{% url 'warehouse:melanotainies' %}">
+        <img src="{% static 'icons/ΜΕΛΑΝΟΤΑΙΝΙΕΣ.png' %}" width="100" height="100" class="img-fluid" alt="ΜΕΛΑΝΟΤΑΙΝΙΕΣ">
+     Μελανοταινίες
+</a>
+
+
+
+<h2 class="align-text-top">
+<a class="badge  badge-success badge-pill" href="{% url 'warehouse:add_melanotainies' %}">
+
+    <i class="fas fa-plus-circle"></i>
+    Προσθήκη</a>
+
+</a>
+</h2>
+</div>
+
+<table class="table table-hover  table-bordered table-sm" id="data-table">
+
+    <thead>
+
+    <tr class="table-success">
+        <th>ΕΤΑΙΡΕΙΑ</th>
+         <th>ΠΟΙΟΤΗΤΑ</th>
+         <th>ΑΝΑΛΩΣΙΜΟ</th>
+
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>ΤΙΜΗ</th>
+
+        <th>ΚΩΔΙΚΟΙ</th>
+        <th>ΠΕΛΑΤΕΣ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΗΣ</th>
+
+
+
+
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for obj in object_list  %}
+    <tr align="center">
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΕΤΑΙΡΙΑ|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΟΙΟΤΗΤΑ|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΑΝΑΛΩΣΙΜΟ|default_if_none:"--" }}</a> </td>
+
+
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30"|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΚΩΔΙΚΟΣ|default_if_none:"--" }} </a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΤΕΜΑΧΙΑ|default_if_none:"--" }}</a> </td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΤΙΜΗ|default_if_none:"--" }} </a></td>
+
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΚΩΔΙΚΟΙ|default_if_none:"--" }} </a></td>
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΕΛΑΤΕΣ|default_if_none:"--" }} </a></td>
+
+        <td><a href=" {{ obj.get_absolute_url }}">{{ obj.ΠΑΡΑΤΗΡΗΣΗΣ|default_if_none:"--" }} </a></td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+
+     <tr class="table-success">
+      <th>ΕΤΑΙΡΕΙΑ</th>
+         <th>ΠΟΙΟΤΗΤΑ</th>
+         <th>ΑΝΑΛΩΣΙΜΟ</th>
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>ΤΙΜΗ</th>
+        <th>ΚΩΔΙΚΟΙ</th>
+        <th>ΠΕΛΑΤΕΣ</th>
+        <th>ΠΑΡΑΤΗΡΗΣΗΣ</th>
+
+
+    </tr>
+
+    </tfoot>
+</table>
+
+
+<p>
+    <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+
+</p>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+{% endblock %}
+
+
+

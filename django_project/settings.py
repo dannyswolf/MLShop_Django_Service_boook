@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ngbgtwu*my@ws%z7y4mszc0yq)yp+zi-9jrxc3chs7&j9-+^(v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.5']
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'receiver_emails',
     'sender_emails',
     'Copiers_Log',
+    'warehouse',
 ]
 
 MIDDLEWARE = [
@@ -100,7 +101,7 @@ DATABASES = {
 
     }
 }
-
+DATABASE_ROUTERS = ['warehouse.router.WarehouseRouter']
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -134,11 +135,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "Media/Service_images/")
 MEDIA_URL = "/Media/Service_images/"
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+SPARE_PARTS_ROOT = os.path.join(BASE_DIR, "Media/SpareParts_images/")
+SPARE_PARTS_URL = "/Media/SpareParts_images/"
+# ERRORS:  ?: (staticfiles.E002) The STATICFILES_DIRS setting should not contain the STATIC_ROOT setting.
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+#     '/var/www/html/static/',
+# ]
 
 
 INTERNAL_IPS = [
@@ -169,7 +178,7 @@ LOGIN_URL = 'login:login'
 
 # DIsable  DEBUG_TOOLBAR
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
+    'SHOW_TOOLBAR_CALLBACK': lambda r: True,  # disables it
     # '...
 }
 

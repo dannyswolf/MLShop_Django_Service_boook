@@ -4,11 +4,13 @@
 {% block content %}
 
 
-<h2 class="btn btn-warning btn-lg">
-    <em class="fas fa-calendar-alt"> Ολοκληρωμένες εργασίες </em>
-</h2>
 
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'Calendar:finished_jobs' %}">
+    <em class="fas fa-calendar-alt">  </em>
+     Ολοκληρωμένες εργασίες
+</a>
 
+<p></p>
 
 <table aria-describedby="data-table" class="table table-hover table-bordered" id="data-table">
 

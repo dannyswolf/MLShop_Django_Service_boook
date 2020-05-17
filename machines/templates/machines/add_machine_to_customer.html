@@ -4,11 +4,14 @@
 {% block content %}
 
 
-<h2 class="btn btn-secondary btn-lg">
 
-      Προσθήκη μηχανήματος
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'machines:machines' %}">
 
-</h2>
+ Προσθήκη μηχανήματος
+</a>
+
+<div class="container-fluid">
+<p></p>
 
 
  {% if form.errors %}
@@ -78,7 +81,7 @@ function goBack() {
   window.history.back();
 }
 </script>
-
+</div>
 {% endblock content %}
 
 

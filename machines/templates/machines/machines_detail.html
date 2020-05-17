@@ -3,17 +3,21 @@
 {% load string_to_date %}
 {% block content %}
 
-    <h2 class="btn btn-secondary btn-lg">  Μηχανήματα </h2>
 
 
 
+<a class="btn btn-light btn-lg rounded-pill " href="{% url 'machines:machines' %}">
+
+     Μηχανήματα
+</a>
 
     <table class="table table-hover table-bordered justify-content-center" id="data-table">
         <thead>
         <tr class="table-success">
-            <th>ID</th>
+
             <th><label about=""> Μηχάνημα </label></th>
             <th>Serial</th>
+            <th>Πελάτης</th>
             <th>Εναρξη</th>
             <th>Μετρητής έναρξης</th>
 
@@ -23,9 +27,10 @@
         <tbody>
         {% for obj in object_list %}
         <tr>
-            <td><a href=" {{ obj.id }}" name="id">{{ obj.id }} </a></td>
+
             <td><a role="button"  class="btn btn-secondary" href=" {{ obj.id }}" name="id">{{ obj.Εταιρεία}}</a> </td>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Serial}} </a> </td>
+            <td><a role="button" class="btn btn-primary" href=" ../customers/{{ obj.Πελάτης.id }}" >{{ obj.Πελάτης}} </a> </td>
             <td><a href=" {{ obj.id }}"><span style="display:none">{{ obj.Εναρξη |string_to_timestamp }}</span> {{ obj.Εναρξη}}</a> </td>
             <td><a href=" {{ obj.id }}" name="id">{{ obj.Μετρητής_έναρξης}}</a> </td>
 
@@ -35,9 +40,10 @@
         </tbody>
         <tfoot>
         <tr class="table-success">
-            <th>ID</th>
+
             <th><label about=""> Μηχάνημα </label></th>
             <th>Serial</th>
+            <th>Πελάτης</th>
             <th>Εναρξη</th>
             <th>Μετρητής έναρξης</th>
 

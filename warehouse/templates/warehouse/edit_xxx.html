@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+       <a href="{% url 'warehouse:xxx' %}">
+<h1 class="btn btn-light btn-lg">
+
+     <img src="{% static 'warehouse/icons/Ω_ΠΑΡΑΓΓΕΛΙΕΣ.png' %}" width="100" height="100" class="img-fluid" alt="ΠΑΡΑΓΓΕΛΙΕΣ">
+     Παραγγελίες
+
+</h1>
+</a>
+
+
+
+ {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ key }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+{% load crispy_forms_tags %}
+<form  method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table-secondary table-bordered">
+
+        <tr class="table-secondary" align="center">
+            <td colspan="3">
+
+
+                <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                        {{ form.ΚΩΔΙΚΟΣ|as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+
+                            {{  form.ΗΜΕΡΩΜΗΝΙΑ|as_crispy_field }}
+
+                    </div>
+
+                    <div class="form-group col-md-3 mb-0">
+
+                            {{ form.ΠΕΡΙΓΡΑΦΗ|as_crispy_field }}
+
+                    </div>
+
+
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.ΑΠΟΤΕΛΕΣΜΑ|as_crispy_field }}
+                    </div>
+
+                </div>
+            </td>
+        </tr>
+        <tr class="table-secondary" align="center">
+
+
+            <td>
+                {{ form.ΠΑΡΑΤΗΡΗΣΕΙΣ|as_crispy_field }}
+                <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+                <input type="file" name="file" multiple />
+                <button type="submit" class="btn btn-success">Αποθήκευση</button>
+
+                <a class="btn  btn btn-danger" role="button" href="{{ object.get_delete_url }}">Διαγραφή</a>
+
+
+            </td>
+            <td>
+            <h3>Αρχεία</h3>
+
+                    <ol>
+                        {% for i in files %}
+                            <li>
+                                <a type="button" class="btn btn-warning" href="{{ form.instance.get_direct_path }}/{{ i }}">
+                                <img src="{{ form.instance.get_direct_path }}/{{ i }}"  width="200" height="200" class="img-fluid" alt="{{ i }}">
+
+                                </a>
+
+                            </li>
+                        {% endfor %}
+
+
+                    </ol>
+            </td>
+        </tr>
+
+
+    </table>
+
+
+</form>
+
+
+
+
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+{% endblock %}
+

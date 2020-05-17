@@ -1,4 +1,4 @@
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, DeleteView, CreateView
 from .models import SpareParts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -24,6 +24,16 @@ class SparePartsListView(LoginRequiredMixin, ListView):
     fields = '__all__'
     # form_class = CustomerForm
     # paginate_by = 5
+
+
+class SparePartsCreateView(LoginRequiredMixin, CreateView):
+    redirect_field_name = ''
+    model = SpareParts
+    fields = '__all__'
+    template_name = 'spareparts/add_spareparts.html'
+
+    def get_success_url(self):
+        return reverse_lazy('spareparts:spareparts')
 
 
 @login_required()
@@ -105,3 +115,14 @@ class EditSparePart(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+
+class DeleteSparePart(LoginRequiredMixin, DeleteView):
+    redirect_field_name = ''
+    model = SpareParts
+    template_name = 'spareparts/confirm_delete.html'
+    success_url = reverse_lazy('spareparts:spareparts')
+
+    def get_object(self, queryset=None):
+        id_ = self.kwargs.get("spareparts_id")  # apo to urls.py -->> path('<int:service_id>'....
+        return get_object_or_404(SpareParts, id=id_)

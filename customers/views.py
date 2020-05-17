@@ -126,7 +126,7 @@ class CustomersListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     # model = Customer
     template_name = 'customers/customers_detail.html'
-    queryset = Customer.objects.filter(Κατάσταση=True)
+    queryset = Customer.objects.filter(Κατάσταση=True).prefetch_related('machines_set')
     fields = '__all__'
     # form_class = CustomerForm
     # paginate_by = 5
@@ -137,7 +137,7 @@ class InactiveCustomersListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
     # model = Customer
     template_name = 'customers/inactive_customers_detail.html'
-    queryset = Customer.objects.filter(Κατάσταση=False)
+    queryset = Customer.objects.filter(Κατάσταση=False).prefetch_related('machines_set')
     fields = '__all__'
     # form_class = CustomerForm
     # paginate_by = 5
