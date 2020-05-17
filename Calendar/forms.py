@@ -4,6 +4,13 @@ from service_data.models import ServiceData
 from datetime import date, datetime
 
 
+TRUE_FALSE_CHOICES = (  # Είναι ανάποδα γιατι το default ειναι Treu δλδ ειναι ενεργό και δεν ειναι ολοκληρομένη εργασία
+    (False, 'Ναι'),  # Ολοκληρώθηκε αρα δεν είναι ενεργό αρα False
+    (True, 'Οχι')  # Δεν Ολοκληρώθηκε αρα ειναι ενεργό
+
+)
+
+
 class CreateCalendarForm(forms.ModelForm):
     class Meta:
         model = Calendar
@@ -33,13 +40,12 @@ class CreateCalendarForm(forms.ModelForm):
     Επ_Service = forms.CharField(max_length=11, required=False)
 
     Service_ID = forms.IntegerField(required=False, help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 10}), required=False, max_length=5000)
-    Ημ_Ολοκλ = forms.CharField(help_text='Ημερομηνία ολοκλήρωσης εργασίας', required=False,
+    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 22}), required=False, max_length=5000)
+    Ημ_Ολοκλ = forms.CharField(help_text='<font color="white"><b>Ημερομηνία ολοκλήρωσης εργασίας</b></font>', required=False,
                                widget=forms.TextInput(attrs={'type': 'date',
                                                              "value": date.today().strftime("%Y-%m-%d")}))
-    Κατάσταση = forms.BooleanField(required=False, initial=True,
-                                   help_text="<font color='red'><strong>Ενεργό αν δεν έχει τελειώσει η "
-                                             "εργασία</strong></font>")
+
+    Κατάσταση = forms.ChoiceField(required=False, initial=True, choices=TRUE_FALSE_CHOICES, label="Ολοκληρώθηκε;",)
     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
                            max_length=100, allow_empty_file=True, required=False)
 
@@ -48,6 +54,8 @@ class CreateCalendarForm(forms.ModelForm):
         # datetime.datetime.strptime("2013-1-25", '%Y-%m-%d').strftime('%m/%d/%y')
         new_date = datetime.strptime(Ημερομηνία, '%Y-%m-%d').strftime('%d/%m/%Y')
         return str(new_date)
+
+
 
 
 class EditCalendarForm(forms.ModelForm):
@@ -81,11 +89,11 @@ class EditCalendarForm(forms.ModelForm):
     Επ_Service = forms.CharField(max_length=11, required=False)
 
     Service_ID = forms.IntegerField(required=False, help_text='<font color="red"><b>Δεν το αλλάζουμε</b></font>')
-    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 12}), required=False, max_length=5000)
-    Ημ_Ολοκλ = forms.CharField(help_text='Ημερομηνία ολοκλήρωσης εργασίας', required=False,
+    Σημειώσεις = forms.CharField(widget=forms.Textarea(attrs={'cols': 40, 'rows': 22}), required=False, max_length=5000)
+    Ημ_Ολοκλ = forms.CharField(help_text='<font color="white"><b>Ημερομηνία ολοκλήρωσης εργασίας</b></font>', required=False,
                                widget=forms.TextInput(attrs={'type': 'date'}))
-    Κατάσταση = forms.BooleanField(required=False, initial=True,
-                                   help_text="<font color='red'><strong>Ενεργό αν δεν έχει τελειώσει η εργασία</strong></font>")
+    Κατάσταση = forms.ChoiceField(required=True, initial=True, choices=TRUE_FALSE_CHOICES, label="Ολοκληρώθηκε;",
+                                  widget=forms.Select())
 
     # file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}),
     #                        max_length=100, allow_empty_file=True, required=False)

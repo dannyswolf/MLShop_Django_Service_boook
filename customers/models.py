@@ -26,7 +26,7 @@ class Customer(models.Model):
 
     Περιοχές = models.TextChoices('Περιοχές', 'Φλώρινα Αμύνταιο Μελίτη')
     Επωνυμία_Επιχείρησης = models.CharField(max_length=200, blank=False, null=False, unique=True)
-    Ονοματεπώνυμο = models.CharField(max_length=200, blank=True, null=True, default="")
+    Ονοματεπώνυμο = models.CharField(max_length=200, help_text="Ονοματεπώνυμο υπευθύνου", blank=True, null=True, default="")
     Διεύθυνση = models.CharField(max_length=200, blank=True, null=True, default="")
     Πόλη = models.CharField(max_length=100, blank=True, null=True, choices=Περιοχές.choices, default="Φλώρινα")
     Ταχ_Κώδικας = models.CharField(blank=True, null=True, max_length=200)

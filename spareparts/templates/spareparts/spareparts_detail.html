@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-
+{% load string_to_date %}
 {% block content %}
 <div class="container-fluid">
 
@@ -12,13 +12,12 @@
 </a>
 
 
-
-
 <table class="table table-hover table-bordered" id="data-table">
 
     <thead>
 
     <tr class="table-success">
+        <th>Ημερομηνία</th>
         <th>PARTS_NR</th>
         <th>ΠΕΡΙΓΡΑΦΗ</th>
         <th>ΚΩΔΙΚΟΣ</th>
@@ -37,6 +36,7 @@
 
     {% for obj in object_list  %}
     <tr align="center">
+        <td><a href=" {{ obj.id }}" ><span style="display:none">{{ obj.Service_ID.Ημερομηνία|string_to_timestamp }}</span>{{ obj.Service_ID.Ημερομηνία|default_if_none:"--" }}</a> </td>
         <td><a href=" {{ obj.id }}" >{{ obj.PARTS_NR|default_if_none:"--" }}</a> </td>
         <td><a href=" {{ obj.id }}" >{{ obj.ΠΕΡΙΓΡΑΦΗ|slice:":30"|default_if_none:"--" }}</a> </td>
         <td><a href=" {{ obj.id }}" >{{ obj.ΚΩΔΙΚΟΣ|default_if_none:"--" }} </a> </td>
@@ -53,6 +53,7 @@
     </tbody>
     <tfoot>
     <tr class="table-success">
+        <th>Ημερομηνία</th>
         <th>PARTS_NR </th>
         <th>ΠΕΡΙΓΡΑΦΗ</th>
         <th>ΚΩΔΙΚΟΣ</th>

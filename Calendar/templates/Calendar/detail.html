@@ -51,6 +51,8 @@
                     </div>
 
 
+
+
                     <div class="form-group col-md-3 mb-0">
                         <a class="btn  btn-secondary" role="button"  href="/machines/{{ calendar_form.Copier_ID.id }}">
                             {{ form.Copier_ID|as_crispy_field }}
@@ -70,7 +72,7 @@
                         {{ form.Ημ_Ολοκλ|as_crispy_field }}
                     </div>
 
-                     <div class="form-group col-md-1 mb-0">
+                     <div class="form-group col-md-1 mb-0 btn btn-success">
                         {{ form.Κατάσταση|as_crispy_field }}
                     </div>
 
@@ -78,10 +80,11 @@
 
             </td>
         </tr>
-        <tr class="table-secondary" align="center">
 
+        <tr class="table-secondary" align="center">
+            <div class="form-group col-md-4 mb-0">
             <td>
-                <div class="form-group col-md-4 mb-0">
+
                         {{ form.Σκοπός|as_crispy_field }}
 
 
@@ -100,12 +103,15 @@
                 {{ form.ΔΤΕ|as_crispy_field }}
 
                 {{ form.Price|as_crispy_field }}
-                    </div>
+
 
             </td>
+            </div>
             <td>
-                <div class="form-group col mb-0">
+                <div class="form-group col">
+                <div class="md-12 mb-12 ">
                 {{ form.Σημειώσεις|as_crispy_field }}
+                </div>
                 <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
                 <input type="file" name="file" multiple />
                 <button type="submit" class="btn btn-success">Αποθήκευση</button>
@@ -118,13 +124,7 @@
 
                 {% endif %}
 
-                    <h2 class="align-text-top">
-                        <a class="badge  badge-success badge-pill" href="{% url 'spareparts:add_spareparts' service_id=form.Service_ID.value %}">
 
-                            <i class="fas fa-plus-circle"></i>
-                        Προσθήκη ανταλλακτικών
-                        </a>
-                    </h2>
 
                 </div>
 
