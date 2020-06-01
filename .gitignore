@@ -4,3 +4,35 @@
 
 /3. ΚΑΙΝΟΥΡΙΑ_ΑΠΟΘΗΚΗ.db
 /Service_book.db
+SparePartsDb.py
+/__pycache__/
+
+Calendar/__pycache__/
+.vscode/settings.json
+Calendar/__pycache__/admin.cpython-37.pyc
+Calendar/__pycache__/forms.cpython-37.pyc
+Calendar/__pycache__/urls.cpython-37.pyc
+Calendar/__pycache__/views.cpython-37.pyc
+Calendar/templatetags/__pycache__/string_to_date.cpython-37.pyc
+Calendar/migrations/__pycache__/0034_auto_20200417_2055.cpython-37.pyc
+Calendar/migrations/__pycache__/0035_auto_20200417_2059.cpython-37.pyc
+Calendar/migrations/__pycache__/0036_calendar_start_time.cpython-37.pyc
+Calendar/migrations/__pycache__/0037_remove_calendar_start_time.cpython-37.pyc
+Calendar/migrations/__pycache__/0038_calendar_file.cpython-37.pyc
+Calendar/migrations/__pycache__/0039_auto_20200422_2243.cpython-37.pyc
+Calendar/migrations/__pycache__/0040_auto_20200422_2246.cpython-37.pyc
+Calendar/migrations/__pycache__/0041_auto_20200422_2259.cpython-37.pyc
+Calendar/migrations/__pycache__/0042_auto_20200422_2305.cpython-37.pyc
+Calendar/migrations/__pycache__/0043_auto_20200422_2308.cpython-37.pyc
+Calendar/migrations/__pycache__/0044_auto_20200422_2318.cpython-37.pyc
+Calendar/migrations/__pycache__/0045_auto_20200512_0110.cpython-37.pyc
+Calendar/migrations/__pycache__/0046_auto_20200512_0112.cpython-37.pyc
+Calendar/templatetags/__pycache__/__init__.cpython-37.pyc
+customers/__pycache__/models.cpython-37.pyc
+customers/__pycache__/views.cpython-37.pyc
+login/__pycache__/urls.cpython-37.pyc
+login/__pycache__/views.cpython-37.pyc
+login/__pycache__/urls.cpython-37.pyc
+login/__pycache__/views.cpython-37.pyc
+
+

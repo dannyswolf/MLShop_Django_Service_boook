@@ -1,24 +1,48 @@
-from django.shortcuts import render, get_object_or_404
-from django.utils.safestring import mark_safe
-from django.views.generic import ListView
-from django.views.generic.edit import UpdateView, DeleteView
-from .models import Calendar
-from django.urls import reverse_lazy
+import calendar
+import os
+import shutil
 from datetime import date, datetime, timedelta
-from django.db.models import Q
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from machines.models import Machines
-from .forms import CreateCalendarForm, EditCalendarForm
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from services.models import Services
 from django.core.exceptions import ObjectDoesNotExist
-from spareparts.models import SpareParts
-from .utils import MyHtmlCalendar, MyFinishedHtmlCalendar
-import os
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse, reverse_lazy
+from django.utils.safestring import mark_safe
+from django.views.generic import ListView
+from django.views.generic.edit import DeleteView, UpdateView
+
 from django_project.settings import MEDIA_ROOT
-import calendar
+
+from machines.models import Machines
+from services.models import Services
+from spareparts.models import SpareParts
+
+from .forms import CreateCalendarForm, EditCalendarForm
+from .models import Calendar
+from .utils import MyFinishedHtmlCalendar, MyHtmlCalendar
+
+
+@login_required()
+def delete_files(request, *args, **kwargs):
+    service_id = kwargs['service_id']
+    calendar_object = Calendar.objects.get(Service_ID=service_id)
+    calendar_id = calendar_object.pk
+
+    data = {
+        'service_id': service_id,
+        'object': calendar_object
+    }
+    if request.method == "POST":
+        path_to_delete = os.path.join(MEDIA_ROOT, str(service_id))
+        shutil.rmtree(path_to_delete, ignore_errors=True)
+
+        return HttpResponseRedirect(reverse('Calendar:edit_calendar', args=(calendar_id,)))
+
+    return render(request, 'Calendar/confirm_delete-files.html', data)
 
 
 # Ενεργά
@@ -187,7 +211,7 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         except FileNotFoundError as error:  # Όταν δεν υπάρχουν αρχεία
             context['files'] = ""
 
-        spareparts = SpareParts.objects.filter(Calendar_ID=id_)
+        spareparts = SpareParts.objects.filter(Service_ID=self.object.Service_ID)
         context['spareparts'] = spareparts
 
         return context

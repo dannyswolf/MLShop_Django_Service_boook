@@ -20,12 +20,11 @@ from .views import SparePartsListView, search_spareparts_view, EditSparePart, De
 app_name = 'spareparts'
 urlpatterns = [
     path('', SparePartsListView.as_view(), name='spareparts'),
-    # path("add_service", CreateService.as_view(), name="add_service"),
+    path("add_spareparts", SparePartsCreateView, name="add_spareparts"),
     # path("add_service/<int:machine_id>", create_service_from_machines, name="add_service_from_machines"),
     #
     path('<int:spareparts_id>', EditSparePart.as_view(), name='edit_sparepart'),
     path('search_spareparts', search_spareparts_view,  name='search_spareparts'),
-    path('add_spareparts/<int:service_id>', SparePartsCreateView.as_view(), name='add_spareparts'),
     path('<int:spareparts_id>/delete', DeleteSparePart.as_view(),  name='delete_sparepart'),
     # path('search_service_dte', search_services_dte,  name='search_services_dte'),
     # path('<int:service_id>/delete/', ServiceDelete.as_view(), name='delete_service'),

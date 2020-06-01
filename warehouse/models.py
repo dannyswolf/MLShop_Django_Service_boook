@@ -37,7 +37,7 @@ class A_ΟΡΟΦΟΣ(models.Model):
         return reverse('warehouse:A_ΟΡΟΦΟΣ_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.id}'
+        return f'{self._meta.model_name.upper()}/{self.id}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -66,7 +66,7 @@ class BROTHER(models.Model):
         return reverse('warehouse:brother_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.ID}'
+        return f'{self._meta.model_name.upper()}/{self.ID}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -96,7 +96,7 @@ class CANON(models.Model):
         return reverse('warehouse:canon_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.ID}'
+        return f'{self._meta.model_name.upper()}/{self.ID}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -139,7 +139,7 @@ class KONICA(models.Model):
         return reverse('warehouse:konica_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.ID}'
+        return f'{self._meta.model_name.upper()}/{self.ID}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -168,7 +168,7 @@ class KYOCERA(models.Model):
         return reverse('warehouse:kyocera_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -197,7 +197,7 @@ class LEXMARK(models.Model):
         return reverse('warehouse:lexmark_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -227,7 +227,7 @@ class OKI(models.Model):
         return reverse('warehouse:oki_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -257,7 +257,7 @@ class RICOH(models.Model):
         return reverse('warehouse:ricoh_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -286,7 +286,7 @@ class SAMSUNG(models.Model):
         return reverse('warehouse:samsung_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -298,7 +298,7 @@ class SHARP(models.Model):
     ΠΕΡΙΓΡΑΦΗ = models.TextField(db_column='ΠΕΡΙΓΡΑΦΗ', blank=True, null=True)  # Field name made lowercase.
     ΚΩΔΙΚΟΣ = models.CharField(db_column='ΚΩΔΙΚΟΣ', blank=True, null=True, max_length=50)  # Field name made lowercase.
     ΤΕΜΑΧΙΑ = models.CharField(db_column='ΤΕΜΑΧΙΑ', blank=True, null=True, max_length=50)  # Field name made lowercase.
-    ΠΑΡΑΤΗΡΗΣΗΣ = models.TextField(db_column='ΠΑΡΑΤΗΡΗΣΗΣ', blank=True, null=True) # Field name made lowercase.
+    ΠΑΡΑΤΗΡΗΣΗΣ = models.TextField(db_column='ΠΑΡΑΤΗΡΗΣΗΣ', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -316,7 +316,7 @@ class SHARP(models.Model):
         return reverse('warehouse:sharp_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -352,7 +352,7 @@ class ΜΕΛΑΝΑΚΙΑ(models.Model):
         return reverse('warehouse:melanakia_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -388,7 +388,7 @@ class ΜΕΛΑΝΟΤΑΙΝΙΕΣ(models.Model):
         return reverse('warehouse:melanotainies_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -423,7 +423,7 @@ class ΤΟΝΕΡ(models.Model):
         return reverse('warehouse:toner_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.ID}'
+        return f'{self._meta.model_name.upper()}/{self.ID}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -458,7 +458,7 @@ class ΦΩΤΟΤΥΠΙΚΑ(models.Model):
         return reverse('warehouse:fototipika_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.ID}'
+        return f'{self._meta.model_name.upper()}/{self.ID}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
@@ -488,7 +488,7 @@ class ΧΧΧ(models.Model):
         return reverse('warehouse:xxx_delete_product', kwargs={'spare_part_id': self.pk})
 
     def get_path(self):
-        return f'{self._meta.model_name}/{self.pk}'
+        return f'{self._meta.model_name.upper()}/{self.pk}'
 
     def get_direct_path(self):
         return os.path.join(SPARE_PARTS_URL, self.get_path())

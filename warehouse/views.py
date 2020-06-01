@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import (A_ΟΡΟΦΟΣ, BROTHER, CANON, KONICA, KYOCERA, LEXMARK, OKI, RICOH, SAMSUNG, SHARP,
@@ -9,7 +10,23 @@ from django.shortcuts import get_object_or_404
 from django_project.settings import SPARE_PARTS_ROOT, SPARE_PARTS_URL
 import os
 import shutil
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
+
+
+
+def A_ΟΡΟΦΟΣ_json(request, *args, **kwargs):
+    queryset = A_ΟΡΟΦΟΣ.objects.using('SparePartsDb').all()
+    # qs_json = serializers.serialize('json', queryset)
+    list_items = [{"id": x.id, "ΕΤΑΙΡΙΑ": str(x.ΕΤΑΙΡΙΑ), "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "TEMAXIA": x.TEMAXIA, "ΤΙΜΗ": x.ΤΙΜΗ, "ΣΥΝΟΛΟ": x.ΣΥΝΟΛΟ, "ΣΕΛΙΔΕΣ": x.ΣΕΛΙΔΕΣ,
+                   "ΠΑΡΑΤΗΡΗΣΗΣ": x.ΠΑΡΑΤΗΡΗΣΗΣ} for x in queryset]
+    
+    status = 200
+    data = {
+        "response": list_items
+    }
+    # return JsonResponse(data=data, status=status)
+    return JsonResponse(data=data, status=status)
 
 class A_ΟΡΟΦΟΣListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''
@@ -112,6 +129,20 @@ class BROTHERListView(LoginRequiredMixin, ListView):
     queryset = BROTHER.objects.using('SparePartsDb').all()
 
 
+def BROTHER_json(request, *args, **kwargs):
+    queryset = BROTHER.objects.using('SparePartsDb').all()
+    # qs_json = serializers.serialize('json', queryset)
+    list_items = [{"ID": x.ID, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ,} for x in queryset]
+    
+    status = 200
+    data = {
+        "response": list_items
+    }
+    # return JsonResponse(data=data, status=status)
+    return JsonResponse(data=data, status=status)
+
+
 class BROTHERCreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
     model = BROTHER
@@ -200,6 +231,20 @@ class CANONListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/photocopiers_detail.html'
     fields = '__all__'
     queryset = CANON.objects.using('SparePartsDb').all()
+
+
+def CANON_json(request, *args, **kwargs):
+    queryset = CANON.objects.using('SparePartsDb').all()
+    # qs_json = serializers.serialize('json', queryset)
+    list_items = [{"id": x.ID, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ,} for x in queryset]
+    
+    status = 200
+    data = {
+        "response": list_items
+    }
+    # return JsonResponse(data=data, status=status)
+    return JsonResponse(data=data, status=status)
 
 
 class CANONCreateView(LoginRequiredMixin, CreateView):
@@ -292,6 +337,20 @@ class KONICAListView(LoginRequiredMixin, ListView):
     queryset = KONICA.objects.using('SparePartsDb').all()
 
 
+def KONICA_json(request, *args, **kwargs):
+    queryset = KONICA.objects.using('SparePartsDb').all()
+    # qs_json = serializers.serialize('json', queryset)
+    list_items = [{"id": x.ID, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ,} for x in queryset]
+    
+    status = 200
+    data = {
+        "response": list_items
+    }
+    # return JsonResponse(data=data, status=status)
+    return JsonResponse(data=data, status=status)
+
+
 class KONICACreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
     model = KONICA
@@ -380,6 +439,20 @@ class KYOCERAListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/photocopiers_detail.html'
     fields = '__all__'
     queryset = KYOCERA.objects.using('SparePartsDb').all()
+
+
+def KYOCERA_json(request, *args, **kwargs):
+    queryset = KYOCERA.objects.using('SparePartsDb').all()
+    # qs_json = serializers.serialize('json', queryset)
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+    # return JsonResponse(data=data, status=status)
+    return JsonResponse(data=data, status=status)
 
 
 class KYOCERACreateView(LoginRequiredMixin, CreateView):
@@ -472,6 +545,19 @@ class LEXMARKListView(LoginRequiredMixin, ListView):
     queryset = LEXMARK.objects.using('SparePartsDb').all()
 
 
+def LEXMARK_json(request, *args, **kwargs):
+    queryset = LEXMARK.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
+
+
 class LEXMARKCreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
     model = LEXMARK
@@ -560,6 +646,19 @@ class OKIListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/photocopiers_detail.html'
     fields = '__all__'
     queryset = OKI.objects.using('SparePartsDb').all()
+
+
+def OKI_json(request, *args, **kwargs):
+    queryset = OKI.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
 
 
 class OKICreateView(LoginRequiredMixin, CreateView):
@@ -652,6 +751,19 @@ class RICOHListView(LoginRequiredMixin, ListView):
     queryset = RICOH.objects.using('SparePartsDb').all()
 
 
+def RICOH_json(request, *args, **kwargs):
+    queryset = RICOH.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
+
+
 class RICOHCreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
     model = RICOH
@@ -739,6 +851,19 @@ class SAMSUNGListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/photocopiers_detail.html'
     fields = '__all__'
     queryset = SAMSUNG.objects.using('SparePartsDb').all()
+
+
+def SAMSUNG_json(request, *args, **kwargs):
+    queryset = SAMSUNG.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
 
 
 class SAMSUNGCreateView(LoginRequiredMixin, CreateView):
@@ -831,6 +956,19 @@ class SHARPListView(LoginRequiredMixin, ListView):
     queryset = SHARP.objects.using('SparePartsDb').all()
 
 
+def SHARP_json(request, *args, **kwargs):
+    queryset = SHARP.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
+
+
 class SHARPCreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
     model = SHARP
@@ -919,6 +1057,19 @@ class ΜΕΛΑΝΑΚΙΑListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/inks_toner_detail.html'
     fields = '__all__'
     queryset = ΜΕΛΑΝΑΚΙΑ.objects.using('SparePartsDb').all()
+
+
+def ΜΕΛΑΝΑΚΙΑ_json(request, *args, **kwargs):
+    queryset = ΜΕΛΑΝΑΚΙΑ.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
 
 
 class ΜΕΛΑΝΑΚΙΑCreateView(LoginRequiredMixin, CreateView):
@@ -1018,6 +1169,19 @@ class ΜΕΛΑΝΟΤΑΙΝΙΕΣListView(LoginRequiredMixin, ListView):
     queryset = ΜΕΛΑΝΟΤΑΙΝΙΕΣ.objects.using('SparePartsDb').all()
 
 
+def ΜΕΛΑΝΟΤΑΙΝΙΕΣ_json(request, *args, **kwargs):
+    queryset = ΜΕΛΑΝΟΤΑΙΝΙΕΣ.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
+
+
 class ΜΕΛΑΝΟΤΑΙΝΙΕΣCreateView(LoginRequiredMixin, CreateView):
     redirect_field_name = ''
     model = ΜΕΛΑΝΟΤΑΙΝΙΕΣ
@@ -1106,6 +1270,19 @@ class ΤΟΝΕΡListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/inks_toner_detail.html'
     fields = '__all__'
     queryset = ΤΟΝΕΡ.objects.using('SparePartsDb').all()
+
+
+def ΤΟΝΕΡ_json(request, *args, **kwargs):
+    queryset = ΤΟΝΕΡ.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
 
 
 class ΤΟΝΕΡCreateView(LoginRequiredMixin, CreateView):
@@ -1199,6 +1376,19 @@ class ΦΩΤΟΤΥΠΙΚΑListView(LoginRequiredMixin, ListView):
     template_name = 'warehouse/inks_toner_detail.html'
     fields = '__all__'
     queryset = ΦΩΤΟΤΥΠΙΚΑ.objects.using('SparePartsDb').all()
+
+
+def ΦΩΤΟΤΥΠΙΚΑ_json(request, *args, **kwargs):
+    queryset = ΦΩΤΟΤΥΠΙΚΑ.objects.using('SparePartsDb').all()
+    list_items = [{"ID": x.pk, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+
+    return JsonResponse(data=data, status=status)
 
 
 class ΦΩΤΟΤΥΠΙΚΑCreateView(LoginRequiredMixin, CreateView):

@@ -56,8 +56,6 @@ class CreateCalendarForm(forms.ModelForm):
         return str(new_date)
 
 
-
-
 class EditCalendarForm(forms.ModelForm):
     class Meta:
         model = Calendar

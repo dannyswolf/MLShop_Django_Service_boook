@@ -5,7 +5,7 @@ from machines.models import Machines
 from Calendar.models import Calendar
 from customers.models import Customer
 from services.models import Services
-
+from django.core import serializers
 
 class SpareParts(models.Model):
     PARTS_NR = models.CharField(max_length=100, blank=True, null=True)
@@ -54,3 +54,19 @@ class SpareParts(models.Model):
         # customers ==>> app name στο urls
         return reverse('spareparts:delete_sparepart', kwargs={'spareparts_id': self.pk})
 
+    def serialize(self):
+        return {
+
+            'id': self.id,
+            'PARTS_NR': self.PARTS_NR,
+            'ΠΕΡΙΓΡΑΦΗ': self.ΠΕΡΙΓΡΑΦΗ,
+            'ΚΩΔΙΚΟΣ': self.ΚΩΔΙΚΟΣ,
+            'ΤΕΜΑΧΙΑ': self.ΤΕΜΑΧΙΑ,
+            'ΠΑΡΑΤΗΡΗΣΗΣ': self.ΠΑΡΑΤΗΡΗΣΗΣ,
+            'ΜΗΧΑΝΗΜΑ': self.ΜΗΧΑΝΗΜΑ,
+            'Service_ID': self.Service_ID,
+            'Customer_ID': self.Customer_ID,
+            'Calendar_ID': self.Calendar_ID
+
+        }
+        

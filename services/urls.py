@@ -16,13 +16,14 @@ Including another URLconf
 
 from django.urls import path
 from .views import ServicesListView, EditService, search_service_view, ServiceDelete, \
-    create_service_from_machines, search_services_dte
+    create_service_from_machines, search_services_dte, delete_files
 
 app_name = 'services'
 urlpatterns = [
     path('', ServicesListView.as_view(), name='services'),
     path("add_service/<int:machine_id>", create_service_from_machines, name="add_service_from_machines"),
     path('<int:service_id>', EditService.as_view(), name='edit_service'),
+    path('<int:service_id>/delete-files', delete_files, name='delete_files'),
     path('search_service', search_service_view,  name='search_service'),
     path('search_service_dte', search_services_dte,  name='search_services_dte'),
     path('<int:service_id>/delete/', ServiceDelete.as_view(), name='delete_service'),

@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path
 from .views import (CalendarListView, create_calendar, EditCalendar, FinishedCalendarListView, CalendarDelete,
                     search_calendar, search_calendar_dte, search_finished_calendar, search_finished_calendar_dte,
-                    CalendarView, FinishedCalendarView)
+                    CalendarView, FinishedCalendarView, delete_files)
 
 
 app_name = 'Calendar'
@@ -27,6 +27,7 @@ urlpatterns = [
     path("finished_jobs", FinishedCalendarListView.as_view(), name="finished_jobs"),
     path("add_calendar/<int:machine_id>", create_calendar, name="add_calendar"),
     path('<int:calendar_id>', EditCalendar.as_view(), name='edit_calendar'),
+    path('<int:service_id>/delete-files', delete_files, name='delete_files'),
     path('<int:calendar_id>/delete/', CalendarDelete.as_view(), name='delete_calendar'),
     path('search_calendar', search_calendar,  name='search_calendar'),
     path('search_finished_calendar', search_finished_calendar,  name='search_finished_calendar'),

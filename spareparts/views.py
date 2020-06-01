@@ -1,14 +1,26 @@
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView
-from .models import SpareParts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.forms.models import modelform_factory
 from django.forms import Textarea
+from .forms import AddSparePartsToService
+from django.http import JsonResponse
+
+
+import json
+
+from .models import SpareParts
 from machines.models import Machines
+from services.models import Services
+from customers.models import Customer
+
+from warehouse.models import (A_ΟΡΟΦΟΣ, BROTHER, CANON, KONICA, KYOCERA, LEXMARK, OKI, RICOH, SAMSUNG, SHARP,
+                                ΜΕΛΑΝΑΚΙΑ, ΜΕΛΑΝΟΤΑΙΝΙΕΣ, ΤΟΝΕΡ, ΦΩΤΟΤΥΠΙΚΑ)
 
 
 # Create your views here.
@@ -26,14 +38,180 @@ class SparePartsListView(LoginRequiredMixin, ListView):
     # paginate_by = 5
 
 
-class SparePartsCreateView(LoginRequiredMixin, CreateView):
-    redirect_field_name = ''
-    model = SpareParts
-    fields = '__all__'
-    template_name = 'spareparts/add_spareparts.html'
+# class SparePartsCreateView(LoginRequiredMixin, CreateView):
+#     redirect_field_name = ''
+#     model = SpareParts
+#     fields = '__all__'
+#     template_name = 'spareparts/add_spareparts.html'
 
-    def get_success_url(self):
-        return reverse_lazy('spareparts:spareparts')
+#     def get_success_url(self):
+#         return reverse_lazy('spareparts:spareparts')
+    
+#     def form_valid(self, form):
+#         print(self.form_valid)
+#         print(self.request.POST)
+
+
+
+
+#     # def form_valid(self, form):
+#     #     print(self.request)
+#     #     print(self.form)
+#     #     #data = form.cleaned_data
+#     #     # print("data", data)
+#     #     return super().form_valid(form)
+
+@login_required()
+def SparePartsCreateView(request, *args, **kwargs):
+    
+    # Javascript 
+    if request.is_ajax():
+        print("request.POST", request.POST)
+        Service_ID =  int(request.POST.get('somedata[Service_ID]'))
+        Customer_ID = int(request.POST.get('somedata[Customer_ID]'))
+        # neeed Services Instance 
+        service_instance = Services.objects.get(pk=Service_ID)
+        customer_instance = Customer.objects.get(pk=Customer_ID)
+
+        ΠΕΡΙΓΡΑΦΗ   = request.POST.get('somedata[ΠΕΡΙΓΡΑΦΗ]')
+        ΚΩΔΙΚΟΣ     = request.POST.get('somedata[ΚΩΔΙΚΟΣ]')
+        Copier_ID   = request.POST.get('somedata[ΜΗΧΑΝΗΜΑ]')
+        category    = request.POST.get('somedata[category]')
+        Service_ID  = service_instance
+        Customer_ID = customer_instance
+        ΜΗΧΑΝΗΜΑ = Machines.objects.get(pk=Copier_ID)
+        
+        # Εισαγωγη νεου ανταλλακτικού ή προσθήκη +1 στο ηδη υπάρχων
+        new_obj, created = SpareParts.objects.get_or_create(ΠΕΡΙΓΡΑΦΗ=ΠΕΡΙΓΡΑΦΗ, ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ, 
+        ΜΗΧΑΝΗΜΑ=ΜΗΧΑΝΗΜΑ.Εταιρεία, Service_ID=Service_ID, Customer_ID=Customer_ID)
+        if created:
+            new_obj.ΤΕΜΑΧΙΑ = 1  # Ορίζουμε ενα τεμάχια
+            new_obj.save()
+            try:
+                # Αφαιρεσει -1 απο την αποθήκη
+                if category == 'brother':
+                    sparepart = BROTHER.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'canon':
+                    sparepart = CANON.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'konica':
+                    sparepart = KONICA.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'kyocera':
+                    sparepart = KYOCERA.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'lexmark':
+                    sparepart = LEXMARK.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'oki':
+                    sparepart = OKI.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'ricoh':
+                    sparepart = RICOH.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'samsung':
+                    sparepart = SAMSUNG.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'sharp':
+                    sparepart = SHARP.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'melanakia':
+                    sparepart = ΜΕΛΑΝΑΚΙΑ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'melanotainies':
+                    sparepart = ΜΕΛΑΝΟΤΑΙΝΙΕΣ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'toner':
+                    sparepart = ΤΟΝΕΡ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'fototypika':
+                    sparepart = ΦΩΤΟΤΥΠΙΚΑ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+            except MultipleObjectsReturned:
+                json_response = { 
+                                'id': new_obj.pk,
+                                "ΠΕΡΙΓΡΑΦΗ": new_obj.ΠΕΡΙΓΡΑΦΗ,
+                                "ΚΩΔΙΚΟΣ": new_obj.ΚΩΔΙΚΟΣ,
+                                'status': 202
+                                } 
+                return JsonResponse(json_response)
+
+            sparepart.ΤΕΜΑΧΙΑ = int(sparepart.ΤΕΜΑΧΙΑ) -1
+            sparepart.save()
+            json_response = { 
+                                'id': new_obj.pk,
+                                "ΠΕΡΙΓΡΑΦΗ": new_obj.ΠΕΡΙΓΡΑΦΗ,
+                                "ΚΩΔΙΚΟΣ": new_obj.ΚΩΔΙΚΟΣ,
+                                'status': 201
+            } 
+            return JsonResponse(json_response)
+        else:   # προσθήκη +1 στο ηδη υπάρχων
+            new_obj.ΤΕΜΑΧΙΑ = int(new_obj.ΤΕΜΑΧΙΑ) + 1
+            new_obj.save()
+            try:
+                # Αφαιρεσει -1 απο την αποθήκη
+                if category == 'brother':
+                    sparepart = BROTHER.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'canon':
+                    sparepart = CANON.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'konica':
+                    sparepart = KONICA.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'kyocera':
+                    sparepart = KYOCERA.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'lexmark':
+                    sparepart = LEXMARK.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'oki':
+                    sparepart = OKI.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'ricoh':
+                    sparepart = RICOH.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'samsung':
+                    sparepart = SAMSUNG.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'sharp':
+                    sparepart = SHARP.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'melanakia':
+                    sparepart = ΜΕΛΑΝΑΚΙΑ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'melanotainies':
+                    sparepart = ΜΕΛΑΝΟΤΑΙΝΙΕΣ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'toner':
+                    sparepart = ΤΟΝΕΡ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'fototypika':
+                    sparepart = ΦΩΤΟΤΥΠΙΚΑ.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+
+            except MultipleObjectsReturned:
+                json_response = { 
+                                'id': new_obj.pk,
+                                "ΠΕΡΙΓΡΑΦΗ": new_obj.ΠΕΡΙΓΡΑΦΗ,
+                                "ΚΩΔΙΚΟΣ": new_obj.ΚΩΔΙΚΟΣ,
+                                'status': 202
+                                } 
+                return JsonResponse(json_response) 
+
+            sparepart.ΤΕΜΑΧΙΑ = int(sparepart.ΤΕΜΑΧΙΑ) -1
+            sparepart.save()
+            json_response = { 
+                                'id': new_obj.pk,
+                                "ΠΕΡΙΓΡΑΦΗ": new_obj.ΠΕΡΙΓΡΑΦΗ,
+                                "ΚΩΔΙΚΟΣ": new_obj.ΚΩΔΙΚΟΣ,
+                                'status': 200
+            } 
+            return JsonResponse(json_response)
+     
+        
+
+
+    form = AddSparePartsToService
+    if request.method == "GET":
+        content = {
+            "form": form
+        }
+        return render(request, "spareparts/add_spareparts.html", content)
+    # if request.method == "POST":
+    #     print("request.POST", request.POST)
+    #     Customer_ID = request.POST.get('Customer_ID')
+    #     Service_ID = request.POST.get('Service_ID')
+    #     ΚΩΔΙΚΟΣ = request.POST.get('ΚΩΔΙΚΟΣ')
+    #     ΜΗΧΑΝΗΜΑ = request.POST.get('ΜΗΧΑΝΗΜΑ')
+    #     machine = Machines.objects.filter(id=ΜΗΧΑΝΗΜΑ)
+    #     ΠΕΡΙΓΡΑΦΗ  = request.POST.get('ΠΕΡΙΓΡΑΦΗ')
+    #     print("Customer_ID", Customer_ID)
+    #     print("Service_ID", Service_ID)
+    #     print("ΚΩΔΙΚΟΣ", ΚΩΔΙΚΟΣ)
+    #     print("ΜΗΧΑΝΗΜΑ", ΜΗΧΑΝΗΜΑ)
+    #     print("machine", machine)
+    #     print("ΠΕΡΙΓΡΑΦΗ", ΠΕΡΙΓΡΑΦΗ)
+    #     new_item = SpareParts(ΠΕΡΙΓΡΑΦΗ=ΠΕΡΙΓΡΑΦΗ, ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ, ΤΕΜΑΧΙΑ=1, ΜΗΧΑΝΗΜΑ=machine, 
+    #     Service_ID=Service_ID, Customer_ID=Customer_ID)
+    #     new_item.save()
+
+    #     return JsonResponse(new_item, status=201)
 
 
 @login_required()

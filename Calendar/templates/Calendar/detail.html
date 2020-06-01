@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-
+{% load static %}
 {% block content %}
 
 
@@ -30,7 +30,7 @@
 
 
 {% load crispy_forms_tags %}
-<form  method="POST" enctype="multipart/form-data">
+<form  id="my-form" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table class="table-secondary table-bordered">
 
@@ -44,9 +44,14 @@
                         {{ form.Ημερομηνία|as_crispy_field }}
                     </div>
 
-                    <div class="form-group col-md-2 mb-0">
-                        <a class="btn btn btn-primary" role="button" href="/customers/{{ calendar_form.Copier_ID.Πελάτης.id }}">
-                            {{  form.Πελάτης|as_crispy_field }}
+
+
+                     <div class="form-group col-md-2 mb-0">
+                        <a class="btn btn btn-primary btn-lg" role="button" href="/customers/{{ calendar_form.Copier_ID.Πελάτης.id }}">
+                                <h5>Πελάτης</h5>
+                                {{  form.Πελάτης.value }}
+
+
                         </a>
                     </div>
 
@@ -85,10 +90,7 @@
             <div class="form-group col-md-4 mb-0">
             <td>
 
-                        {{ form.Σκοπός|as_crispy_field }}
-
-
-
+                {{ form.Σκοπός|as_crispy_field }}
 
                 {{ form.Τεχνικός|as_crispy_field }}
 
@@ -100,37 +102,33 @@
 
                 {{ form.Επ_Service|as_crispy_field }}
 
-                {{ form.ΔΤΕ|as_crispy_field }}
-
-                {{ form.Price|as_crispy_field }}
-
-
             </td>
             </div>
             <td>
                 <div class="form-group col">
+
                 <div class="md-12 mb-12 ">
                 {{ form.Σημειώσεις|as_crispy_field }}
                 </div>
+
                 <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+
                 <input type="file" name="file" multiple />
+
                 <button type="submit" class="btn btn-success">Αποθήκευση</button>
+
                 {% if not spareparts  and not files %}
                 <a role="button" class="btn btn-danger" href="{% url 'Calendar:delete_calendar' calendar_form.id %}">Διαγραφή</a>
+
                 {% else %}
-
                 <p style="color:red"><b>Για διαγραφή διαγράψτε πρώτα τα ανταλλακτικά και αρχεία</b></p>
-
-
                 {% endif %}
-
-
 
                 </div>
 
 
             </td>
-            <td align="left">
+            <td align="center">
                 <h5 class="btn btn-secondary">Αριθμός συντήρηση</h5>
                 <div class="form-group col-md-2 mb-0">
                     <a role="button" class="btn btn-outline-secondary" href="{% url 'services:edit_service' form.Service_ID.value %}">
@@ -138,7 +136,7 @@
 
                     </div>
 
-                <h3>Ανταλλακτικά</h3>
+                <div class="alert alert-info" role="alert"><h3>Ανταλλακτικά</h3></div>
 
                 <ol>
                     {% for item in spareparts %}
@@ -151,6 +149,7 @@
                     {% endfor %}
                 </ol>
 
+                {% if files %}
                 <h3>Αρχεία</h3>
                     <ol>
                         {% for i in files %}
@@ -160,47 +159,408 @@
                             </li>
                         {% endfor %}
 
-
+                        <a role="button" class="btn btn-danger" href="{% url 'Calendar:delete_files' form.Service_ID.value %}">Διαγραφεί αρχείων
+                    </a>
                     </ol>
-
+                {% endif %}
             </td>
-
         </tr>
         <tr class="table-secondary" align="center">
-        <td align="left" colspan="2">
+        <td align="left">
             <div class="form-row">
-
-
-                <div class="form-group col-md-2 mb-0">
+                <div class="form-group col-md-2 mb-0" style="visibility: hidden">
                         {{ form.Service_ID|as_crispy_field }}
                 </div>
-
-
-
-
             </div>
+        </td>      
 
-        </td>
+ <td align="left">
+            <div class="form-row">
+                <div class="form-group col-md-2 mb-0" style="visibility: hidden">
+                
+                <input type="number" name="Customer_ID" value="{{ form.instance.Customer_ID }}" class="numberinput form-control" id="id_Customer_ID">
+               
+                        
+                </div>
+            </div>
+        </td>  
+
+
+
             </tr>
-
-
     </table>
-
-
-
 </form>
 
 
 
+<div class="alert alert-success col-12 mb-3 p-3 text-center">
+            <button id="" class="btn btn-primary btn-lg rounded-pill" onclick="hide()">Προσθήκη ανταλλακτικών</button>
+             </div>
+
+<ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
+<li class="nav-item">
+
+                <a role="button" onclick="load_warehouse('brother')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/BROTHER.png" %} width="50" height="70" class="img-fluid " alt="Brother">
+                Brother        </a>
+
+</li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('canon')" class="btn btn-light mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/CANON.png" %} width="50" height="50" class="img-fluid " alt="Canon">
+                Canon
+                </a>
+
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('konica')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/KONICA.png" %} width="50" height="50" class="img-fluid " alt="Konica">
+                Konica
+                    </a>
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('kyocera')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/KYOCERA.png" %} width="50" height="50" class="img-fluid "alt="kyocera">
+                kyocera
+                </a>
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('lexmark')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/LEXMARK.png" %} width="50" height="70" class="img-fluid " alt="Lexmark">
+                    Lexmark</a>
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('oki')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/OKI.png" %} width="50" height="50" class="img-fluid" alt="Oki">
+                    Oki</a>
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('ricoh')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/RICOH.png" %} width="50" height="50" class="img-fluid" alt="Ricoh">
+            Ricoh
+                </a>
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('samsung')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/SAMSUNG.png" %} width="50" height="50" class="img-fluid" alt="samsung">
+            Samsung
+            </a>
+    </li>
+    <li class="nav-item">
+                <a role="button" onclick="load_warehouse('sharp')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/SHARP.png" %} width="50" height="50" class="img-fluid" alt="Sharp">
+            Sharp
+            </a>
+    </li>
+</ul>
+    <ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
+        <li class="nav-item">
+
+                <a role="button" onclick="load_warehouse('melanakia')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/ΜΕΛΑΝΑΚΙΑ.png" %} width="60" height="60" class="img-fluid" alt="melanakia">
+                    Μελανάκια
+                </a>
+        </li>
+        <li class="nav-item">
+                <a role="button" onclick="load_warehouse('melanotainies')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/ΜΕΛΑΝΟΤΑΙΝΙΕΣ.png" %} width="60" height="60" class="img-fluid" alt="melanotainies">
+                Μελανοταινίες
+                </a>
+        </li>
+        <li class="nav-item">
+                <a role="button" onclick="load_warehouse('toner')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/ΤΟΝΕΡ.png" %} width="60" height="60" class="img-fluid" alt="toner">
+                Toner
+                </a>
+        </li>
+        <li class="nav-item">
+                <a role="button" onclick="load_warehouse('fototypika')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
+                <img src={% static "warehouse/icons/ΦΩΤΟΤΥΠΙΚΑ.png" %} width="60" height="60" class="img-fluid" alt="fototipika">
+                Φωτοτυπικά
+                </a>
+        </li>
+    </ul>
+
+</div>
+
+<div id="warehouse" class="container-fluid">
+
+     <table class="table table-hover table-bordered table-sm" id="data-table">
+    <thead>
+    <tr class="table-success">
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>Προσθήκη</th>
+    </tr>
+    </thead>
+    <tbody>
+
+     </tbody>
+      <tfoot>
+        <tr class="table-success">
+          <th>ΠΕΡΙΓΡΑΦΗ</th>
+          <th>ΚΩΔΙΚΟΣ</th>
+          <th>TEMAXIA</th>
+          <th>Προσθήκη</th>
+        </tr>
+      </tfoot>
+    </table>
 
 
+
+
+
+  </div>
 <script>
 function goBack() {
   window.history.back();
 }
+
+
+
+
 </script>
-  </div>
+    <script>
+
+
+    function hide() {
+            var x = document.getElementById("warehouse");
+            if (x.style.display === "none") {
+                x.style.display = "table";
+            } else {
+                x.style.display = "none";
+                    }
+}
+
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+
+const table = document.getElementById("warehouse");
+
+
+// Προσθήκη προιόντος
+function add_btn(x, category){  
+  
+  var item_id = all_items[x].id
+  var item_perigrafi = all_items[x].ΠΕΡΙΓΡΑΦΗ
+  var item_kodikos = all_items[x].ΚΩΔΙΚΟΣ
+  
+  // Περνουμε τα στοιχεια της κλησης απο το Calendar 
+  const form = document.querySelector('form');
+  const data = Object.fromEntries(new FormData(form).entries());
+  
+  var Customer_ID = data.Customer_ID
+  var Copier_ID =  data.Copier_ID
+  var Service_ID = data.Service_ID
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+  const data_to_send = {
+
+    "ΠΕΡΙΓΡΑΦΗ": item_perigrafi,
+    "ΚΩΔΙΚΟΣ": item_kodikos,
+    "ΜΗΧΑΝΗΜΑ": Copier_ID,
+    "Service_ID": Service_ID,
+    "Customer_ID": Customer_ID,
+    'category' : category,
+  }
+  
+  const method = 'POST'
+  const url = "../../spareparts/add_spareparts"
+  $.ajax({
+        url: url,
+        type: method,
+        data: {
+        somedata:  data_to_send ,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+    },
+        dataType: 'json',
+        success: function (data) {
+            
+            if (data.status === 201) {
+
+                alert("Ο κωδικός " + data.ΚΩΔΙΚΟΣ + " Προστέθηκε ");
+            }
+            if (data.status === 200) {
+
+                alert("Προστέθηκε  και αλλο τεμάχιο με κωδικό " + data.ΚΩΔΙΚΟΣ );
+            } 
+            if (data.status === 202) {
+
+                alert("Προστέθηκε  αλλα ο κωδικός " + data.ΚΩΔΙΚΟΣ + " δεν είναι μοναδικός");
+            } 
+
+          
+        }
+      });
+
+}
+
+var all_items = [];
+// Show Data from selected warehouse
+function load_warehouse(category) {
+    const xhr = new XMLHttpRequest()
+    const method = 'GET'
+    const url = "../../warehouse/" + category + "-json"
+    const responseType = "json"
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function() {
+
+    const serverResponse = xhr.response
+
+    const head = `
+
+    <table class="table table-hover table-bordered table-sm" id="data-table">
+    <thead>
+    <tr class="table-success">
+        <th>ΠΕΡΙΓΡΑΦΗ</th>
+        <th>ΚΩΔΙΚΟΣ</th>
+        <th>ΤΕΜΑΧΙΑ</th>
+        <th>Προσθήκη</th>
+    </tr>
+    </thead>
+    <tbody>`;
+
+    const footer = `</tr>
+    </tbody>
+      <tfoot>
+        <tr class="table-success">
+          <th>ΠΕΡΙΓΡΑΦΗ</th>
+          <th>ΚΩΔΙΚΟΣ</th>
+          <th>TEMAXIA</th>
+          <th>Προσθήκη</th>
+        </tr>
+      </tfoot>
+    </table>`;
+
+    var listed_items = serverResponse.response
+    
+    var final_item = ""
+    var i;
+    all_items = [];
+    for (i=0; i<listed_items.length; i++) {
+        all_items.push(listed_items[i])
+        // Περνουμε το ID απο τα προιοντα 
+        var id = listed_items[i].id // Αν ειναι id
+        if (id === undefined) {
+            var id = listed_items[i].ID  // Aν ειναι ID
+
+        }
+        
+       
+
+        var description_item =  '<td><a href="../warehouse/' + category + '/'+ id + '">' + listed_items[i].ΠΕΡΙΓΡΑΦΗ + '</a> </td>';
+        var code_item =  '<td><a href="../warehouse/' + category + '/'+ id + '">' + listed_items[i].ΚΩΔΙΚΟΣ + '</a> </td>';
+        var pieces_item =  '<td><a href="../warehouse/' + category + '/'+ id + '">' + listed_items[i].ΤΕΜΑΧΙΑ + '</a> </td>';
+
+        var notes_item =   "<td><button onclick=add_btn(" + i + ",\""+category+"\") id=" + i + " class='btn btn-primary'>Προσθήκη</button></td></tr>";
+        
+        final_item +=   description_item + code_item + pieces_item + notes_item                           
+      
+      }
+    var final_table = head + final_item + footer
+    table.innerHTML = final_table
+    RunDataTable()
+   
+                         }
+
+
+xhr.send();
+}
+
+
+
+
+
+
+
+
+// Run DataTable
+
+function RunDataTable() {
+
+    $(document).ready(function() {
+    // Setup - add a text input to each footer cell
+
+    $('#data-table thead th').each( function () {
+
+        var title = $(this).text();
+
+            $(this).html( '<input type="text" placeholder="Αναζήτηση '+title+'" />' );
+
+    } );
+
+    // DataTable
+
+    var table =  $('#data-table').DataTable({
+ "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+        "autoWidth": false,
+        "processing": true,
+        "scrollY":        "400px",
+        "scrollCollapse": true,
+        "paging":         false,
+        scrollX: true,
+
+    dom: 'B<"center">lfrtip',
+
+    buttons: {
+        name: 'primary',
+        buttons: [  {
+            extend: 'copy',
+            text: 'Αντιγραφή'
+        },
+        {
+            extend: 'excel',
+            text: 'Excel',
+            exportOptions: {
+                modifier: {
+                    page: 'current'
+                }
+            }
+        },
+
+         'pdf', 'print', 'colvis',
+        'colvisRestore' ]
+
+    }
+});
+
+    // Apply the search
+    table.columns().every( function () {
+
+        var that = this;
+
+        $( 'input', this.header() ).on( 'keyup change clear', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+    } );
+} );
+
+
+}
+
+    </script>
+
+
+
 
 
 {% endblock %}
-

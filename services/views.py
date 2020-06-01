@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Services
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.forms import Textarea
 from django.forms.models import modelform_factory
 from django.db.models import Q
@@ -15,7 +15,26 @@ from services.forms import CreateServiceFromMachineForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from spareparts.models import SpareParts
-from datetime import datetime
+import shutil
+from Calendar.models import Calendar
+
+
+@login_required()
+def delete_files(request, *args, **kwargs):
+    service_id = kwargs['service_id']
+    service_object = Services.objects.get(id=service_id)
+
+    data = {
+        'service_id': service_id,
+        'object': service_object
+    }
+    if request.method == "POST":
+        path_to_delete = os.path.join(MEDIA_ROOT, str(service_id))
+        shutil.rmtree(path_to_delete, ignore_errors=True)
+
+        return HttpResponseRedirect(reverse('services:edit_service', args=(service_id,)))
+
+    return render(request, 'services/confirm_delete-files.html', data)
 
 
 class ServicesListView(LoginRequiredMixin, ListView):
@@ -100,6 +119,20 @@ class ServiceDelete(LoginRequiredMixin, DeleteView):
         id_ = self.kwargs.get("service_id")  # apo to urls.py -->> path('<int:service_id>'....
         return get_object_or_404(Services, id=id_)
 
+    def delete(self, request, *args, **kwargs):
+        """
+           Τρέχει όταν επιβεβαιώνουμε την διαγραφή
+           self ==>  <Calendar.views.CalendarDelete object at 0x7fbc61c77908>
+           request ==>       <WSGIRequest: POST '/Calendar/170/delete/'>
+           kwargs ==>        {'calendar_id': 170}
+        """
+        service_obj = self.get_object()
+        # Διαγραφή Calendar
+        calendar_obj = Calendar.objects.get(Service_ID=service_obj.pk)
+        calendar_obj.delete()
+        # Διαγραφή Service
+        service_obj.delete()
+        return HttpResponseRedirect(self.success_url)
 
 @login_required()
 def search_service_view(request):
