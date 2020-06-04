@@ -135,19 +135,23 @@
 
 </form>
 
+</div>
 
-<div class="alert alert-success col-12 mb-3 p-3 text-center">
+<div class="alert alert-success col-12 mb-3 p-3 text-center" >
             <button id="" class="btn btn-primary btn-lg rounded-pill" onclick="hide()">Προσθήκη ανταλλακτικών</button>
              </div>
 
-<ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
-<li class="nav-item">
+<div class="alert alert-success col-12 mb-3 p-3 mx-auto text-center" id="AddSpareParts" style="display:none">
+
+
+    <ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
+    <li class="nav-item">
 
                 <a role="button" onclick="load_warehouse('brother')" class="btn btn-light  mb-1 rounded-pill  left badge-pill">
                 <img src={% static "warehouse/icons/BROTHER.png" %} width="50" height="70" class="img-fluid " alt="Brother">
                 Brother        </a>
 
-</li>
+    </li>
     <li class="nav-item">
                 <a role="button" onclick="load_warehouse('canon')" class="btn btn-light mb-1 rounded-pill  left badge-pill">
                 <img src={% static "warehouse/icons/CANON.png" %} width="50" height="50" class="img-fluid " alt="Canon">
@@ -195,7 +199,7 @@
             Sharp
             </a>
     </li>
-</ul>
+    </ul>
     <ul class="nav nav-pills nav-fill" style="background-color: #EFF0F1;">
         <li class="nav-item">
 
@@ -224,7 +228,7 @@
         </li>
     </ul>
 
-</div>
+
 
 <div id="warehouse" class="container-fluid">
 
@@ -251,24 +255,19 @@
     </table>
 
 
-
-
-
   </div>
+</div>
+
 <script>
 function goBack() {
   window.history.back();
 }
-
-
-
-
 </script>
-    <script>
 
 
+<script>
     function hide() {
-            var x = document.getElementById("warehouse");
+            var x = document.getElementById("AddSpareParts");
             if (x.style.display === "none") {
                 x.style.display = "table";
             } else {
@@ -503,12 +502,7 @@ function RunDataTable() {
     </script>
 
 
-{% endblock content %}
 
 
 
-
-
-
-
-
+{% endblock %}

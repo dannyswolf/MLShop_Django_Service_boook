@@ -119,11 +119,11 @@ urlpatterns = [
     path('toner/<int:spare_part_id>', ΤΟΝΕΡUpdateView.as_view(), name='edit_toner'),
     path('toner/<int:spare_part_id>/delete', ΤΟΝΕΡDeleteView.as_view(), name='toner_delete_product'),
     # ΦΩΤΟΤΥΠΙΚΑ
-    path('fototipika/', ΦΩΤΟΤΥΠΙΚΑListView.as_view(), name='fototipika'),
-    path('fototipika-json', ΦΩΤΟΤΥΠΙΚΑ_json, name='fototipika_json'),
-    path('add_fototipika/', ΦΩΤΟΤΥΠΙΚΑCreateView.as_view(), name='add_fototipika'),
-    path('fototipika/<int:spare_part_id>', ΦΩΤΟΤΥΠΙΚΑUpdateView.as_view(), name='edit_fototipika'),
-    path('fototipika/<int:spare_part_id>/delete', ΦΩΤΟΤΥΠΙΚΑDeleteView.as_view(), name='fototipika_delete_product'),
+    path('fototypika/', ΦΩΤΟΤΥΠΙΚΑListView.as_view(), name='fototipika'),
+    path('fototypika-json', ΦΩΤΟΤΥΠΙΚΑ_json, name='fototipika_json'),
+    path('add_fototypika/', ΦΩΤΟΤΥΠΙΚΑCreateView.as_view(), name='add_fototipika'),
+    path('fototypika/<int:spare_part_id>', ΦΩΤΟΤΥΠΙΚΑUpdateView.as_view(), name='edit_fototipika'),
+    path('fototypika/<int:spare_part_id>/delete', ΦΩΤΟΤΥΠΙΚΑDeleteView.as_view(), name='fototipika_delete_product'),
     # Παραγγελίες
     path('xxx/', ΧΧΧListView.as_view(), name='xxx'),
     path('add_xxx/', ΧΧΧCreateView.as_view(), name='add_xxx'),
