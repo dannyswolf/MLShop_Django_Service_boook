@@ -1,10 +1,10 @@
-from django.views.generic import ListView, UpdateView, DeleteView, CreateView
+from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.exceptions import MultipleObjectsReturned
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.forms.models import modelform_factory
 from django.forms import Textarea
@@ -61,9 +61,9 @@ class SparePartsListView(LoginRequiredMixin, ListView):
 #     #     # print("data", data)
 #     #     return super().form_valid(form)
 
+
 @login_required()
 def SparePartsCreateView(request, *args, **kwargs):
-    
     # Javascript 
     if request.is_ajax():
         print("request.POST", request.POST)
@@ -183,9 +183,6 @@ def SparePartsCreateView(request, *args, **kwargs):
                                 'status': 200
             } 
             return JsonResponse(json_response)
-     
-        
-
 
     form = AddSparePartsToService
     if request.method == "GET":
@@ -193,25 +190,23 @@ def SparePartsCreateView(request, *args, **kwargs):
             "form": form
         }
         return render(request, "spareparts/add_spareparts.html", content)
-    # if request.method == "POST":
-    #     print("request.POST", request.POST)
-    #     Customer_ID = request.POST.get('Customer_ID')
-    #     Service_ID = request.POST.get('Service_ID')
-    #     ΚΩΔΙΚΟΣ = request.POST.get('ΚΩΔΙΚΟΣ')
-    #     ΜΗΧΑΝΗΜΑ = request.POST.get('ΜΗΧΑΝΗΜΑ')
-    #     machine = Machines.objects.filter(id=ΜΗΧΑΝΗΜΑ)
-    #     ΠΕΡΙΓΡΑΦΗ  = request.POST.get('ΠΕΡΙΓΡΑΦΗ')
-    #     print("Customer_ID", Customer_ID)
-    #     print("Service_ID", Service_ID)
-    #     print("ΚΩΔΙΚΟΣ", ΚΩΔΙΚΟΣ)
-    #     print("ΜΗΧΑΝΗΜΑ", ΜΗΧΑΝΗΜΑ)
-    #     print("machine", machine)
-    #     print("ΠΕΡΙΓΡΑΦΗ", ΠΕΡΙΓΡΑΦΗ)
-    #     new_item = SpareParts(ΠΕΡΙΓΡΑΦΗ=ΠΕΡΙΓΡΑΦΗ, ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ, ΤΕΜΑΧΙΑ=1, ΜΗΧΑΝΗΜΑ=machine, 
-    #     Service_ID=Service_ID, Customer_ID=Customer_ID)
-    #     new_item.save()
+    if request.method == "POST":
+        next_url = request.POST.get('next-url')
+        print("next_url", next_url)
+        print("request.POST", request.POST)
 
-    #     return JsonResponse(new_item, status=201)
+        form = AddSparePartsToService(request.POST or None)
+        if form.is_valid():
+            print("FORM.is_valid()")
+            form.save()
+            print("FORM.save()")
+        form = AddSparePartsToService
+        content = {
+            "form": form
+        }
+
+        return redirect(f"../{next_url}")
+
 
 
 @login_required()

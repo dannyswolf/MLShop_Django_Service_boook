@@ -122,7 +122,7 @@ class A_ΟΡΟΦΟΣDeleteView(LoginRequiredMixin, DeleteView):
 
         self.object.delete()
         return HttpResponseRedirect(success_url)
-
+        
 
 class BROTHERListView(LoginRequiredMixin, ListView):
     redirect_field_name = ''

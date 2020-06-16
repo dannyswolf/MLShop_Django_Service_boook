@@ -56,6 +56,7 @@
                         <a class="btn  btn-secondary" role="button"  href="/machines/{{ machine_form.Copier_ID.id }}">
                             <h5>Μηχάνημα</h5>
                             {{ machine_form.Copier_ID }}
+                            
                         </a>
 
                     </div>
@@ -131,6 +132,14 @@
         </tr>
 
     </table>
+    <div class="form-row">
+        <div class="form-group col-md-2 mb-0" style="visibility: hidden">
+        
+        <input type="number" name="Customer_ID" value="{{ machine_form.Copier_ID.Πελάτης.id }}" class="numberinput form-control" id="id_Customer_ID">
+        <input type="number" name="Copier_ID" value="{{ machine_form.Copier_ID.id }}" class="numberinput form-control" id="id_Copier_ID">
+        <input type="number" name="Service_ID" value="{{ form.instance.id }}" class="numberinput form-control" id="id_Service_ID">
+        </div>
+    </div>
 
 
 </form>
@@ -138,7 +147,7 @@
 </div>
 
 <div class="alert alert-success col-12 mb-3 p-3 text-center" >
-            <button id="" class="btn btn-primary btn-lg rounded-pill" onclick="hide()">Προσθήκη ανταλλακτικών</button>
+            <button id="" class="btn btn-primary btn-lg rounded-pill" onclick="hide('AddSpareParts')">Προσθήκη ανταλλακτικών</button>
              </div>
 
 <div class="alert alert-success col-12 mb-3 p-3 mx-auto text-center" id="AddSpareParts" style="display:none">
@@ -258,6 +267,105 @@
   </div>
 </div>
 
+
+<div class="alert alert-success col-12 mb-3 p-3 text-center" >
+            <button id="" class="btn btn-primary btn-lg rounded-pill" onclick="hide('AddSparePartsNotFromWarehouse')">Προσθήκη ανταλλακτικών εκτός αποθήκης</button>
+             </div>
+
+<div class="alert alert-success col-12 mb-3 p-3 mx-auto text-center"  id="AddSparePartsNotFromWarehouse" style="display:none">
+<form  method="POST" enctype="multipart/form-data" id=add_spareparts_form action="{% url 'spareparts:add_spareparts' %}">
+    {% csrf_token %}
+<table class="table table-secondary table-bordered">
+
+    <tr class="table-secondary" align="center">
+    <td colspan="2">
+
+        <div class="form-row">
+            <div class="form-group col-md-2 mb-2">
+                <h5>Customer_ID </h5>
+                <a class="btn btn btn-primary" role="button">
+
+                    <input type="text" name="Customer_ID" value="{{  machine_form.Copier_ID.Πελάτης.id }}"
+                            class="textinput textInput form-control" required>
+
+                </a>
+
+            </div>
+            <div class="form-group col-md-2 mb-2">
+                <h5>ΜΗΧΑΝΗΜΑ </h5>
+                <a class="btn btn btn-primary" role="button">
+
+                    <input type="text" name="ΜΗΧΑΝΗΜΑ" value="{{  machine_form.Copier_ID }}"
+                            class="textinput textInput form-control" required>
+
+                </a>
+            </div>
+
+            <div class="form-group col-md-2 mb-2">
+                <H5>PARTS_NR</H5>
+                <input type="text" name="PARTS_NR"  maxlength="200" class="textinput textInput form-control" >
+
+            </div>
+
+            <div class="form-group col-md-1 mb-0">
+                <H5>ΚΩΔΙΚΟΣ</H5>
+                <input type="text" name="ΚΩΔΙΚΟΣ"  maxlength="200" class="textinput textInput form-control" required>
+
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <H5>ΤΕΜΑΧΙΑ</H5>
+                <input type="text" name="ΤΕΜΑΧΙΑ"  maxlength="200" class="textinput textInput form-control" required>
+
+            </div>
+
+        </div>
+    </td>
+    </tr>
+    <tr class="table-secondary" align="center">
+        <td>
+
+                <H5>ΠΕΡΙΓΡΑΦΗ</H5>
+                    <textarea name="ΠΕΡΙΓΡΑΦΗ" maxlength="200" class="textarea form-control"> </textarea>
+
+
+
+        </td>
+
+            <td>
+                 <H5>ΠΑΡΑΤΗΡΗΣΗΣ</H5>
+                <textarea name="ΠΑΡΑΤΗΡΗΣΗΣ" cols="40" rows="10" maxlength="500" class="textarea form-control"> </textarea>
+
+                <button type="button" class="btn btn-info" onclick="goBack()">Πίσω</button>
+                <button type="submit" class="btn btn-success">Αποθήκευση</button>
+
+            </td>
+
+    </tr>
+        <tr class="table-secondary" align="center">
+        <td align="left" colspan="2">
+            <div class="form-row">
+
+                <div class="form-group col-md-2 mb-0" style="visibility: hidden">
+
+                <input type="text" name="next-url" value="services/{{ form.instance.id }}"
+                       maxlength="200" class="textinput textInput form-control">
+
+                <input type="text" name="Service_ID" value="{{ form.instance.id }}"
+                       maxlength="200" class="textinput textInput form-control">
+
+                </div>
+
+            </div>
+
+
+        </td>
+            </tr>
+
+</table>
+</form>
+
+</div>
+
 <script>
 function goBack() {
   window.history.back();
@@ -266,8 +374,8 @@ function goBack() {
 
 
 <script>
-    function hide() {
-            var x = document.getElementById("AddSpareParts");
+    function hide(element) {
+            var x = document.getElementById(element);
             if (x.style.display === "none") {
                 x.style.display = "table";
             } else {
@@ -305,7 +413,7 @@ function add_btn(x, category){
   // Περνουμε τα στοιχεια της κλησης απο το Calendar
   const form = document.querySelector('form');
   const data = Object.fromEntries(new FormData(form).entries());
-
+  
   var Customer_ID = data.Customer_ID
   var Copier_ID =  data.Copier_ID
   var Service_ID = data.Service_ID
@@ -319,7 +427,7 @@ function add_btn(x, category){
     "Customer_ID": Customer_ID,
     'category' : category,
   }
-
+  
   const method = 'POST'
   const url = "../../spareparts/add_spareparts"
   $.ajax({
