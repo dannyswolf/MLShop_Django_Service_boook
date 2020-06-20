@@ -26,6 +26,7 @@ from .models import Calendar
 from .utils import MyFinishedHtmlCalendar, MyHtmlCalendar
 
 
+
 @login_required()
 def delete_files(request, *args, **kwargs):
     service_id = kwargs['service_id']
