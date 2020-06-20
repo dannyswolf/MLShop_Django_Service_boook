@@ -19,7 +19,7 @@ from machines.models import Machines
 from services.models import Services
 from customers.models import Customer
 
-from warehouse.models import (A_ΟΡΟΦΟΣ, BROTHER, CANON, KONICA, KYOCERA, LEXMARK, OKI, RICOH, SAMSUNG, SHARP,
+from warehouse.models import (A_ΟΡΟΦΟΣ, BROTHER, CANON, EPSON, KONICA, KYOCERA, LEXMARK, OKI, RICOH, SAMSUNG, SHARP,
                                 ΜΕΛΑΝΑΚΙΑ, ΜΕΛΑΝΟΤΑΙΝΙΕΣ, ΤΟΝΕΡ, ΦΩΤΟΤΥΠΙΚΑ)
 
 
@@ -93,6 +93,8 @@ def SparePartsCreateView(request, *args, **kwargs):
                     sparepart = BROTHER.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
                 elif category == 'canon':
                     sparepart = CANON.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'epson':
+                    sparepart = EPSON.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
                 elif category == 'konica':
                     sparepart = KONICA.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
                 elif category == 'kyocera':
@@ -142,6 +144,8 @@ def SparePartsCreateView(request, *args, **kwargs):
                     sparepart = BROTHER.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
                 elif category == 'canon':
                     sparepart = CANON.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
+                elif category == 'epson':
+                    sparepart = EPSON.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
                 elif category == 'konica':
                     sparepart = KONICA.objects.get(ΚΩΔΙΚΟΣ=ΚΩΔΙΚΟΣ)
                 elif category == 'kyocera':

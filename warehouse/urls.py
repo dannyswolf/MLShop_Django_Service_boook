@@ -19,6 +19,7 @@ from .views import (
                     A_ΟΡΟΦΟΣListView,       A_ΟΡΟΦΟΣCreateView,         A_ΟΡΟΦΟΣUpdateView,         A_ΟΡΟΦΟΣDeleteView,
                     BROTHERListView,        BROTHERCreateView,          BROTHERUpdateView,          BROTHERDeleteView,
                     CANONListView,          CANONCreateView,            CANONUpdateView,            CANONDeleteView,
+                    EPSONListView,          EPSONCreateView,            EPSONUpdateView,            EPSONDeleteView,
                     KONICAListView,         KONICACreateView,           KONICAUpdateView,           KONICADeleteView,
                     KYOCERAListView,        KYOCERACreateView,          KYOCERAUpdateView,          KYOCERADeleteView,
                     LEXMARKListView,        LEXMARKCreateView,          LEXMARKUpdateView,          LEXMARKDeleteView,
@@ -32,7 +33,7 @@ from .views import (
                     ΦΩΤΟΤΥΠΙΚΑListView,     ΦΩΤΟΤΥΠΙΚΑCreateView,       ΦΩΤΟΤΥΠΙΚΑUpdateView,       ΦΩΤΟΤΥΠΙΚΑDeleteView,
                     ΧΧΧListView,            ΧΧΧCreateView,              ΧΧΧUpdateView,              XXXDeleteView,
                     # Json
-                    A_ΟΡΟΦΟΣ_json, BROTHER_json, CANON_json, KONICA_json, KYOCERA_json, LEXMARK_json, OKI_json,
+                    A_ΟΡΟΦΟΣ_json, BROTHER_json, CANON_json, EPSON_json, KONICA_json, KYOCERA_json, LEXMARK_json, OKI_json,
                     RICOH_json, SAMSUNG_json, SHARP_json, ΜΕΛΑΝΑΚΙΑ_json, ΜΕΛΑΝΟΤΑΙΝΙΕΣ_json, ΤΟΝΕΡ_json,
                     ΦΩΤΟΤΥΠΙΚΑ_json
                    )
@@ -57,6 +58,12 @@ urlpatterns = [
     path('add_canon/', CANONCreateView.as_view(), name='add_canon'),
     path('canon/<int:spare_part_id>', CANONUpdateView.as_view(), name='edit_canon'),
     path('canon/<int:spare_part_id>/delete', CANONDeleteView.as_view(), name='canon_delete_product'),
+    # Epson
+    path('epson/', EPSONListView.as_view(), name='epson'),
+    path('epson-json', EPSON_json, name='epson_json'),
+    path('add_epson/', EPSONCreateView.as_view(), name='add_epson'),
+    path('epson/<int:spare_part_id>', EPSONUpdateView.as_view(), name='edit_epson'),
+    path('epson/<int:spare_part_id>/delete', EPSONDeleteView.as_view(), name='epson_delete_product'),
     # Konica
     path('konica/', KONICAListView.as_view(), name='konica'),
     path('konica-json', KONICA_json, name='konica_json'),

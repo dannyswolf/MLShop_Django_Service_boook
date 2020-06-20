@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import (A_ΟΡΟΦΟΣ, BROTHER, CANON, KONICA, KYOCERA, LEXMARK, OKI, RICOH, SAMSUNG, SHARP,
+from .models import (A_ΟΡΟΦΟΣ, BROTHER, CANON, EPSON, KONICA, KYOCERA, LEXMARK, OKI, RICOH, SAMSUNG, SHARP,
                      ΜΕΛΑΝΑΚΙΑ, ΜΕΛΑΝΟΤΑΙΝΙΕΣ, ΤΟΝΕΡ, ΦΩΤΟΤΥΠΙΚΑ, ΧΧΧ)
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -315,6 +315,112 @@ class CANONDeleteView(LoginRequiredMixin, DeleteView):
     def get_object(self, queryset=None):
         id_ = self.kwargs.get("spare_part_id")  # apo to urls.py -->> path('<int:service_id>'....
         return get_object_or_404(CANON, ID=id_)
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        path_to_delete = os.path.join(SPARE_PARTS_ROOT, self.object.get_path())
+
+        try:
+            shutil.rmtree(path_to_delete, ignore_errors=True)
+        except OSError as e:
+            print("Error: %s - %s." % (e.filename, e.strerror))
+
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
+
+
+class EPSONListView(LoginRequiredMixin, ListView):
+    redirect_field_name = ''
+    template_name = 'warehouse/photocopiers_detail.html'
+    fields = '__all__'
+    queryset = EPSON.objects.using('SparePartsDb').all()
+
+
+@login_required()
+def EPSON_json(request, *args, **kwargs):
+    queryset = EPSON.objects.using('SparePartsDb').all()
+    # qs_json = serializers.serialize('json', queryset)
+    list_items = [{"id": x.ID, "ΠΕΡΙΓΡΑΦΗ": str(x.ΠΕΡΙΓΡΑΦΗ), "ΚΩΔΙΚΟΣ": str(x.ΚΩΔΙΚΟΣ),
+                   "ΤΕΜΑΧΙΑ": x.ΤΕΜΑΧΙΑ, } for x in queryset]
+
+    status = 200
+    data = {
+        "response": list_items
+    }
+    # return JsonResponse(data=data, status=status)
+    return JsonResponse(data=data, status=status)
+
+
+class EPSONCreateView(LoginRequiredMixin, CreateView):
+    redirect_field_name = ''
+    model = EPSON
+    fields = '__all__'
+    template_name = 'warehouse/add_photocopiers.html'
+
+    def get_success_url(self):
+        return reverse_lazy('warehouse:epson')
+
+
+class EPSONUpdateView(LoginRequiredMixin, UpdateView):
+    redirect_field_name = ''
+    model = EPSON
+    fields = '__all__'
+    template_name = 'warehouse/edit_photocopiers.html'
+    success_url = reverse_lazy('warehouse:epson')
+
+    def get_object(self, queryset=None):
+        id_ = self.kwargs.get("spare_part_id")  # apo to urls.py -->> path('<int:customer_id>'....
+        return get_object_or_404(EPSON, ID=id_)
+
+    def get_context_data(self, **kwargs):
+        context = super(EPSONUpdateView, self).get_context_data(**kwargs)
+        path = self.object.get_path()
+        try:
+            files = os.listdir(os.path.join(SPARE_PARTS_ROOT, path))
+            context['files'] = files
+
+        except FileNotFoundError as error:  # Όταν δεν υπάρχουν αρχεία
+            context['files'] = ""
+        return context
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+
+        path = self.object.get_path()
+        # Αρχεία
+        file_dir = os.path.join(SPARE_PARTS_ROOT, path)
+
+        # Αν ανεβάσουμε αρχεία να κάνει φάκελο αν δεν υπάρχει
+        if self.request.FILES.getlist("file") and not os.path.exists(file_dir):
+            os.makedirs(file_dir)
+
+        for x in self.request.FILES.getlist("file"):
+            def process(f):
+                with open(f'{file_dir}/' + str(f.name), 'wb+') as destination:
+                    for chunk in f.chunks():
+                        destination.write(chunk)
+
+            process(x)
+
+        return super().form_valid(form)
+
+
+class EPSONDeleteView(LoginRequiredMixin, DeleteView):
+    redirect_field_name = ''
+    model = EPSON
+    template_name = 'warehouse/confirm_delete.html'
+    success_url = reverse_lazy('warehouse:epson')
+
+    # error_url = 'customers/error_url.html'
+
+    def get_object(self, queryset=None):
+        id_ = self.kwargs.get("spare_part_id")  # apo to urls.py -->> path('<int:service_id>'....
+        return get_object_or_404(EPSON, ID=id_)
 
     def delete(self, request, *args, **kwargs):
         """

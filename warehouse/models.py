@@ -102,6 +102,36 @@ class CANON(models.Model):
         return os.path.join(SPARE_PARTS_URL, self.get_path())
 
 
+class EPSON(models.Model):
+    ID = models.AutoField(db_column='ID', primary_key=True, blank=True, null=False)  # Field name made lowercase.
+    PARTS_NR = models.CharField(db_column='PARTS_NR', blank=True, null=True, max_length=50)  # Field name made lowercase
+    ΠΕΡΙΓΡΑΦΗ = models.TextField(db_column='ΠΕΡΙΓΡΑΦΗ', blank=True, null=True)  # Field name made lowercase.
+    ΚΩΔΙΚΟΣ = models.CharField(db_column='ΚΩΔΙΚΟΣ', blank=True, null=True, max_length=50)  # Field name made lowercase.
+    ΤΕΜΑΧΙΑ = models.CharField(db_column='ΤΕΜΑΧΙΑ', blank=True, null=True, max_length=50)  # Field name made lowercase.
+    ΠΑΡΑΤΗΡΗΣΗΣ = models.TextField(db_column='ΠΑΡΑΤΗΡΗΣΗΣ', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'EPSON'
+
+    def __str__(self):
+        return f"PARTS_NR :{self.PARTS_NR} ΠΕΡΙΓΡΑΦΗ: {self.ΠΕΡΙΓΡΑΦΗ} Κωδικός: {self.ΚΩΔΙΚΟΣ}"
+
+    def get_absolute_url(self):
+        # customers ==>> app name στο urls
+        return reverse('warehouse:edit_epson', kwargs={'spare_part_id': self.pk})
+
+    def get_delete_url(self):
+        # customers ==>> app name στο urls
+        return reverse('warehouse:epson_delete_product', kwargs={'spare_part_id': self.pk})
+
+    def get_path(self):
+        return f'{self._meta.model_name.upper()}/{self.pk}'
+
+    def get_direct_path(self):
+        return os.path.join(SPARE_PARTS_URL, self.get_path())
+
+
 class Images(models.Model):
     ID = models.TextField(db_column='ID', blank=True, null=False)  # Field name made lowercase.
     Filename = models.TextField(db_column='Filename', blank=True, null=True)  # Field name made lowercase.
