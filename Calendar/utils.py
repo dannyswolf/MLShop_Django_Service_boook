@@ -104,9 +104,10 @@ class MyFinishedHtmlCalendar(HTMLCalendar):
             Ημερομηνία = event['Ημερομηνία']
             old_date = datetime.strptime(Ημερομηνία, "%d/%m/%Y")
 
+            task_year = old_date.year
             task_month = old_date.month
             task_day = old_date.day
-            if self.month == task_month and task_day == day:
+            if self.yaar == task_year and self.month == task_month and task_day == day:
                 d += f'<li><a class="btn btn-primary" role="button" href="' f'{event["id"]}"> {event["Πελάτης"]}</a></li>'
 
         if day != 0:

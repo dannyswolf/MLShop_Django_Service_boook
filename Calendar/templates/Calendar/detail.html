@@ -157,7 +157,7 @@
                     <ol>
                         {% for i in files %}
                             <li>
-                                <a href="{{ MEDIA_URL }}{{ form.Service_ID.value }}/{{ i }}">{{ i }}</a>
+                                <a href="{{ MEDIA_URL }}{{ form.instance.Ημερομηνία|slice:'6:'  }}/{{ form.Service_ID.value }}/{{ i }}">{{ i }}</a>
 
                             </li>
                         {% endfor %}
