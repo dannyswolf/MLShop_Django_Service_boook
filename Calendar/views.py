@@ -26,11 +26,12 @@ from .models import Calendar
 from .utils import MyFinishedHtmlCalendar, MyHtmlCalendar
 
 
-
 @login_required()
 def delete_files(request, *args, **kwargs):
     service_id = kwargs['service_id']
     calendar_object = Calendar.objects.get(Service_ID=service_id)
+    calendar_date = calendar_object.Ημερομηνία
+    calendar_year = calendar_date[6:]
     calendar_id = calendar_object.pk
 
     data = {
@@ -38,7 +39,7 @@ def delete_files(request, *args, **kwargs):
         'object': calendar_object
     }
     if request.method == "POST":
-        path_to_delete = os.path.join(MEDIA_ROOT, str(service_id))
+        path_to_delete = os.path.join(MEDIA_ROOT, f"{calendar_year}", str(service_id))
         shutil.rmtree(path_to_delete, ignore_errors=True)
 
         return HttpResponseRedirect(reverse('Calendar:edit_calendar', args=(calendar_id,)))
@@ -137,7 +138,7 @@ def create_calendar(request, machine_id, **kwargs):
             # Αρχεία
             # uploaded_file = request.FILES.getlist("file")
             Service_ID = new_service.pk
-            file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+            file_dir = os.path.join(MEDIA_ROOT, f"{Ημερομηνία[6:]}", str(Service_ID))
             if not os.path.exists(file_dir):
                 os.makedirs(file_dir)
             for x in request.FILES.getlist("file"):
@@ -207,7 +208,7 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         context['calendar_form'] = self.object  # whatever you would like
         try:
 
-            files = os.listdir(os.path.join(MEDIA_ROOT, str(self.object.Service_ID)))
+            files = os.listdir(os.path.join(MEDIA_ROOT, f"{self.object.Ημερομηνία[6:]}", str(self.object.Service_ID)))
             context['files'] = files
         except FileNotFoundError as error:  # Όταν δεν υπάρχουν αρχεία
             context['files'] = ""
@@ -227,6 +228,7 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         Ενέργειες = data['Ενέργειες']
         Τεχνικός = data['Τεχνικός']
         Ημερομηνία = data['Ημ_Ολοκλ']
+        year = data['Ημερομηνία']
         ΔΤΕ = data['ΔΤΕ']
         Μετρητής = data['Μετρητής']
         Επ_Service = data['Επ_Service']
@@ -235,7 +237,7 @@ class EditCalendar(LoginRequiredMixin, UpdateView):
         Service_ID = data['Service_ID']
 
         # Αρχεία
-        file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+        file_dir = os.path.join(MEDIA_ROOT, f"{year[6:]}", str(Service_ID))
         if self.request.FILES.getlist("file") and not os.path.exists(file_dir):
             os.makedirs(file_dir)
 

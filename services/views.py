@@ -23,13 +23,14 @@ from Calendar.models import Calendar
 def delete_files(request, *args, **kwargs):
     service_id = kwargs['service_id']
     service_object = Services.objects.get(id=service_id)
+    service_year = service_object.Ημερομηνία[6:]
 
     data = {
         'service_id': service_id,
         'object': service_object
     }
     if request.method == "POST":
-        path_to_delete = os.path.join(MEDIA_ROOT, str(service_id))
+        path_to_delete = os.path.join(MEDIA_ROOT, f"{service_year}", str(service_id))
         shutil.rmtree(path_to_delete, ignore_errors=True)
 
         return HttpResponseRedirect(reverse('services:edit_service', args=(service_id,)))
@@ -80,10 +81,11 @@ class EditService(LoginRequiredMixin, UpdateView):
         id_ = self.kwargs.get("service_id")
         context = super(EditService, self).get_context_data(**kwargs)
         context['machine_form'] = self.object  # whatever you would like
+        service_year = self.object.Ημερομηνία
         spareparts = SpareParts.objects.filter(Service_ID=id_)
         context['service_id'] = id_
         try:
-            files = os.listdir(os.path.join(MEDIA_ROOT, str(id_)))
+            files = os.listdir(os.path.join(MEDIA_ROOT, f"{service_year[6:]}", str(id_)))
             context['files'] = files
         except FileNotFoundError as error:  # Όταν δεν υπάρχουν αρχεία
             context['files'] = ""
@@ -95,7 +97,8 @@ class EditService(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         # # Αρχεία
         Service_ID = form.instance.id
-        file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+        service_year = self.object.Ημερομηνία
+        file_dir = os.path.join(MEDIA_ROOT, f"{service_year[6:]}", str(Service_ID))
         if not os.path.exists(file_dir):
             os.makedirs(file_dir)
         for x in self.request.FILES.getlist("file"):
@@ -194,8 +197,9 @@ def create_service_from_machines(request, machine_id, **kwargs):
 
             # # Αρχεία
             Service_ID = form.instance.id
+            service_year = form.instance.Ημερομηνία
 
-            file_dir = os.path.join(MEDIA_ROOT, str(Service_ID))
+            file_dir = os.path.join(MEDIA_ROOT, f"{service_year[6:]}", str(Service_ID))
             if not os.path.exists(file_dir):
                 os.makedirs(file_dir)
             for x in request.FILES.getlist("file"):
