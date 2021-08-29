@@ -93,11 +93,11 @@ WSGI_APPLICATION = 'django_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'Service_book.db'),
+        'NAME': os.path.join(BASE_DIR, 'databases/service/Service_book.db'),
     },
     'SparePartsDb': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '3. ΚΑΙΝΟΥΡΙΑ_ΑΠΟΘΗΚΗ.db'),
+        'NAME': os.path.join(BASE_DIR, 'databases/warehouse/3. ΚΑΙΝΟΥΡΙΑ_ΑΠΟΘΗΚΗ.db'),
 
     }
 }
